@@ -1,0 +1,14 @@
+{
+  "testing": {
+    "use_env_variable": "LOCALDB",
+    "dialect": "mysql"
+  },
+  "development": {
+    "use_env_variable": "DEV_URL",
+    "dialect": "mysql"
+  },
+  "production": {
+    "use_env_variable": "PROD_URL",
+    "dialect": "mysql"
+  }
+}
