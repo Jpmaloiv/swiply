@@ -1,7 +1,6 @@
 {
   "testing": {
-    "use_env_variable": "LOCALDB",
-    "dialect": "mysql"
+    "use_env_variable": "LOCALDB"
   },
   "development": {
     "use_env_variable": "JAWSDB_URL",
