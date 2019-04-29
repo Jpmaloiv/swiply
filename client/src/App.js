@@ -19,6 +19,8 @@ import Dashboard from './components/Dashboard'
 import AddPage from './components/Pages/AddPage'
 import PageView from './components/Pages/PageView'
 
+import AddContent from './components/Content/AddContent'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -61,6 +63,8 @@ class App extends Component {
           <Switch>
             <Route path='/pages/add' component={AddPage} />
             <Route path='/pages/:pageId' component={PageView} />
+
+            <Route path='/pages/:pageId/content/add' component={AddContent} />
           </Switch>
 
           <link
