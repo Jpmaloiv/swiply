@@ -146,7 +146,7 @@ export default class AddPage extends Component {
                             }
                         </div>
                         <Button
-                            variant='dark'
+                            variant='success'
                             size='lg'
                             style={{ display: 'block' }}
                             onClick={this.addPage.bind(this)}

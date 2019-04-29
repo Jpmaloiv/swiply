@@ -135,8 +135,8 @@ export default class PageView extends Component {
 
                     <div className='main'>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            {/* <h5 style={{ margin: 0 }}>Add Content</h5> */}
-                            {/* <NavLink to='/content/add'> */}
+                            <h5 style={{ margin: 0 }}>Add Content</h5>
+                            <NavLink to='/content/add'>
                             <Button
                                 variant='success'
                                 size='lg'
@@ -145,7 +145,7 @@ export default class PageView extends Component {
                             >
                                 <FontAwesomeIcon icon='plus' />
                             </Button>
-                            {/* </NavLink> */}
+                            </NavLink>
                         </div>
                         <div>
                             {this.state.summaryEdit ?
@@ -167,7 +167,7 @@ export default class PageView extends Component {
                             }
                         </div>
                         <Button
-                            variant='dark'
+                            variant='success'
                             size='lg'
                             style={{ display: 'block' }}
                             onClick={this.updatePage.bind(this)}

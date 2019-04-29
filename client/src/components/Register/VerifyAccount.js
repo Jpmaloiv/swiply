@@ -49,7 +49,7 @@ export default class VerifyAccount extends Component {
                         {this.props.state.phone}<br />
                         You should get it in a few seconds</p>
 
-                    <Button variant='dark' size='lg' onClick={this.verifyAccount.bind(this)}>
+                    <Button variant='success' size='lg' onClick={this.verifyAccount.bind(this)}>
                         Continue
                 </Button>
                 </div>

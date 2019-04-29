@@ -41,7 +41,7 @@ export default class VerifyAccount extends Component {
                         </Form.Group>
                     </Form>
 
-                    <Button variant='dark' size='lg' onClick={() => this.props.setState({ view: 'SubscriptionPlan' })}>
+                    <Button variant='success' size='lg' onClick={() => this.props.setState({ view: 'SubscriptionPlan' })}>
                         Next
                 </Button>
                 </div>

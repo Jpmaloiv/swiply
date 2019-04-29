@@ -16,7 +16,7 @@ export default class Welcome extends Component {
                     <img src={require(`../images/welcome.png`)} style={{ width: '100%', opacity: .6 }} alt='Welcome' />
 
                     <NavLink to='/pages/add'>
-                        <Button variant='dark' size='lg'>
+                        <Button variant='success' size='lg'>
                             Create Your First Page
                         </Button>
                     </NavLink>

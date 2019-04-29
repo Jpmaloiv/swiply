@@ -49,7 +49,7 @@ export default class SubscriptionPlan extends Component {
                         </Button>
                     </ButtonGroup>
 
-                    <Button variant='dark' size='lg' onClick={this.register.bind(this)}>
+                    <Button variant='success' size='lg' onClick={this.register.bind(this)}>
                         Register
                 </Button>
                 </div>

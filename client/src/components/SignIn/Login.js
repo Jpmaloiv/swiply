@@ -48,7 +48,7 @@ export default class Login extends Component {
                     </InputGroup>
                     <p>Please enter your phone number to sign in.</p>
 
-                    <Button variant='dark' size='lg' onClick={this.verifyPhone.bind(this)}>
+                    <Button variant='success' size='lg' onClick={this.verifyPhone.bind(this)}>
                         Continue
                 </Button>
                 </div>

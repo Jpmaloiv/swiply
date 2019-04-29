@@ -29,8 +29,6 @@ router.post('/add', (req, res) => {
  * Don't forget to run an `npm i` to install the `youtube-api` dependencies.
  * */
 
-// I downloaded the file from OAuth2 -> Download JSON
-// const CREDENTIALS = readJson(`../client_secret.json`);
 
 // Init lien server
 let server = new Lien({

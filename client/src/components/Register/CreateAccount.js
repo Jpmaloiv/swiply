@@ -103,7 +103,7 @@ export default class CreateAccount extends Component {
                         </Form.Group>
                     </Form>
 
-                    <Button variant='dark' size='lg' onClick={this.verifyPhone.bind(this)}>
+                    <Button variant='success' size='lg' onClick={this.verifyPhone.bind(this)}>
                         Continue
                     </Button>
                 </div>
