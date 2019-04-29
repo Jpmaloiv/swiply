@@ -34,6 +34,11 @@ app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit: 
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.use(express.static(path.join(__dirname + '/public')));
+
 //   AWS TEST 
 app.set('client', './client');
 app.use(express.static('./client/public'));
