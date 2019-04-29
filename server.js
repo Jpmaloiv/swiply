@@ -1,12 +1,10 @@
 
-require('dotenv').config();
+require("dotenv").config();
 const express = require('express');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser')
 , readJson = require("r-json")
-
-
 
 /* YOUTUBE API */
 var fs = require('fs');
@@ -14,15 +12,15 @@ var readline = require('readline');
 var { google } = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 
+// Express setup
+const app = express();
+const PORT = process.env.PORT || 3001;
+
 // Import models
 const db = require(path.join(__dirname + '/models'));
 
 // Import routes
 const api = require('./routes')
-
-// Express setup
-const app = express();
-const PORT = process.env.PORT || 3001;
 
 // file upload middleware
 // app.use(fileUpload())
@@ -46,6 +44,13 @@ app.engine('html', require('ejs').renderFile);
 // Routes
 app.use('/api/', api)
 
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, './client/build/index.html'), function (err) {
+        if (err) {
+            res.status(500).send(err)
+        }
+    })
+})
 
 db.sequelize.sync({ force: false, logging: console.log }).then(function () {
     app.listen(PORT, function () {
