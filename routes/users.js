@@ -34,13 +34,17 @@ const upload = multer({
 // Register a new user
 router.post('/register', upload.single('imgFile'), (req, res) => {
 
+    const imageLink = ''
+    if (req.file) imageLink = req.file.key;
+
+
     const user = {
         firstName: req.query.firstName,
         lastName: req.query.lastName,
         email: req.query.email.toLowerCase(),
         phone: req.query.phone,
         summary: req.query.summary,
-        imageLink: req.file.key,
+        imageLink: imageLink,
         remember: req.query.remember
     }
 

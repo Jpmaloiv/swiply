@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import axios from 'axios'
 
+import Button from 'react-bootstrap/Button'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 export default class AddContent extends Component {
     constructor(props) {
