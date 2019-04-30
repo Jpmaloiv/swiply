@@ -101,6 +101,7 @@ router.get('/search', (req, res) => {
 
 // Update a user
 router.put('/update', upload.single('imgFile'), (req, res) => {
+    console.log("REQ", req.files, req.file)
 
     let imageLink = req.query.imageLink
     if (req.file) imageLink = req.file.key;

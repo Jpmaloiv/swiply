@@ -43,7 +43,7 @@ export default class AccountSettings extends Component {
     // Preview image once seleted
     onImageChange = e => {
         const file = e.target.files[0]
-        this.props.setState({
+        this.setState({
             image: URL.createObjectURL(file),
             file: file,
             fileName: file.name,
@@ -54,6 +54,7 @@ export default class AccountSettings extends Component {
     // Updates user with any changes made
     updateUser() {
         const { user } = this.state;
+        console.log(user)
 
         // let file = page.file
         // // Split the filename to get the name and type
@@ -61,10 +62,10 @@ export default class AccountSettings extends Component {
         // let fileName = fileParts[0];
         // let fileType = fileParts[1];
         // console.log("Preparing the upload", file);
-        // let data = new FormData();
-        // data.append("imgFile", file)
+        let data = new FormData();
+        data.append("imgFile", this.state.file)
         axios.put('/api/users/update?id=' + this.state.user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + '&title=' + user.title + '&phone=' + user.phone +
-            '&email=' + user.email + '&summary=' + user.summary)
+            '&email=' + user.email + '&summary=' + user.summary, data)
             .then(res => {
                 console.log(res)
                 window.location.reload();
@@ -105,9 +106,7 @@ export default class AccountSettings extends Component {
                                 }
                             </div>
                             <Form.Group>
-                                <form action="/add" method="post" enctype="multipart/form-data" style={{ padding: 0 }}>
-                                    <input type='file' name='videoFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
-                                </form>
+                                    <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>First Name</Form.Label>
