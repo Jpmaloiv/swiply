@@ -99,5 +99,43 @@ router.get('/search', (req, res) => {
         })
 })
 
+// Update a user
+router.put('/update', upload.single('imgFile'), (req, res) => {
+
+    let imageLink = req.query.imageLink
+    if (req.file) imageLink = req.file.key;
+
+    const user = {
+        firstName: req.query.firstName,
+        lastName: req.query.lastName,
+        title: req.query.title,
+        email: req.query.email,
+        profile: req.query.profile,
+        phone: req.query.phone,
+        summary: req.query.summary,
+        imageLink: imageLink,
+        instagram: req.query.instagram,
+        facebook: req.query.facebook,
+        twitter: req.query.twitter,
+        linkedin: req.query.linkedin,
+        whatsapp: req.query.whatsapp,
+        website: req.query.website,
+        remember: req.query.remember
+    }
+
+    let AWS = 'N/A'
+    if (req.file) AWS = 'Image uploaded!'
+
+    db.User.update(user, { where: { id: req.query.id } })
+        .then(resp => {
+            res.status(200);
+            res.json({ success: true, message: 'User created!', token: auth.generateJWT(resp), AWS: AWS });
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ message: "Internal server error.", error: err });
+        })
+})
+
 
 module.exports = router;

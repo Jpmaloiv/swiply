@@ -19,9 +19,9 @@ export default class Navigation extends Component {
 
 
     render() {
-        let profile = ''
-        if (this.props.decoded.profile) profile = this.props.decoded.profile
-        if (!this.props.decoded.profile) profile = this.props.decoded.id
+        // let profile = ''
+        // if (this.props.decoded.profile) profile = this.props.decoded.profile
+        // if (!this.props.decoded.profile) profile = this.props.decoded.id
 
         return (
             <header>
@@ -45,10 +45,10 @@ export default class Navigation extends Component {
                         <NavLink to='/customers'>
                             Customers
                         </NavLink>
-                        <NavLink to={`/profile/${profile}`}>
+                        <NavLink to={`/profile/edit/${this.props.decoded.id}`}>
                             Public Profile
                         </NavLink>
-                        <NavLink to='/account'>
+                        <NavLink to={`/account/${this.props.decoded.id}`}>
                             <FontAwesomeIcon icon='user' />My Account
                         </NavLink>
                         <NavLink to='/' onClick={this.logout}>

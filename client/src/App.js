@@ -22,6 +22,8 @@ import PageView from './components/Pages/PageView'
 import AddContent from './components/Content/AddContent'
 
 import Profile from './components/Profile/Profile'
+import EditProfile from './components/Profile/EditProfile'
+import AccountSettings from './components/Account/AccountSettings'
 
 class App extends Component {
   constructor(props) {
@@ -69,7 +71,9 @@ class App extends Component {
 
             <Route path='/content/add' component={AddContent} />
 
-            <Route path='/profile/:profile' component={Profile} />
+            <Route exact path='/profile/:profile' component={Profile} /> 
+            <Route path='/profile/edit/:userId' component={EditProfile} />
+            <Route path='/account/:userId' component={AccountSettings} />
            
           </Switch>
 

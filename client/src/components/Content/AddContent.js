@@ -88,6 +88,7 @@ export default class AddContent extends Component {
                         variant='success'
                         size='lg'
                         style={{ display: 'block' }}
+                    disabled
                         onClick={this.addContent.bind(this)}
                     >
                         Upload Content

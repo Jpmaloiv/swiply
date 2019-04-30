@@ -37,6 +37,30 @@ module.exports = function (sequelize, DataTypes) {
         imageLink: {
             type: DataTypes.STRING
         },
+        instagram: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        facebook: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        twitter: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        linkedIn: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        whatsapp: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        website: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         remember: {
             type: DataTypes.BOOLEAN,
             allowNull: true
