@@ -14,6 +14,14 @@ module.exports = function (sequelize, DataTypes) {
                 isEmail: true
             }
         },
+        profile: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         summary: {
             type: DataTypes.STRING,
             allowNull: true

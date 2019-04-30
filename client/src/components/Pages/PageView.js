@@ -68,15 +68,6 @@ export default class PageView extends Component {
             })
     }
 
-    uploadVideo() {
-        axios.post('/api/content/add')
-            .then(res => {
-                console.log(res)
-            }).catch(err => {
-                console.error(err);
-            })
-
-    }
 
     render() {
 
@@ -137,14 +128,13 @@ export default class PageView extends Component {
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <h5 style={{ margin: 0 }}>Add Content</h5>
                             <NavLink to='/content/add'>
-                            <Button
-                                variant='success'
-                                size='lg'
-                                className='circle'
-                                onClick={this.uploadVideo}
-                            >
-                                <FontAwesomeIcon icon='plus' />
-                            </Button>
+                                <Button
+                                    variant='success'
+                                    size='lg'
+                                    className='circle'
+                                >
+                                    <FontAwesomeIcon icon='plus' />
+                                </Button>
                             </NavLink>
                         </div>
                         <div>

@@ -11,6 +11,7 @@ module.exports = {
             id: user.id,
             email: user.email,
             name: user.firstName + ' ' + user.lastName,
+            profile: user.profile,
             exp: expire.getTime() / 1000
         }, process.env.JWT_SECRET)
     },

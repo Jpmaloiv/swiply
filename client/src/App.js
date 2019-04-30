@@ -21,6 +21,8 @@ import PageView from './components/Pages/PageView'
 
 import AddContent from './components/Content/AddContent'
 
+import Profile from './components/Profile/Profile'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -38,6 +40,7 @@ class App extends Component {
   }
 
   render() {
+
     return (
       <Router>
         <div className='body'>
@@ -64,7 +67,10 @@ class App extends Component {
             <Route path='/pages/add' component={AddPage} />
             <Route path='/pages/:pageId' component={PageView} />
 
-            <Route path='/pages/:pageId/content/add' component={AddContent} />
+            <Route path='/content/add' component={AddContent} />
+
+            <Route path='/profile/:profile' component={Profile} />
+           
           </Switch>
 
           <link

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import jwt_decode from 'jwt-decode'
+
 
 
 export default class Navigation extends Component {
@@ -17,6 +19,10 @@ export default class Navigation extends Component {
 
 
     render() {
+        let profile = ''
+        if (this.props.decoded.profile) profile = this.props.decoded.profile
+        if (!this.props.decoded.profile) profile = this.props.decoded.id
+
         return (
             <header>
                 <div>
@@ -39,7 +45,7 @@ export default class Navigation extends Component {
                         <NavLink to='/customers'>
                             Customers
                         </NavLink>
-                        <NavLink to='/profile'>
+                        <NavLink to={`/profile/${profile}`}>
                             Public Profile
                         </NavLink>
                         <NavLink to='/account'>

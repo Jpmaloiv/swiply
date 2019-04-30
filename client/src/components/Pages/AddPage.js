@@ -65,7 +65,7 @@ export default class AddPage extends Component {
             '&summary=' + page.summary + '&fileName=' + fileName + '&fileType=' + fileType, data)
             .then((response) => {
                 console.log(response)
-                // window.location = '/dashboard'
+                window.location = '/dashboard'
             }).catch((error) => {
                 console.error(error);
             })

@@ -53,7 +53,7 @@ export default class CreateAccount extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='center'>
                     <h2>Create Account</h2><br />
-                    <Form>
+                    <Form className='login'>
                         <Form.Group>
                             <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                             <div className='profilePic'>

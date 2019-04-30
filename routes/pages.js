@@ -40,11 +40,14 @@ router.post("/add", upload.single('imgFile'), function (req, res) {
 
   upload.single('imgFile')
 
+  let imageLink = ''
+  if (req.file) imageLink = req.file.key;
+
   const page = {
     name: req.query.name,
     description: req.query.description,
     summary: req.query.summary,
-    imageLink: req.file.key,
+    imageLink: imageLink,
     UserId: req.query.userId
   }
 
@@ -77,6 +80,7 @@ router.get('/search', (req, res) => {
       res.status(500).json({ message: "Internal server error.", error: err });
     })
 })
+
 
 router.put('/update', (req, res) => {
 

@@ -3,9 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import axios from 'axios'
 
 import Button from 'react-bootstrap/Button'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Form from 'react-bootstrap/Form'
 
 
 export default class AddContent extends Component {
@@ -23,10 +21,34 @@ export default class AddContent extends Component {
 
     }
 
+    // Handles user input
+    handleChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    // Preview image once seleted
+    onVideoChange = e => {
+        console.log(e.target.files)
+        const file = e.target.files[0]
+        this.setState({
+            video: URL.createObjectURL(file),
+            file: file,
+            fileName: file.name,
+            fileType: file.type
+        })
+    }
 
     // Creates new content
     addContent() {
-
+        let data = new FormData();
+        data.append("videoFile", this.state.file)
+        console.log("DATA", data)
+        axios.post('/api/content/add', data)
+            .then(res => {
+                console.log(res)
+            }).catch(err => {
+                console.error(err);
+            })
     }
 
 
@@ -34,50 +56,42 @@ export default class AddContent extends Component {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
-                    <div className={this.state.video === '' ? 'imageBanner' : 'imageBanner set'}>
+                    <div className='center'>
                         <h2>Add Video</h2>
                         <h5>Plese upload a video file and description for your content.</h5>
-                        <form action="/add" method="post" enctype="multipart/form-data" style={{ padding: 0 }}>
-                            <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
-                        </form>
-                        {/* <img src={this.state.image} style={{ width: '100%', opacity: .2 }} alt='' /> */}
 
-                        <div className='textOverlay'>
-                            {this.state.video ?
-                                <span></span>
-                                :
-                                <FontAwesomeIcon
-                                    icon='plus'
-                                    size='6x'
-                                    style={{ opacity: .2 }}
-                                    onClick={() => { this.upload.click() }}
+                        <Form>
+                            <Form.Group>
+                                <form action="/add" method="post" enctype="multipart/form-data" style={{ padding: 0 }}>
+                                    <input type='file' name='videoFile' ref={(ref) => this.upload = ref} onChange={this.onVideoChange} />
+                                </form>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    placeholder={this.state.name}
+                                    name='name'
+                                    onChange={this.handleChange}
                                 />
-                            }
-
-                                <FormControl
-                                    style={{ width: 'initial' }}
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    as='textarea'
                                     placeholder={this.state.description}
                                     name='description'
                                     onChange={this.handleChange}
-                                    onBlur={this.handleEditing}
                                 />
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p>{this.state.description}</p>
-                                    <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
-                                </div>
-                        </div>
+                            </Form.Group>
+                        </Form>
                     </div>
 
-                    <div className='main'>
-                        <Button
-                            variant='success'
-                            size='lg'
-                            style={{ display: 'block' }}
-                            onClick={this.addPage.bind(this)}
-                        >
-                            Upload Content
-                        </Button>
-                    </div>
+                    <Button
+                        variant='success'
+                        size='lg'
+                        style={{ display: 'block' }}
+                        onClick={this.addContent.bind(this)}
+                    >
+                        Upload Content
+                    </Button>
                 </div>
             </ReactCSSTransitionGroup>
         )

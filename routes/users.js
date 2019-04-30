@@ -34,9 +34,8 @@ const upload = multer({
 // Register a new user
 router.post('/register', upload.single('imgFile'), (req, res) => {
 
-    const imageLink = ''
+    let imageLink = ''
     if (req.file) imageLink = req.file.key;
-
 
     const user = {
         firstName: req.query.firstName,
@@ -72,6 +71,27 @@ router.post('/login', (req, res) => {
         .then(resp => {
             const user = resp.dataValues;
             res.json({ success: true, message: 'Logged in!', token: auth.generateJWT(user) });
+        })
+        .catch(err => {
+            console.error("ERR", err);
+            res.status(500).json({ message: "Internal server error.", error: err });
+        })
+})
+
+
+router.get('/search', (req, res) => {
+
+    let query = {
+        where: {},
+        include: [{
+            model: db.Page
+        }]
+    }
+    if (req.query.id) query.where.id = req.query.id
+
+    db.User.findAll(query)
+        .then(resp => {
+            res.json({ success: true, message: 'User(s) found!', response: resp, bucket: process.env.S3_BUCKET });
         })
         .catch(err => {
             console.error("ERR", err);
