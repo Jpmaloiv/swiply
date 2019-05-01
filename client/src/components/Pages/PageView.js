@@ -126,7 +126,7 @@ export default class PageView extends Component {
 
                     <div className='main'>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <h5 style={{ margin: 0 }}>Add Content</h5>
+                            {/* <h5 style={{ margin: 0 }}>Add Content</h5> */}
                             <NavLink to='/content/add'>
                                 <Button
                                     variant='success'

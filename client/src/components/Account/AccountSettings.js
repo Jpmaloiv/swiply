@@ -3,6 +3,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,6 +19,10 @@ export default class AccountSettings extends Component {
     }
 
     componentWillMount() {
+        this.fetchUser();
+    }
+
+    fetchUser() {
         const loginToken = window.localStorage.getItem("token");
         let decoded = ''
         if (loginToken) decoded = jwt_decode(loginToken)
@@ -26,13 +32,20 @@ export default class AccountSettings extends Component {
                 console.log(resp)
                 this.setState({
                     user: resp.data.response[0],
-                    image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`,
                     S3_BUCKET: resp.data.bucket
-                })
+                }, this.imageCheck)
             })
             .catch((error) => {
                 console.error(error)
             })
+    }
+
+    imageCheck() {
+        const { user } = this.state
+        if (user.imageLink) {
+            user.imageLink = `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}`
+            this.setState({ render: !this.state.render })
+        }
     }
 
     // Handles user input
@@ -43,13 +56,26 @@ export default class AccountSettings extends Component {
     // Preview image once seleted
     onImageChange = e => {
         const file = e.target.files[0]
+        this.state.user.imageLink = URL.createObjectURL(file);
         this.setState({
-            image: URL.createObjectURL(file),
             file: file,
             fileName: file.name,
             fileType: file.type
         })
     }
+
+    createNotification = (type) => {
+        return () => {
+            switch (type) {
+                case 'success':
+                    NotificationManager.success('Account updated', '', 2500);
+                    break;
+                case 'error':
+                    NotificationManager.error('Error updating account', '', 2500);
+                    break;
+            }
+        };
+    };
 
     // Updates user with any changes made
     updateUser() {
@@ -68,17 +94,21 @@ export default class AccountSettings extends Component {
             '&email=' + user.email + '&summary=' + user.summary, data)
             .then(res => {
                 console.log(res)
-                window.location.reload();
+                this.success.click();
+                this.fetchUser();
             }).catch(err => {
                 console.error(err);
+                this.error.click();
             })
     }
+
+
 
 
     render() {
 
         const { user } = this.state
-        console.log(this.state)
+
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
@@ -87,9 +117,9 @@ export default class AccountSettings extends Component {
 
                         <Form style={{ padding: '25px 75px' }}>
                             <div className='profilePic'>
-                                {this.state.image ?
+                                {user.imageLink ?
                                     <div>
-                                        <img src={this.state.image} style={{ width: 75, height: 75, borderRadius: '50%', objectFit: 'cover' }} alt='' />
+                                        <img src={user.imageLink} style={{ width: 75, height: 75, borderRadius: '50%', objectFit: 'cover' }} alt='' />
                                         <FontAwesomeIcon
                                             icon='plus'
                                             style={{ opacity: .2, position: 'absolute' }}
@@ -106,7 +136,7 @@ export default class AccountSettings extends Component {
                                 }
                             </div>
                             <Form.Group>
-                                    <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
+                                <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>First Name</Form.Label>
@@ -169,6 +199,10 @@ export default class AccountSettings extends Component {
                         Update Account
                     </Button>
                 </div>
+
+                <button className='btn btn-success' onClick={this.createNotification('success')} ref={(ref) => this.success = ref} style={{ display: 'none' }}>Success</button>
+                <button className='btn btn-danger' onClick={this.createNotification('error')} ref={(ref) => this.error = ref} style={{ display: 'none' }}>Error</button>
+                <NotificationContainer />
             </ReactCSSTransitionGroup>
         )
     }

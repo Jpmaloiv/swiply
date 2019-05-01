@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom';
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import Moment from 'react-moment';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Button from 'react-bootstrap/Button'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
+import { SocialIcon } from 'react-social-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -85,6 +84,14 @@ export default class Profile extends Component {
                                 <h3>{user.firstName + ' ' + user.lastName}</h3>
                                 <p>{user.title}</p>
                             </div>
+                            <div className='social'>
+                                {/* {user.instagram ? <SocialIcon url={user.instagram} /> : <span></span>} */}
+                                {user.facebook ? <SocialIcon url={user.facebook} /> : <span></span>}
+                                {user.twitter ? <SocialIcon url={user.twitter} /> : <span></span>}
+                                {user.linkedin ? <SocialIcon url={user.linkedin} /> : <span></span>}
+                                {user.whatsapp ? <SocialIcon url={user.whatsapp} /> : <span></span>}
+                                {user.website ? <SocialIcon url={user.website} /> : <span></span>}
+                            </div>
                         </div>
 
                     </div>
@@ -123,3 +130,4 @@ export default class Profile extends Component {
         )
     }
 }
+

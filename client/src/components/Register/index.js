@@ -10,7 +10,10 @@ export default class Register extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            view: 'CreateAccount'
+            view: 'CreateAccount',
+            firstName: '',
+            lastName: '',
+            summary: ''
         }
     }
 
