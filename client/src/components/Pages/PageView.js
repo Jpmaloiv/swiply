@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { NavLink } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
@@ -17,22 +17,30 @@ export default class PageView extends Component {
             name: 'Page Name',
             description: 'Short Description',
             summary: 'Page Summary',
-            page: {}
+            page: {},
+            edit: false
         }
     }
 
     componentWillMount() {
+        const loginToken = window.localStorage.getItem("token");
+        if (loginToken) this.setState({ decoded: jwt_decode(loginToken) })
+
         axios.get('/api/pages/search?pageId=' + this.props.match.params.pageId)
             .then((resp) => {
                 console.log(resp)
                 this.setState({
                     page: resp.data.response[0],
                     image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`
-                })
+                }, this.checkSelf)
             })
             .catch((error) => {
                 console.error(error)
             })
+    }
+
+    checkSelf() {
+        if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
     }
 
     // Handles user input
@@ -44,6 +52,19 @@ export default class PageView extends Component {
     handleEditing = e => {
         let name = e.currentTarget.getAttribute('name') + 'Edit'
         this.setState({ [name]: !this.state[name] });
+    }
+
+    // Toggles whether page is published
+    handlePublish = e => {
+        const published = e.target.value;
+        const { page } = this.state;
+        axios.put('/api/pages/update?id=' + page.id + '&published=' + published)
+            .then(res => {
+                console.log(res)
+                window.location.reload();
+            }).catch(err => {
+                console.error(err);
+            })
     }
 
     // Updates page with any changes made
@@ -71,7 +92,10 @@ export default class PageView extends Component {
 
     render() {
 
-        const { page } = this.state
+
+        const { edit, page } = this.state
+
+        console.log(edit)
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -79,6 +103,34 @@ export default class PageView extends Component {
                     <div className='imageBanner set'>
                         <input type='file' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                         <img src={this.state.image} style={{ width: '100%', opacity: .3 }} alt='' />
+
+                        {this.state.edit == true ?
+                            <div style={{position: 'absolute', top: 10, right: 25}}>
+                                {page.published == true ?
+                                    <Button
+                                        variant='dark'
+                                        size='sm'
+                                        value={false}
+                                        onClick={this.handlePublish.bind(this)}
+                                        style={{width: 'initial'}}
+                                    >
+                                        Unpublish
+                                    </Button>
+                                    :
+                                    <Button
+                                        variant='dark'
+                                        size='sm'
+                                        value={true}
+                                        onClick={this.handlePublish.bind(this)}
+                                        style={{width: 'initial'}}
+                                    >
+                                        Publish
+                                    </Button>
+                                }
+                            </div>
+                            :
+                            <span></span>
+                        }
 
                         <div className='textOverlay'>
                             {this.state.image ?
@@ -104,7 +156,11 @@ export default class PageView extends Component {
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <h3>{page.name}</h3>
-                                    <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
+                                    {edit ?
+                                        <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
+                                        :
+                                        <span></span>
+                                    }
                                 </div>
                             }
                             {this.state.descriptionEdit ?
@@ -118,7 +174,11 @@ export default class PageView extends Component {
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <p>{page.description}</p>
-                                    <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
+                                    {edit ?
+                                        <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
+                                        :
+                                        <span></span>
+                                    }
                                 </div>
                             }
                         </div>
@@ -127,7 +187,7 @@ export default class PageView extends Component {
                     <div className='main'>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             {/* <h5 style={{ margin: 0 }}>Add Content</h5> */}
-                            <NavLink to='/content/add'>
+                            {/* <NavLink to='/content/add'>
                                 <Button
                                     variant='success'
                                     size='lg'
@@ -135,7 +195,7 @@ export default class PageView extends Component {
                                 >
                                     <FontAwesomeIcon icon='plus' />
                                 </Button>
-                            </NavLink>
+                            </NavLink> */}
                         </div>
                         <div>
                             {this.state.summaryEdit ?
@@ -152,7 +212,11 @@ export default class PageView extends Component {
                                 :
                                 <div style={{ display: 'flex' }}>
                                     <p>{page.summary}</p>
-                                    <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
+                                    {edit ?
+                                        <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
+                                        :
+                                        <span></span>
+                                    }
                                 </div>
                             }
                         </div>

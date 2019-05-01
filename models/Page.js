@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
         },
         imageLink: {
             type: DataTypes.STRING
+        },
+        published: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     });
 

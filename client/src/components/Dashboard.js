@@ -20,7 +20,7 @@ export default class Dashboard extends Component {
     }
 
     componentWillMount() {
-        axios.get('api/pages/search')
+        axios.get('api/pages/search?published=true')
             .then((resp) => {
                 console.log(resp)
                 this.setState({

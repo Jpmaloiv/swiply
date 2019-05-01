@@ -70,7 +70,9 @@ router.get('/search', (req, res) => {
 
   let query = { where: {} }
   if (req.query.pageId) query.where.id = req.query.pageId
+  if (req.query.published) query.where.published = true
 
+  console.log("QUERY", query)
   db.Page.findAll(query)
     .then(resp => {
       res.json({ success: true, message: 'Pages found!', response: resp, bucket: process.env.S3_BUCKET });
@@ -87,7 +89,8 @@ router.put('/update', (req, res) => {
   const page = {
     name: req.query.name,
     description: req.query.description,
-    summary: req.query.summary
+    summary: req.query.summary,
+    published: req.query.published
   }
 
   let AWS = 'N/A'
