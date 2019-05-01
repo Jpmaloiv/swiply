@@ -95,8 +95,6 @@ export default class PageView extends Component {
 
         const { edit, page } = this.state
 
-        console.log(edit)
-
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>

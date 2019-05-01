@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Moment from 'react-moment';
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -20,7 +21,11 @@ export default class Dashboard extends Component {
     }
 
     componentWillMount() {
-        axios.get('api/pages/search?published=true')
+        const loginToken = window.localStorage.getItem("token");
+        let decoded = ''
+        if (loginToken) decoded = jwt_decode(loginToken);
+
+        axios.get('api/pages/search?userId=' + decoded.id)
             .then((resp) => {
                 console.log(resp)
                 this.setState({
@@ -101,7 +106,7 @@ export default class Dashboard extends Component {
                                             <p>{page.name}</p>
                                             <p style={{fontSize: 14, color: '#a4A5A8'}}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                             <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                <span>$38,250</span>
+                                                <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                                 <span>5.5k Followers</span>
                                                 <span>+98%</span>
                                             </p>

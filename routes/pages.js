@@ -71,6 +71,7 @@ router.get('/search', (req, res) => {
   let query = { where: {} }
   if (req.query.pageId) query.where.id = req.query.pageId
   if (req.query.published) query.where.published = true
+  if (req.query.userId) query.where.UserId = req.query.userId
 
   console.log("QUERY", query)
   db.Page.findAll(query)
