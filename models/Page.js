@@ -22,6 +22,11 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Page.associate = function (models) {
+        models.Page.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
         models.Page.hasMany(models.Content, {
             foreignKey: {
                 allowNull: false

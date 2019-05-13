@@ -163,7 +163,7 @@ export default class EditProfile extends Component {
                             <div className="smartphone" style={{ overflow: 'scroll', boxShadow: '-5px 10px 35px 1px #333' }}>
                                 <div className="content">
                                     <div id='background' className='imageBanner set' style={{ height: 335 }}>
-                                        <img src={user.Pages.length > 0 ? `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.Pages[0].imageLink}` : ''} style={{ width: '100%', height: '100%', opacity: .3, objectFit: 'cover' }} alt='' />
+                                        <img src={user.Pages.length > 0 ? `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}` : ''} style={{ width: '100%', height: '100%', opacity: .3, filter: 'blur(8px)', objectFit: 'cover' }} alt='' />
 
                                         <div className='textOverlay'>
                                             <div className='profilePic'>

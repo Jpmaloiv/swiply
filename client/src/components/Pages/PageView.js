@@ -3,13 +3,14 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { NavLink } from 'react-router-dom'
 import Moment from 'react-moment';
-
+import Switch from "react-switch";
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 
 export default class PageView extends Component {
@@ -20,9 +21,11 @@ export default class PageView extends Component {
             name: 'Page Name',
             description: 'Short Description',
             summary: 'Page Summary',
-            page: { Contents: [] },
-            edit: false
+            page: { User: {}, Contents: [] },
+            edit: false,
+            checked: false
         }
+        this.handleSwitch = this.handleSwitch.bind(this)
     }
 
     componentWillMount() {
@@ -34,16 +37,21 @@ export default class PageView extends Component {
                 console.log(resp)
                 this.setState({
                     page: resp.data.response[0],
-                    image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`
-                }, this.checkSelf)
+                    image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`,
+                    s3Bucket: resp.data.bucket
+                }, this.checkPermissions)
             })
             .catch((error) => {
                 console.error(error)
             })
     }
 
-    checkSelf() {
-        if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
+    checkPermissions() {
+        if (this.state.decoded) {
+            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
+        } else {
+            this.setState({ viewAccess: false })
+        }
     }
 
     // Handles user input
@@ -55,6 +63,10 @@ export default class PageView extends Component {
     handleEditing = e => {
         let name = e.currentTarget.getAttribute('name') + 'Edit'
         this.setState({ [name]: !this.state[name] });
+    }
+
+    handleSwitch(checked) {
+        this.setState({ checked });
     }
 
     // Toggles whether page is published
@@ -92,10 +104,18 @@ export default class PageView extends Component {
             })
     }
 
+    
+    customerSignup() {
+        window.localStorage.setItem('customer', true);
+        window.localStorage.setItem('pageId', this.state.page.id);
+        window.location = `/`
+    }
+
 
     render() {
 
-        const { edit, page } = this.state
+        const { edit, page, viewAccess } = this.state
+        const user = page.User
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -184,42 +204,78 @@ export default class PageView extends Component {
                             <Button
                                 variant='success'
                                 size='lg'
+                                onClick={this.state.decoded 
+                                    ? () => window.location = `/pages/${this.props.match.params.pageId}/checkout` 
+                                    : () => this.customerSignup()}
                             >
-                                {this.state.priceEdit ?
-                                    <FormControl
-                                        style={{ width: 'initial' }}
-                                        placeholder="Amount or 'Free'"
-                                        name='price'
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleEditing}
-                                    />
-                                    :
+                                {viewAccess ?
                                     <div>
-                                        Set Pricing ${page.price ? page.price : '--'}&nbsp;
-                                        {edit ?
-                                            <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
+                                        {this.state.priceEdit ?
+                                            <FormControl
+                                                style={{ width: 'initial' }}
+                                                placeholder="Amount or 'Free'"
+                                                name='price'
+                                                onChange={this.handleChange}
+                                                onBlur={this.handleEditing}
+                                            />
                                             :
-                                            <span></span>
+                                            <div>
+                                                Set Pricing ${page.price ? page.price : '--'}&nbsp;
+                                                {edit ?
+                                                    <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
+                                                    :
+                                                    <span></span>
+                                                }
+                                            </div>
                                         }
                                     </div>
+                                    :
+                                    <span>Request Page Access ${page.price}</span>
                                 }
                             </Button>
                         </div>
                     </div>
 
                     <div className='main'>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 35 }}>
-                            <h5 style={{ margin: 0 }}>Add Content</h5>
-                            <NavLink to={`/pages/${this.props.match.params.pageId}/add-content`}>
-                                <Button
-                                    variant='success'
-                                    size='lg'
-                                    className='circle'
-                                >
-                                    <FontAwesomeIcon icon='plus' />
-                                </Button>
-                            </NavLink>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            {this.state.checked ?
+                                <div style={{ display: 'flex', marginBottom: 10 }}>
+                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover' }} alt='' />
+                                    <div>
+                                        <h5>{user.firstName} {user.lastName}</h5>
+                                        <p><i>{user.title}</i></p>
+                                    </div>
+                                </div>
+                                :
+                                <span></span>
+                            }
+                            {edit ?
+                                <label style={{ display: 'flex' }}>
+                                    <span style={{ marginRight: 10 }}>Display Profile</span>
+                                    <Switch onChange={this.handleSwitch} checked={this.state.checked} checkedIcon={false} uncheckedIcon={false} />
+                                </label>
+                                :
+                                <span></span>
+                            }
                         </div>
+                        {this.state.checked ? <p>{user.summary}</p> : <span></span>}
+
+                        {edit ?
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 35 }}>
+                                <h5 style={{ margin: 0 }}>Add Content</h5>
+                                <NavLink to={`/pages/${this.props.match.params.pageId}/add-content`}>
+                                    <Button
+                                        variant='success'
+                                        size='lg'
+                                        className='circle'
+                                    >
+                                        <FontAwesomeIcon icon='plus' />
+                                    </Button>
+                                </NavLink>
+                            </div>
+                            :
+                            <span></span>
+                        }
                         <div>
                             {this.state.summaryEdit ?
                                 <InputGroup>
@@ -265,18 +321,21 @@ export default class PageView extends Component {
                             )}
                         </div>
 
-
-                        <Button
-                            variant='success'
-                            size='lg'
-                            style={{ display: 'block' }}
-                            onClick={this.updatePage.bind(this)}
-                        >
-                            Update Page
+                        {edit ?
+                            <Button
+                                variant='success'
+                                size='lg'
+                                style={{ display: 'block' }}
+                                onClick={this.updatePage.bind(this)}
+                            >
+                                Update Page
                         </Button>
+                            :
+                            <span></span>
+                        }
                     </div>
                 </div>
-            </ReactCSSTransitionGroup>
+            </ReactCSSTransitionGroup >
         )
     }
 }

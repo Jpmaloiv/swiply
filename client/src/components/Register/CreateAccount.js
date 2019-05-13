@@ -9,6 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default class CreateAccount extends Component {
 
+    // Checks to see if user is a customer who requested page access
+    componentDidMount() {
+        if (window.localStorage.getItem('customer')) {
+            this.setState({ 
+                customer: true
+            })
+        }
+    }
+
     /* Sends a verification code via SMS */
     verifyPhone() {
         axios.post('api/auth/send?phone=' + this.props.state.phone)

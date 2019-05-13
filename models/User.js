@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
         summary: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: true
         },
         plan: {

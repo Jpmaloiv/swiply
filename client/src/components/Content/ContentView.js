@@ -46,8 +46,6 @@ export default class ContentView extends Component {
 
 
 
-
-
     render() {
 
         return (
