@@ -22,6 +22,7 @@ export default class PageView extends Component {
             summary: 'Page Summary',
             page: { User: {}, Contents: [] },
             edit: false,
+            priceEdit: false,
             viewAccess: false,
             checked: false
         }
@@ -69,7 +70,7 @@ export default class PageView extends Component {
             })
 
         if (this.state.decoded) {
-            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true, viewAccess: true })
+            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
         }
     }
 
@@ -137,7 +138,7 @@ export default class PageView extends Component {
         const { edit, page } = this.state
         const user = page.User
 
-        console.log(this.state)
+        console.log(edit)
 
 
         return (
@@ -234,8 +235,8 @@ export default class PageView extends Component {
                                         ? () => window.location = '/checkout'
                                         : () => this.customerSignup()}
                                 >
-                                
-                                {edit ?
+
+                                    {edit ?
                                         <div>
                                             {this.state.priceEdit ?
                                                 <FormControl
@@ -331,7 +332,7 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-                                <NavLink to={!this.state.viewAccess ? <span></span> : `/pages/${this.props.match.params.pageId}/${content.id}`} style={{ color: 'initial' }}>
+                                <NavLink to={this.state.viewAccess || this.state.edit ? `/pages/${this.props.match.params.pageId}/${content.id}` : <span></span>} style={{ color: 'initial' }}>
 
                                     <div key={i} className='page' style={{ display: 'flex' }}>
                                         <img src={`https://img.youtube.com/vi/${content.id}/0.jpg`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
