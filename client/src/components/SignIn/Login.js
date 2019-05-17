@@ -7,16 +7,17 @@ import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 
 
-export default class Login extends Component {
+export default class Login extends Component {x
 
 
     // Handle user input
     handleChange = e => {
+        console.log(e.target)
         this.props.setState({ [e.target.name]: e.target.value });
     };
 
     verifyPhone() {
-        axios.post('api/auth/verify?phone=' + this.props.state.phone)
+        axios.post(`api/auth/verify?phone=${this.props.state.phone}&role=${this.props.state.role}`)
             .then((resp) => {
                 console.log(resp)
                 if (resp.data.success === true) {
@@ -37,6 +38,18 @@ export default class Login extends Component {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='center'>
+                    {this.props.state.role === 'user' ?
+                        <div>
+                            <h2 style={{margin: 0}}>Content Provider Login</h2>
+                            <Button variant='link' onClick={this.handleChange} name='role' value='customer'>Are you a customer?</Button>
+                        </div>
+                        :
+                        <div>
+                            <h2 style={{margin: 0}}>Customer Login</h2>
+                            <Button variant='link' onClick={this.handleChange} name='role' value='user'>Are you a content provider?</Button>
+                        </div>
+                    }
+                    <br />
                     <h3>Welcome Back</h3>
                     <InputGroup>
                         <FormControl

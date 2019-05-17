@@ -21,7 +21,7 @@ const cloudStorage = multerS3({
         ab_callback(null, { fieldname: file.fieldname });
     },
     key: function (request, file, ab_callback) {
-        const newFileName = 'images/profile/users/' + file.originalname + "-" + Date.now();
+        const newFileName = 'images/profile/customers/' + file.originalname + "-" + Date.now();
         ab_callback(null, newFileName);
     },
 });
@@ -43,31 +43,29 @@ switch (process.env.NODE_ENV) {
         break;
 }
 
-const role = 'user'
+const role = 'customer'
 
-// Register a new user
+// Register a new customer
 router.post('/register', upload.single('imgFile'), (req, res) => {
 
     let imageLink = ''
     if (req.file) imageLink = req.file.key;
 
-    const user = {
+    const customer = {
         firstName: req.query.firstName,
         lastName: req.query.lastName,
         email: req.query.email.toLowerCase(),
         phone: req.query.phone,
-        summary: req.query.summary,
-        imageLink: imageLink,
-        remember: req.query.remember
+        imageLink: imageLink
     }
 
     let AWS = 'N/A'
     if (req.file) AWS = 'Image uploaded!'
 
-    db.User.create(user)
+    db.Customer.create(customer)
         .then(resp => {
             res.status(200);
-            res.json({ success: true, message: 'User created!', token: auth.generateJWT(resp, role), AWS: AWS });
+            res.json({ success: true, message: 'Customer created!', token: auth.generateJWT(resp, role), AWS: AWS });
         })
         .catch(err => {
             console.error(err);
@@ -77,14 +75,16 @@ router.post('/register', upload.single('imgFile'), (req, res) => {
 
 router.post('/login', (req, res) => {
 
-    db.User.findOne({
+    let role = 'customer'
+
+    db.Customer.findOne({
         where: {
             phone: req.query.phone
         }
     })
         .then(resp => {
             const user = resp.dataValues;
-            res.json({ success: true, message: 'Logged in!', token: auth.generateJWT(user) });
+            res.json({ success: true, message: 'Logged in!', token: auth.generateJWT(user, role) });
         })
         .catch(err => {
             console.error("ERR", err);
@@ -97,16 +97,17 @@ router.get('/search', (req, res) => {
 
     let query = {
         where: {},
-        include: [{
-            model: db.Page
-        }]
+        include: {
+            model: db.Page,
+            as: 'pages'
+        }
     }
     if (req.query.id) query.where.id = req.query.id
     if (req.query.profile) query.where.profile = req.query.profile
 
-    db.User.findAll(query)
+    db.Customer.findAll(query)
         .then(resp => {
-            res.json({ success: true, message: 'User(s) found!', response: resp, BASE_URL: BASE_URL, bucket: process.env.S3_BUCKET });
+            res.json({ success: true, message: 'Customer(s) found!', response: resp, BASE_URL: BASE_URL, bucket: process.env.S3_BUCKET });
         })
         .catch(err => {
             console.error("ERR", err);
@@ -121,31 +122,22 @@ router.put('/update', upload.single('imgFile'), (req, res) => {
     let imageLink = req.query.imageLink
     if (req.file) imageLink = req.file.key;
 
-    const user = {
+    const customer = {
         firstName: req.query.firstName,
         lastName: req.query.lastName,
-        title: req.query.title,
         email: req.query.email,
         profile: req.query.profile,
         phone: req.query.phone,
-        summary: req.query.summary,
-        imageLink: imageLink,
-        instagram: req.query.instagram,
-        facebook: req.query.facebook,
-        twitter: req.query.twitter,
-        linkedin: req.query.linkedin,
-        whatsapp: req.query.whatsapp,
-        website: req.query.website,
-        remember: req.query.remember
+        imageLink: imageLink
     }
 
     let AWS = 'N/A'
     if (req.file) AWS = 'Image uploaded!'
 
-    db.User.update(user, { where: { id: req.query.id } })
+    db.Customer.update(customer, { where: { id: req.query.id } })
         .then(resp => {
             res.status(200);
-            res.json({ success: true, message: 'User created!', token: auth.generateJWT(resp), AWS: AWS });
+            res.json({ success: true, message: 'User created!', token: auth.generateJWT(resp, role), AWS: AWS });
         })
         .catch(err => {
             console.error(err);

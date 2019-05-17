@@ -27,7 +27,12 @@ export default class AccountSettings extends Component {
         let decoded = ''
         if (loginToken) decoded = jwt_decode(loginToken)
 
-        axios.get('/api/users/search?id=' + decoded.id)
+        let role = ''
+        if (decoded.role === 'user') role = 'users'
+        if (decoded.role === 'customer') role = 'customers'
+        this.setState({ role: role })
+
+        axios.get(`/api/${role}/search?id=` + decoded.id)
             .then((resp) => {
                 console.log(resp)
                 this.setState({
@@ -82,7 +87,10 @@ export default class AccountSettings extends Component {
     // Updates user with any changes made
     updateUser() {
         const { user } = this.state;
-        console.log(user)
+
+        let role = ''
+        if (this.state.role === 'users') role = 'users'
+        if (this.state.role === 'customers') role = 'customers'
 
         // let file = page.file
         // // Split the filename to get the name and type
@@ -92,7 +100,7 @@ export default class AccountSettings extends Component {
         // console.log("Preparing the upload", file);
         let data = new FormData();
         data.append("imgFile", this.state.file)
-        axios.put('/api/users/update?id=' + this.state.user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + '&title=' + user.title + '&phone=' + user.phone +
+        axios.put(`/api/${role}/update?id=` + this.state.user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + '&title=' + user.title + '&phone=' + user.phone +
             '&email=' + user.email + '&summary=' + user.summary, data)
             .then(res => {
                 console.log(res)
@@ -105,11 +113,9 @@ export default class AccountSettings extends Component {
     }
 
 
-
-
     render() {
 
-        const { user } = this.state
+        const { role, user } = this.state
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -160,14 +166,18 @@ export default class AccountSettings extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Title</Form.Label>
-                                <Form.Control
-                                    placeholder={user.title}
-                                    name='title'
-                                    onChange={this.handleChange}
-                                />
-                            </Form.Group>
+                            {role === 'user' ?
+                                <Form.Group>
+                                    <Form.Label>Title</Form.Label>
+                                    <Form.Control
+                                        placeholder={user.title}
+                                        name='title'
+                                        onChange={this.handleChange}
+                                    />
+                                </Form.Group>
+                                :
+                                <span></span>
+                            }
                             <Form.Group>
                                 <Form.Label>Phone</Form.Label>
                                 <Form.Control
@@ -184,15 +194,19 @@ export default class AccountSettings extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Profile Summary</Form.Label>
-                                <Form.Control
-                                    as='textarea'
-                                    placeholder={user.summary}
-                                    name='summary'
-                                    onChange={this.handleChange}
-                                />
-                            </Form.Group>
+                            {role === 'user' ?
+                                <Form.Group>
+                                    <Form.Label>Profile Summary</Form.Label>
+                                    <Form.Control
+                                        as='textarea'
+                                        placeholder={user.summary}
+                                        name='summary'
+                                        onChange={this.handleChange}
+                                    />
+                                </Form.Group>
+                                :
+                                <span></span>
+                            }
                         </Form>
                     </div>
 

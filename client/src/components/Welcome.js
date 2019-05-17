@@ -3,9 +3,15 @@ import { NavLink } from 'react-router-dom'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
+import jwt_decode from 'jwt-decode'
 
 
 export default class Welcome extends Component {
+
+    componentDidMount() {
+        const loginToken = window.localStorage.getItem("token");
+        if (loginToken) this.setState({ decoded: jwt_decode(loginToken) }, () => console.log(this.state.decoded))
+    }
 
     render() {
         return (

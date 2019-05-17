@@ -22,6 +22,9 @@ import AddPage from './components/Pages/AddPage'
 import PageView from './components/Pages/PageView'
 
 import Checkout from './components/Checkout/Checkout'
+import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation'
+
+import MyPurchases from './components/Customer/MyPurchases'
 
 import AddContent from './components/Content/AddContent'
 import ContentView from './components/Content/ContentView'
@@ -29,6 +32,8 @@ import ContentView from './components/Content/ContentView'
 import Profile from './components/Profile/Profile'
 import EditProfile from './components/Profile/EditProfile'
 import AccountSettings from './components/Account/AccountSettings'
+
+import Example from './components/Example'
 
 
 class App extends Component {
@@ -80,15 +85,21 @@ class App extends Component {
               <Route exact path='/pages/:pageId' component={PageView} />
 
               <Route exact path='/pages/:pageId/add-content' component={AddContent} />
-              
-              <Route path='/pages/:pageId/:contentId' component={ContentView} />
+
+              <Route exact path='/pages/:pageId/:contentId' component={ContentView} />
 
               <Route exact path='/profile/:profile' component={Profile} />
               <Route path='/profile/edit/:userId' component={EditProfile} />
               <Route path='/account/:userId' component={AccountSettings} />
 
+              <Route path='/purchased' component={PurchaseConfirmation} />
+
+              <Route path='/purchases' component={MyPurchases} />
+
+              <Route path='/example' component={Example} />
+
               <Elements>
-                <Route path='/pages/:pageId/checkout' component={Checkout} />
+                <Route exact path='/checkout' component={Checkout} />
               </Elements>
             </Switch>
 

@@ -18,15 +18,18 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        imageLink: {
+            type: DataTypes.STRING
+        },
     });
 
-    // User.associate = function (models) {
-    //     models.User.hasMany(models.Page, {
-    //         foreignKey: {
-    //             allowNull: false
-    //         }
-    //     })
-    // }
+    Customer.associate = function (models) {
+        models.Customer.belongsToMany(models.Page, {
+            through: 'pageAccess',
+            as: 'pages',
+            foreignKey: 'CustomerId'
+        });
+    }
 
     return Customer;
 };

@@ -8,15 +8,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export default class CreateAccount extends Component {
-
-    // Checks to see if user is a customer who requested page access
-    componentDidMount() {
-        if (window.localStorage.getItem('customer')) {
-            this.setState({ 
-                customer: true
-            })
+    constructor(props) {
+        super(props)
+        this.state = {
+            page: ''
+        }
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                window.localStorage.clear();
+            }
         }
     }
+
 
     /* Sends a verification code via SMS */
     verifyPhone() {
@@ -53,6 +56,9 @@ export default class CreateAccount extends Component {
 
 
     render() {
+        console.log(this.props)
+
+        const { page } = this.props.state
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -116,6 +122,21 @@ export default class CreateAccount extends Component {
                             <Form.Check type='checkbox' label='Remember me' />
                         </Form.Group>
                     </Form>
+
+                    {this.props.state.customer ?
+                        <div style={{ textAlign: 'center' }}>
+                            <div className='page' style={{ display: 'flex', flex: 'initial', margin: '1em auto' }}>
+                                <img src={`https://s3-us-west-1.amazonaws.com/${this.props.state.s3Bucket}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
+                                <div style={{ width: '100%', textAlign: 'left' }}>
+                                    <h4>{page.name}</h4>
+                                    <p>{page.description}</p>
+                                </div>
+                                <div>${page.price}</div>
+                            </div>
+                        </div>
+                        :
+                        <span></span>
+                    }
 
                     <Button variant='success' size='lg' onClick={this.verifyPhone.bind(this)}>
                         Continue

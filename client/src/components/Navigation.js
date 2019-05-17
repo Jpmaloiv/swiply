@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import jwt_decode from 'jwt-decode'
-
+import { slide as Menu } from 'react-burger-menu'
 
 
 export default class Navigation extends Component {
-
 
     logout() {
         if (window.confirm('Would you like to log out of PV3?')) {
@@ -19,9 +17,8 @@ export default class Navigation extends Component {
 
 
     render() {
-        // let profile = ''
-        // if (this.props.decoded.profile) profile = this.props.decoded.profile
-        // if (!this.props.decoded.profile) profile = this.props.decoded.id
+
+        const { role } = this.props.decoded
 
         return (
             <header>
@@ -35,25 +32,61 @@ export default class Navigation extends Component {
                     </NavLink>
                 </div>
                 {this.props.decoded ?
-                    <div className='navigation'>
-                        <NavLink to='/dashboard'>
-                            Dashboard
+                    <div>
+                        <div className='navigation'>
+                            {role === 'user' ?
+                                <div style={{display: 'inherit'}}>
+                                    <NavLink to='/dashboard'>
+                                        Dashboard
+                                    </NavLink>
+                                    <NavLink to='/sales'>
+                                        Sales
+                                    </NavLink>
+                                    <NavLink to='/customers'>
+                                        Customers
+                                    </NavLink>
+                                    <NavLink to={`/profile/edit/${this.props.decoded.id}`}>
+                                        Public Profile
+                                    </NavLink>
+                                </div>
+                                :
+                                <span></span>
+                            }
+                            <NavLink to={`/account/${this.props.decoded.id}`}>
+                                <FontAwesomeIcon icon='user' />My Account
+                            </NavLink>
+                            {role === 'customer' ?
+                                <div style={{display: 'inherit'}}>
+                                    <NavLink to='/purchases'>
+                                        My Purchases
+                                    </NavLink>
+                                    <NavLink to='contact-us'>
+                                        Contact Us
+                                    </NavLink>
+                                </div>
+                                :
+                                <span></span>
+                            }
+                            <NavLink to='/' onClick={this.logout}>
+                                <FontAwesomeIcon icon='sign-out-alt' />Sign out
+                            </NavLink>
+                        </div>
+
+                        <Menu className='nav-mobile' right>
+                            <a id="dashboard" className="menu-item" href="/dashboard">Dashboard</a>
+                            <a id="sales" className="menu-item" href="/sales">Sales</a>
+
+                            <a id="customers" className="menu-item" href="/customers">Customers</a>
+
+                            <a id="dashboard" className="menu-item" href={`/profile/edit/${this.props.decoded.id}`}>Public Profile</a>
+
+                            <a id="dashboard" className="menu-item" href={`/account/${this.props.decoded.id}`}>My Account</a>
+
+
+                            <NavLink to='/' onClick={this.logout}>
+                                <FontAwesomeIcon icon='sign-out-alt' />Sign out
                         </NavLink>
-                        <NavLink to='/sales'>
-                            Sales
-                        </NavLink>
-                        <NavLink to='/customers'>
-                            Customers
-                        </NavLink>
-                        <NavLink to={`/profile/edit/${this.props.decoded.id}`}>
-                            Public Profile
-                        </NavLink>
-                        <NavLink to={`/account/${this.props.decoded.id}`}>
-                            <FontAwesomeIcon icon='user' />My Account
-                        </NavLink>
-                        <NavLink to='/' onClick={this.logout}>
-                            <FontAwesomeIcon icon='sign-out-alt' />Sign out
-                        </NavLink>
+                        </Menu>
                     </div>
                     :
                     <div>
@@ -62,6 +95,7 @@ export default class Navigation extends Component {
                             :
                             <div className='link' onClick={() => this.props.setState({ login: true })}>Sign In</div>
                         }
+
                     </div>
                 }
             </header>

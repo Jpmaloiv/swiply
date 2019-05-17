@@ -41,8 +41,6 @@ export default class Dashboard extends Component {
 
 
     render() {
-        console.log(this.state)
-
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='main'>

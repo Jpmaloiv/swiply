@@ -12,7 +12,6 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-
 export default class PageView extends Component {
     constructor(props) {
         super(props)
@@ -23,12 +22,17 @@ export default class PageView extends Component {
             summary: 'Page Summary',
             page: { User: {}, Contents: [] },
             edit: false,
+            viewAccess: false,
             checked: false
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
 
     componentWillMount() {
+        window.localStorage.removeItem('customer')
+        window.localStorage.removeItem('pageId')
+        window.localStorage.removeItem('page')
+
         const loginToken = window.localStorage.getItem("token");
         if (loginToken) this.setState({ decoded: jwt_decode(loginToken) })
 
@@ -47,10 +51,24 @@ export default class PageView extends Component {
     }
 
     checkPermissions() {
+        let query = ''
+        if (this.state.decoded) query = `?id=${this.state.decoded.id}`
+        axios.get('/api/customers/search' + query)
+            .then((resp) => {
+                console.log(resp)
+                let customer = resp.data.response[0]
+                let pageIds = [];
+                for (var i = 0; i < customer.pages.length; i++) {
+                    pageIds.push(customer.pages[i].id)
+                }
+                if (pageIds.includes(this.state.pageId)) this.setState({ viewAccess: true })
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+
         if (this.state.decoded) {
             if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
-        } else {
-            this.setState({ viewAccess: false })
         }
     }
 
@@ -104,18 +122,22 @@ export default class PageView extends Component {
             })
     }
 
-    
+
     customerSignup() {
         window.localStorage.setItem('customer', true);
         window.localStorage.setItem('pageId', this.state.page.id);
+        window.localStorage.setItem('page', this.state.page.name)
         window.location = `/`
     }
 
 
     render() {
 
-        const { edit, page, viewAccess } = this.state
+        const { edit, page } = this.state
         const user = page.User
+
+        console.log(this.state.viewAccess)
+
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -124,7 +146,7 @@ export default class PageView extends Component {
                         <input type='file' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                         <img src={this.state.image} style={{ width: '100%', opacity: .3 }} alt='' />
 
-                        {this.state.edit ?
+                        {edit ?
                             <div style={{ position: 'absolute', top: 10, right: 25 }}>
                                 {page.published ?
                                     <Button
@@ -201,38 +223,43 @@ export default class PageView extends Component {
                                     }
                                 </div>
                             }
-                            <Button
-                                variant='success'
-                                size='lg'
-                                onClick={this.state.decoded 
-                                    ? () => window.location = `/pages/${this.props.match.params.pageId}/checkout` 
-                                    : () => this.customerSignup()}
-                            >
-                                {viewAccess ?
-                                    <div>
-                                        {this.state.priceEdit ?
-                                            <FormControl
-                                                style={{ width: 'initial' }}
-                                                placeholder="Amount or 'Free'"
-                                                name='price'
-                                                onChange={this.handleChange}
-                                                onBlur={this.handleEditing}
-                                            />
-                                            :
-                                            <div>
-                                                Set Pricing ${page.price ? page.price : '--'}&nbsp;
-                                                {edit ?
-                                                    <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
-                                                    :
-                                                    <span></span>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
+
+                            {this.state.viewAccess ? <span></span>
+                                :
+                                <Button
+                                    variant='success'
+                                    size='lg'
+                                    onClick={edit ? null : this.state.decoded
+                                        ? () => window.location = '/checkout'
+                                        : () => this.customerSignup()}
+                                >
                                     :
-                                    <span>Request Page Access ${page.price}</span>
-                                }
-                            </Button>
+                                {edit ?
+                                        <div>
+                                            {this.state.priceEdit ?
+                                                <FormControl
+                                                    style={{ width: 'initial' }}
+                                                    placeholder="Amount or 'Free'"
+                                                    name='price'
+                                                    onChange={this.handleChange}
+                                                    onBlur={this.handleEditing}
+                                                />
+                                                :
+                                                <div>
+                                                    Set Pricing ${page.price ? page.price : '--'}&nbsp;
+                                                {edit ?
+                                                        <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
+                                                        :
+                                                        <span></span>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        :
+                                        <span>Request Page Access ${page.price}</span>
+                                    }
+                                </Button>
+                            }
                         </div>
                     </div>
 
@@ -303,7 +330,7 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-                                <NavLink to={`/pages/${this.props.match.params.pageId}/${content.id}`} style={{ color: 'initial' }}>
+                                <NavLink to={!this.state.viewAccess ? <span></span> : `/pages/${this.props.match.params.pageId}/${content.id}`} style={{ color: 'initial' }}>
 
                                     <div key={i} className='page' style={{ display: 'flex' }}>
                                         <img src={`https://img.youtube.com/vi/${content.id}/0.jpg`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
