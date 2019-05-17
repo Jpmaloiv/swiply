@@ -137,7 +137,7 @@ export default class PageView extends Component {
         const { edit, page } = this.state
         const user = page.User
 
-        console.log(this.state.viewAccess)
+        console.log(this.state)
 
 
         return (
@@ -234,7 +234,7 @@ export default class PageView extends Component {
                                         ? () => window.location = '/checkout'
                                         : () => this.customerSignup()}
                                 >
-                                    :
+                                
                                 {edit ?
                                         <div>
                                             {this.state.priceEdit ?
