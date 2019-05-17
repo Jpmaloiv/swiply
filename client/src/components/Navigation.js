@@ -19,6 +19,7 @@ export default class Navigation extends Component {
     render() {
 
         const { role } = this.props.decoded
+        console.log(this.props.decoded)
 
         return (
             <header>

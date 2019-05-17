@@ -20,7 +20,7 @@ export default class MyPurchases extends Component {
         let decoded = ''
         if (loginToken) decoded = jwt_decode(loginToken);
 
-        axios.get(`/api/customers/search?=${decoded.id}`)
+        axios.get(`/api/customers/search?id=${decoded.id}`)
             .then((resp) => {
                 console.log(resp)
                 this.setState({

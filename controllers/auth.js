@@ -5,6 +5,7 @@ module.exports = {
 
     // Generates local storage token
     generateJWT(user, role) {
+        console.log("ROLE", role)
         let expire = new Date();
         expire.setDate(expire.getDate() + 7);
         return jwt.sign({

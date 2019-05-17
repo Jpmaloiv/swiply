@@ -23,10 +23,13 @@ export default class VerifyAccount extends Component {
 
     /* Verifies the user with the verification code sent via SMS */
     login() {
-        console.log(this.props, this.state)
+        let role = ''
+        if (this.props.state.role === 'user') role = 'users'
+        if (this.props.state.role === 'customer') role = 'customers'
+        
         // Switches to the Profile Summary screen
         if (this.state.code === JSON.stringify(this.props.state.verifyCode)) {
-            axios.post('api/users/login?phone=' + this.props.state.phone)
+            axios.post(`api/${role}/login?phone=` + this.props.state.phone)
                 .then((resp) => {
                     console.log(resp)
                     window.localStorage.setItem("token", resp.data.token);

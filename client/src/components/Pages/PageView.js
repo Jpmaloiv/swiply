@@ -61,14 +61,15 @@ export default class PageView extends Component {
                 for (var i = 0; i < customer.pages.length; i++) {
                     pageIds.push(customer.pages[i].id)
                 }
-                if (pageIds.includes(this.state.pageId)) this.setState({ viewAccess: true })
+
+                if (pageIds.includes(this.state.page.id)) this.setState({ viewAccess: true })
             })
             .catch((error) => {
                 console.error(error)
             })
 
         if (this.state.decoded) {
-            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
+            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true, viewAccess: true })
         }
     }
 

@@ -77,6 +77,8 @@ router.post('/register', upload.single('imgFile'), (req, res) => {
 
 router.post('/login', (req, res) => {
 
+    let role = 'user'
+
     db.User.findOne({
         where: {
             phone: req.query.phone
@@ -84,7 +86,7 @@ router.post('/login', (req, res) => {
     })
         .then(resp => {
             const user = resp.dataValues;
-            res.json({ success: true, message: 'Logged in!', token: auth.generateJWT(user) });
+            res.json({ success: true, message: 'Logged in!', token: auth.generateJWT(user, role) });
         })
         .catch(err => {
             console.error("ERR", err);
