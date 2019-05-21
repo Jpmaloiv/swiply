@@ -7,6 +7,7 @@ An application for content providers to sell their content.
 
 -"npm install" in both root and client folder
 
+
 -ENVORIONMENTAL VARIABLES:
 
 AWS_ACCESS_KEY_ID=AKIAIQAZSPTQJU6FHE7Q

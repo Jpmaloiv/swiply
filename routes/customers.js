@@ -33,7 +33,7 @@ const upload = multer({
 let BASE_URL = ''
 switch (process.env.NODE_ENV) {
     case 'testing':
-        BASE_URL = process.env.TESTING_URL
+        BASE_URL = process.env.TEST_URL
         break;
     case 'development':
         BASE_URL = process.env.DEV_URL
