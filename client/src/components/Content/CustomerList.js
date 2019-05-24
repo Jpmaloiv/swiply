@@ -14,7 +14,8 @@ export default class CustomerList extends Component {
         super(props)
         this.state = {
             stats: [],
-            pages: []
+            pages: [],
+            customers: []
         }
     }
 
@@ -23,11 +24,11 @@ export default class CustomerList extends Component {
         let decoded = ''
         if (loginToken) decoded = jwt_decode(loginToken);
 
-        axios.get('api/customer/search?userId=' + decoded.id)
+        axios.get('api/customers/search?userId=' + decoded.name)
             .then((resp) => {
                 console.log(resp)
                 this.setState({
-                    customer: resp.data.response,
+                    customers: resp.data.response,
                     S3_BUCKET: resp.data.bucket
                 })
             })
