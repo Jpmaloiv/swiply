@@ -1,18 +1,8 @@
-import React, { Component } from 'react';
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { Component, default as React } from 'react';
+import { CardElement, injectStripe } from 'react-stripe-elements';
 
-import Button from 'react-bootstrap/Button'
-
-import {
-  CardElement,
-  injectStripe,
-  StripeProvider,
-  Elements,
-} from 'react-stripe-elements';
-
-
-// You can customize your Elements to give it the look and feel of your site.
 const createOptions = () => {
   return {
     style: {
@@ -31,12 +21,12 @@ const createOptions = () => {
     }
   }
 };
-
-class _CardForm extends Component {
+class Checkout extends Component {
   state = {
     page: '',
     errorMessage: '',
   };
+
 
   componentWillMount() {
     const loginToken = window.localStorage.getItem("token");
@@ -63,46 +53,69 @@ class _CardForm extends Component {
     }
   };
 
-  handleSubmit = (evt) => {
-    evt.preventDefault();
-    console.log(this.props, this.state)
-    if (this.props.stripe) {
-      this.props.stripe.createToken().then(this.props.handleResult);
+  handleSubmit = (ev) => {
+    ev.preventDefault();
 
-      axios.post(`api/auth/page?customerId=${this.state.decoded.id}&pageId=${window.localStorage.getItem('pageId')}`)
-        .then((resp) => {
-          console.log(resp)
-          window.location = '/purchased'
-        }).catch((error) => {
-          console.error(error);
-        })
-    } else {
-      console.log("Stripe.js hasn't loaded yet.");
-    }
+    // this.props.stripe
+    //   .createPaymentMethod('card', { billing_details: { name: 'Jenny Rosen' } })
+    //   .then(({ paymentMethod }) => {
+    //     console.log('Received Stripe PaymentMethod:', paymentMethod);
+    //   })
+    //   .catch(err =>{
+    //     console.log(err)
+    //   })
+
+    // this.props.stripe.createToken({ type: 'card', name: 'Jenny Rosen' })
+    // .then(({token }) => {
+    //   console.log('Generated token:', token);
+    // })
+    // .catch(err =>{
+    //   console.log(err)
+    // })
+
+    this.props.stripe.createSource({
+      type: 'card',
+      owner: {
+        name: 'Jenny Rosen',
+      },
+      amount: '200'
+    })
+      .then(({ source }) => {
+        console.log('Source:', source);
+        axios.post(`api/auth/page?customerId=${this.state.decoded.id}&pageId=${window.localStorage.getItem('pageId')}, data`)
+          .then((resp) => {
+            console.log(resp)
+            window.location = '/purchased'
+          }).catch((error) => {
+            console.error(error);
+          })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
   };
-
   render() {
 
     const { page } = this.state
 
     return (
       <div className='center'>
-        <div className="CardDemo">
-          <form onSubmit={this.handleSubmit.bind(this)} style={{paddingBottom: 0}}>
-            <label style={{ width: 250 }}>
-              Card details
-            <CardElement
-                onChange={this.handleChange}
-                {...createOptions()}
-              />
-            </label>
-            <div className="error" role="alert">
-              {this.state.errorMessage}
-            </div>
-            <Button variant='success' onClick={this.handleSubmit}>Pay</Button>
-          </form>
-        </div>
 
+
+        <form onSubmit={this.handleSubmit}>
+          <label style={{ width: 250 }}>
+            Card details
+            <CardElement
+              onChange={this.handleChange}
+              {...createOptions()}
+            />
+          </label>
+          <div className="error" role="alert">
+            {this.state.errorMessage}
+          </div>
+          <button onClick={this.handleSubmit}>Confirm order</button>
+        </form>
         {this.state.customer ?
           <div style={{ textAlign: 'center' }}>
             <div className='page' style={{ display: 'flex', flex: 'initial', margin: '1em auto' }}>
@@ -122,15 +135,4 @@ class _CardForm extends Component {
   }
 }
 
-const CardForm = injectStripe(_CardForm);
-
-export default class CardDemo extends Component {
-  render() {
-    console.log(this.props)
-    return (
-      <div className='form'>
-        <CardForm handleResult={this.props.handleResult} />
-      </div>
-    );
-  }
-}
+export default injectStripe(Checkout);

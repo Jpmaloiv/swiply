@@ -9,7 +9,7 @@ import './App.css';
 
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Navigation from './components/Navigation'
 import Register from './components/Register'
@@ -55,7 +55,7 @@ class App extends Component {
   render() {
 
     return (
-      <StripeProvider apiKey="pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8">
+      <StripeProvider apiKey="pk_test_BPGq0NsIB5DoeRHctLqSA5tQ00R4ZG7vaT">
         <Router>
           <div className='body'>
             <Navigation
@@ -111,16 +111,17 @@ class App extends Component {
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossOrigin="anonymous"
             />
-
           </div>
+
         </Router>
+
       </StripeProvider>
     );
   }
 }
 
 // FontAwesome Library
-library.add(faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faCheck, faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus)
 
 
 export default App;

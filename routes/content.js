@@ -2,14 +2,50 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
 
-router.post('/add', (req, res) => {
+const s3 = new aws.S3();
+
+const cloudStorage = multerS3({
+  s3: s3,
+  bucket: process.env.S3_BUCKET,
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  ACL: 'public-read',
+  metadata: function (request, file, ab_callback) {
+    ab_callback(null, { fieldname: file.fieldname });
+  },
+  key: function (request, file, ab_callback) {
+    const newFileName = 'content/' + file.originalname + "-" + Date.now();
+    ab_callback(null, newFileName);
+  },
+});
+
+const upload = multer({
+  storage: cloudStorage
+});
+
+router.use(function (req, res, next) {
+  console.log("USE", req.file, req.files);
+  next();
+});
+
+
+
+router.post('/add', upload.single('imgFile'), (req, res) => {
   console.log("QUERY", req.query)
 
+  upload.single('imgFile')
+
+  let {id} = req.query
+  if (req.file) id = req.file.key;
+
     const content = {
-        id: req.query.id,
+        id: id,
         name: req.query.name,
         description: req.query.description,
+        type: req.query.type,
         PageId: req.query.pageId
       }
     

@@ -94,6 +94,9 @@ form.login {
   cursor: pointer
 }
 
+
+/* Buttons */
+
 button {
   width: 300px;
   margin: 25px auto !important;
@@ -107,11 +110,23 @@ button.circle {
   margin: 0 5px !important
 }
 
-.btn-link {
-  padding-top: 0 !important;
-  text-decoration: underline !important;
-  font-size: 12px !important;
+.btn.btn-link {
+  border-bottom: 1px solid #dfe0e6;
+  color: #000;
+  text-decoration: none;
+  font-size: 14px !important;
 }
+
+.btn.active.btn-link {
+  border-bottom: 3px solid #06b367;
+  text-decoration: none
+}
+
+.btn.btn-link:hover {
+  color: initial;
+  text-decoration: none
+}
+
 
 /* Links */
 

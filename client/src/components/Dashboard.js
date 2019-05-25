@@ -47,22 +47,22 @@ export default class Dashboard extends Component {
                     <div className='statistics'>
                         <div style={{ backgroundColor: '#01ae63' }}>
                             <FontAwesomeIcon icon='dollar-sign' />
-                            <div>$45k</div>
+                            <div>${Math.floor(Math.random() * 99)}k</div>
                             <div>Recent Earnings (+50)</div>
                         </div>
                         <div style={{ backgroundColor: '#e0ab01' }}>
                             <FontAwesomeIcon icon='eye' />
-                            <div>15.5m</div>
+                            <div>{Math.floor(Math.random() * (250)) / 10}m</div>
                             <div>Recent View (+32)</div>
                         </div>
                         <div style={{ backgroundColor: '#0650df' }}>
                             <FontAwesomeIcon icon='user-plus' />
-                            <div>4,500</div>
+                            <div>{Math.floor(Math.random() * 19999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
                             <div>New Followers (+90)</div>
                         </div>
                         <div style={{ backgroundColor: '#3808aa' }}>
                             <FontAwesomeIcon icon='signal' />
-                            <div>67.85%</div>
+                            <div>{Math.floor(Math.random() * (9999)) / 100}%</div>
                             <div>Percentages (+20)</div>
                         </div>
                     </div>

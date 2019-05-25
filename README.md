@@ -1,5 +1,4 @@
-# pv3
-
+# Swiply
 An application for content providers to sell their content.
 
 ###########

@@ -3,11 +3,13 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios'
 
 import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 
 
-export default class Login extends Component {x
+export default class Login extends Component {
+    x
 
 
     // Handle user input
@@ -38,17 +40,23 @@ export default class Login extends Component {x
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='center'>
-                    {this.props.state.role === 'user' ?
-                        <div>
-                            <h2 style={{margin: 0}}>Content Provider Login</h2>
-                            <Button variant='link' onClick={this.handleChange} name='role' value='customer'>Are you a customer?</Button>
-                        </div>
-                        :
-                        <div>
-                            <h2 style={{margin: 0}}>Customer Login</h2>
-                            <Button variant='link' onClick={this.handleChange} name='role' value='user'>Are you a content provider?</Button>
-                        </div>
-                    }
+                    <h2>Login</h2>
+                    <ButtonGroup style={{ width: '100%' }}>
+                        <Button
+                            variant='link'
+                            active={this.props.state.role === 'user'}
+                            onClick={() => this.props.setState({ role: 'user' })}
+                        >
+                            Content Provider
+                        </Button>
+                        <Button
+                            variant='link'
+                            active={this.props.state.role === 'customer'}
+                            onClick={() => this.props.setState({ role: 'customer' })}
+                        >
+                            Customer
+                        </Button>
+                    </ButtonGroup>
                     <br />
                     <h3>Welcome Back</h3>
                     <InputGroup>
