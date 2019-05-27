@@ -1,39 +1,40 @@
+// FontAwesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheck, faDollarSign, faEye, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import jwt_decode from 'jwt-decode';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import jwt_decode from 'jwt-decode'
-
 import { Elements, StripeProvider } from 'react-stripe-elements';
-
 // import logo from './logo.svg';
 import './App.css';
+import AccountSettings from './components/Account/AccountSettings';
+import Checkout from './components/Checkout/Checkout';
+import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation';
+import AddContent from './components/Content/AddContent';
+import ContentView from './components/Content/ContentView';
+import CustomerList from './components/Content/CustomerList';
+import MyPurchases from './components/Customer/MyPurchases';
+import Dashboard from './components/Dashboard';
+import Example from './components/Example';
+import Navigation from './components/Navigation';
+import AddPage from './components/Pages/AddPage';
+import PageView from './components/Pages/PageView';
+import EditProfile from './components/Profile/EditProfile';
+import Profile from './components/Profile/Profile';
+import Register from './components/Register';
+import SignIn from './components/SignIn';
+import Welcome from './components/Welcome';
 
-// FontAwesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheck, faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
-import Navigation from './components/Navigation'
-import Register from './components/Register'
-import SignIn from './components/SignIn'
-import Welcome from './components/Welcome'
 
-import Dashboard from './components/Dashboard'
 
-import AddPage from './components/Pages/AddPage'
-import PageView from './components/Pages/PageView'
 
-import Checkout from './components/Checkout/Checkout'
-import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation'
 
-import MyPurchases from './components/Customer/MyPurchases'
 
-import AddContent from './components/Content/AddContent'
-import ContentView from './components/Content/ContentView'
 
-import Profile from './components/Profile/Profile'
-import EditProfile from './components/Profile/EditProfile'
-import AccountSettings from './components/Account/AccountSettings'
 
-import Example from './components/Example'
+
+
 
 
 class App extends Component {
@@ -68,7 +69,6 @@ class App extends Component {
               <div>
                 <Route exact path='/' component={Welcome} />
                 <Route path='/dashboard' component={Dashboard} />
-
               </div>
               :
               <div>
@@ -81,6 +81,7 @@ class App extends Component {
             }
 
             <Switch>
+              <Route path='/customers' component={CustomerList} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />
 
@@ -121,7 +122,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faCheck, faDollarSign, faEye, faPen, faPlus, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faCheck, faDollarSign, faEye, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
 
 
 export default App;
