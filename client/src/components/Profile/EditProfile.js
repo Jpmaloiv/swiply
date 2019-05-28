@@ -72,7 +72,7 @@ export default class EditProfile extends Component {
                             <h5 style={{ textAlign: 'center' }}>My PV3 Link</h5>
                             <InputGroup>
                                 <InputGroup.Prepend>
-                                    <InputGroup.Text>http://swiply.herokuapp.com/profile/</InputGroup.Text>
+                                    <InputGroup.Text>http://pv3-dev.herokuapp.com/profile/</InputGroup.Text>
                                 </InputGroup.Prepend>
                                 <FormControl
                                     placeholder={user.profile || user.id}
@@ -80,7 +80,7 @@ export default class EditProfile extends Component {
                                     name='profile'
                                     onChange={this.handleChange}
                                 />
-                                <CopyToClipboard text={`http://swiply.herokuapp.com/profile/${user.profile || user.id}`} onCopy={() => this.setState({ copied: true })} style={{ cursor: 'pointer' }}>
+                                <CopyToClipboard text={`http://pv3-dev.herokuapp.com/profile/${user.profile || user.id}`} onCopy={() => this.setState({ copied: true })} style={{ cursor: 'pointer' }}>
                                     <InputGroup.Append>
                                         <InputGroup.Text style={{ background: '#01ae63', color: '#fff', borderRadius: 30, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>Copy</InputGroup.Text>
                                     </InputGroup.Append>

@@ -62,21 +62,24 @@ export default class PageView extends Component {
     }
 
     checkPermissions() {
-        if (this.state.decoded.role === 'customer') {
-            axios.get(`/api/customers/search?id=${this.state.decoded.id}`)
-                .then((resp) => {
-                    console.log(resp)
-                    let customer = resp.data.response[0]
-                    let pageIds = [];
-                    for (var i = 0; i < customer.pages.length; i++) {
-                        pageIds.push(customer.pages[i].id)
-                    }
+        console.log(this.state.decoded)
+        if (this.state.decoded) {
+            if (this.state.decoded.role === 'customer') {
+                axios.get(`/api/customers/search?id=${this.state.decoded.id}`)
+                    .then((resp) => {
+                        console.log(resp)
+                        let customer = resp.data.response[0]
+                        let pageIds = [];
+                        for (var i = 0; i < customer.pages.length; i++) {
+                            pageIds.push(customer.pages[i].id)
+                        }
 
-                    if (pageIds.includes(this.state.page.id)) this.setState({ viewAccess: true })
-                })
-                .catch((error) => {
-                    console.error(error)
-                })
+                        if (pageIds.includes(this.state.page.id)) this.setState({ viewAccess: true })
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+            }
         }
 
         if (this.state.decoded) {
@@ -342,8 +345,8 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-                            
-                                <a 
+
+                                <a
                                     href={this.state.viewAccess || this.state.edit
                                         ? content.type === 'video'
                                             ? `/pages/${this.props.match.params.pageId}/${content.id}`
