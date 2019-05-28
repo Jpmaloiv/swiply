@@ -51,23 +51,33 @@ export default class PageView extends Component {
             })
     }
 
-    checkPermissions() {
-        let query = ''
-        if (this.state.decoded) query = `?id=${this.state.decoded.id}`
-        axios.get('/api/customers/search' + query)
+    componentDidMount() {
+        axios.put(`/api/pages/update?id=${this.props.match.params.pageId}&view=${true}`)
             .then((resp) => {
                 console.log(resp)
-                let customer = resp.data.response[0]
-                let pageIds = [];
-                for (var i = 0; i < customer.pages.length; i++) {
-                    pageIds.push(customer.pages[i].id)
-                }
-
-                if (pageIds.includes(this.state.page.id)) this.setState({ viewAccess: true })
             })
             .catch((error) => {
                 console.error(error)
             })
+    }
+
+    checkPermissions() {
+        if (this.state.decoded.role === 'customer') {
+            axios.get(`/api/customers/search?id=${this.state.decoded.id}`)
+                .then((resp) => {
+                    console.log(resp)
+                    let customer = resp.data.response[0]
+                    let pageIds = [];
+                    for (var i = 0; i < customer.pages.length; i++) {
+                        pageIds.push(customer.pages[i].id)
+                    }
+
+                    if (pageIds.includes(this.state.page.id)) this.setState({ viewAccess: true })
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        }
 
         if (this.state.decoded) {
             if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
@@ -332,10 +342,20 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-                                <NavLink to={this.state.viewAccess || this.state.edit ? `/pages/${this.props.match.params.pageId}/${content.id}` : <span></span>} style={{ color: 'initial' }}>
+                                <NavLink
+                                    to={this.state.viewAccess || this.state.edit
+                                        ? content.type === 'video'
+                                            ? `/pages/${this.props.match.params.pageId}/${content.id}`
+                                            : `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${content.link}`
+                                        : <span></span>}
+                                    style={{ color: 'initial' }}
+                                >
 
                                     <div key={i} className='page' style={{ display: 'flex' }}>
-                                        <img src={`https://img.youtube.com/vi/${content.id}/0.jpg`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
+                                        {content.type === 'video'
+                                            ? <img src={`https://img.youtube.com/vi/${content.link}/0.jpg`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
+                                            : <FontAwesomeIcon icon='file' size='4x' style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
+                                        }
                                         <div style={{ width: '100%' }}>
                                             <p>{content.name}</p>
                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>

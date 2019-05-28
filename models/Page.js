@@ -18,6 +18,10 @@ module.exports = function (sequelize, DataTypes) {
         published: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        views: {
+            type: DataTypes.STRING,
+            defaultValue: 0
         }
     });
 

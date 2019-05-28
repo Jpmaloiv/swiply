@@ -33,7 +33,7 @@ export default class ContentView extends Component {
     }
 
     embed() {
-        axios.get(`https://api.embedly.com/1/oembed?key=${this.state.EMBEDLY_API_KEY}&url=https://www.youtube.com/watch?v=${this.state.content.id}`)
+        axios.get(`https://api.embedly.com/1/oembed?key=${this.state.EMBEDLY_API_KEY}&url=https://www.youtube.com/watch?v=${this.state.content.link}`)
             .then((resp) => {
                 console.log(resp)
                 this.setState({

@@ -1,6 +1,6 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheck, faDollarSign, faEye, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faDollarSign, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -122,7 +122,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faCheck, faDollarSign, faEye, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faCheck, faDollarSign, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
 
 
 export default App;

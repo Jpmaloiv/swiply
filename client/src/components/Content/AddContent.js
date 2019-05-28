@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import axios from 'axios'
+import jwt_decode from 'jwt-decode';
+
 
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -22,6 +24,11 @@ export default class AddContent extends Component {
         }
     }
 
+    componentDidMount() {
+        const loginToken = window.localStorage.getItem("token");
+        if (loginToken) this.setState({ decoded: jwt_decode(loginToken) })
+    }
+
     // Handles user input
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
@@ -29,11 +36,12 @@ export default class AddContent extends Component {
 
     // Creates new content
     addContent() {
-        let id = this.state.url.replace('https://www.youtube.com/watch?v=', '').replace('https://youtu.be/', '')
+        let link = this.state.url.replace('https://www.youtube.com/watch?v=', '').replace('https://youtu.be/', '')
         let data = new FormData();
         data.append('imgFile', this.state.file)
-        axios.post('/api/content/add?id=' + id + '&name=' + this.state.name + '&description=' + this.state.description + '&type=' + this.state.content +
-            '&pageId=' + this.props.match.params.pageId, data)
+        console.log(this.state.decoded)
+        axios.post('/api/content/add?name=' + this.state.name + '&description=' + this.state.description + '&link=' + link + '&type=' + this.state.content +
+            '&userName=' + this.state.decoded.name + '&pageId=' + this.props.match.params.pageId, data)
             .then(res => {
                 console.log(res)
                 window.location = `/pages/${this.props.match.params.pageId}`

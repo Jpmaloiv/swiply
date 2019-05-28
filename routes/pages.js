@@ -101,11 +101,14 @@ router.put('/update', (req, res) => {
     description: req.query.description,
     summary: req.query.summary,
     price: req.query.price,
-    published: req.query.published
+    published: req.query.published,
   }
 
   let AWS = 'N/A'
   if (req.file) AWS = 'Image uploaded!'
+
+  // Increment page view count
+  if (req.query.view) db.Page.increment('views', { where: { id: req.query.id }})
 
   db.Page.update(page, { where: { id: req.query.id } })
     .then(resp => {
