@@ -342,11 +342,12 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-                                <NavLink
-                                    to={this.state.viewAccess || this.state.edit
+                            
+                                <a 
+                                    href={this.state.viewAccess || this.state.edit
                                         ? content.type === 'video'
                                             ? `/pages/${this.props.match.params.pageId}/${content.id}`
-                                            : `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${content.link}`
+                                            : `https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${content.link}`
                                         : <span></span>}
                                     style={{ color: 'initial' }}
                                 >
@@ -366,7 +367,7 @@ export default class PageView extends Component {
                                             </p>
                                         </div>
                                     </div>
-                                </NavLink>
+                                </a>
                             )}
                         </div>
 
