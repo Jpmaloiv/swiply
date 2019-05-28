@@ -32,7 +32,8 @@ export default class EditProfile extends Component {
                 console.log(resp)
                 this.setState({
                     user: resp.data.response[0],
-                    S3_BUCKET: resp.data.bucket
+                    s3Bucket: resp.data.bucket,
+                    baseUrl: resp.data.BASE_URL
                 })
             })
             .catch((error) => {
@@ -62,7 +63,7 @@ export default class EditProfile extends Component {
 
     render() {
 
-        const { user } = this.state
+        const { baseUrl, user } = this.state
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -72,7 +73,7 @@ export default class EditProfile extends Component {
                             <h5 style={{ textAlign: 'center' }}>My PV3 Link</h5>
                             <InputGroup>
                                 <InputGroup.Prepend>
-                                    <InputGroup.Text>http://pv3-dev.herokuapp.com/profile/</InputGroup.Text>
+                                    <InputGroup.Text>{baseUrl}/profile/</InputGroup.Text>
                                 </InputGroup.Prepend>
                                 <FormControl
                                     placeholder={user.profile || user.id}
@@ -80,7 +81,7 @@ export default class EditProfile extends Component {
                                     name='profile'
                                     onChange={this.handleChange}
                                 />
-                                <CopyToClipboard text={`http://pv3-dev.herokuapp.com/profile/${user.profile || user.id}`} onCopy={() => this.setState({ copied: true })} style={{ cursor: 'pointer' }}>
+                                <CopyToClipboard text={`${baseUrl}/profile/${user.profile || user.id}`} onCopy={() => this.setState({ copied: true })} style={{ cursor: 'pointer' }}>
                                     <InputGroup.Append>
                                         <InputGroup.Text style={{ background: '#01ae63', color: '#fff', borderRadius: 30, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>Copy</InputGroup.Text>
                                     </InputGroup.Append>
@@ -163,12 +164,12 @@ export default class EditProfile extends Component {
                             <div className="smartphone" style={{ overflow: 'scroll', boxShadow: '-5px 10px 35px 1px #333' }}>
                                 <div className="content">
                                     <div id='background' className='imageBanner set' style={{ height: 335 }}>
-                                        <img src={user.Pages.length > 0 ? `https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}` : ''} style={{ width: '100%', height: '100%', opacity: .3, filter: 'blur(8px)', objectFit: 'cover' }} alt='' />
+                                        <img src={user.Pages.length > 0 ? `https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}` : ''} style={{ width: '100%', height: '100%', opacity: .3, filter: 'blur(8px)', objectFit: 'cover' }} alt='' />
 
                                         <div className='textOverlay'>
                                             <div className='profilePic'>
                                                 {user.imageLink ?
-                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}`} style={{ width: 75, height: 75, borderRadius: '50%', objectFit: 'cover' }} alt='' />
+                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, borderRadius: '50%', objectFit: 'cover' }} alt='' />
                                                     :
                                                     <FontAwesomeIcon
                                                         icon='user-plus'
@@ -198,7 +199,7 @@ export default class EditProfile extends Component {
                                         {this.state.user.Pages.map((page, i) =>
                                             <NavLink to={`/pages/${page.id}`} style={{ color: 'initial', width: '100%' }} key={i}>
                                                 <div className='page' style={{ display: 'flex', width: 'initial', margin: '5px 0' }}>
-                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
+                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
                                                     <div style={{ width: '100%', textAlign: 'left' }}>
                                                         <p>{page.name}</p>
                                                         <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
