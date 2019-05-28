@@ -68,7 +68,7 @@ export default class Dashboard extends Component {
                     </div>
                 </div>
 
-                <div style={{backgroundColor: '#f9fafc', borderTop: '1px solid #ebecef'}}>
+                <div style={{ backgroundColor: '#f9fafc', borderTop: '1px solid #ebecef' }}>
                     <div className='main'>
                         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto' }}>
                             <div>
@@ -100,9 +100,14 @@ export default class Dashboard extends Component {
 
                                     <div key={i} className='page' style={{ display: 'flex' }}>
                                         <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                        <div style={{width: '100%'}}>
-                                            <p>{page.name}</p>
-                                            <p style={{fontSize: 14, color: '#a4A5A8'}}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
+                                        <div style={{ width: '100%' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                                                <div>
+                                                    <p>{page.name}</p>
+                                                    <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
+                                                </div>
+                                                <div>{page.views || 0} Views</div>
+                                            </div>
                                             <p style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                                 <span>5.5k Followers</span>
