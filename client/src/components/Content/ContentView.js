@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
-
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
+import ReactHtmlParser from 'react-html-parser';
 
 
 export default class ContentView extends Component {
@@ -47,11 +48,41 @@ export default class ContentView extends Component {
 
 
     render() {
-
         return (
-            <div style={{textAlign: 'center', margin: 25}}>
-                {ReactHtmlParser(this.state.embed)}
-            </div>
-        )
-    }
-}
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionAppear={true}
+              transitionAppearTimeout={500}
+              transitionEnter={false}
+              transitionLeave={false}
+            >
+              <div className="main">
+                <div style={{ textAlign: "center", margin: 25 }}>
+                  {ReactHtmlParser(this.state.embed)}
+                  </div>
+                  <div style={{textAlign: 'left' }} >
+                  <h4>{this.state.content.name}</h4>
+                    <h5 style={{ display: "flex" }}>Content Summary</h5>
+                    {this.state.summaryEdit ? (
+                      <InputGroup>
+                        <FormControl
+                          as="textarea"
+                          style={{ width: "initial" }}
+                          placeholder={this.state.content.description}
+                          name="summary"
+                          onChange={this.handleChange}
+                          onBlur={this.handleEditing}
+                        />
+                      </InputGroup>
+                    ) : (
+                      <div style={{ display: "flex" }}>
+
+                        <p>{this.state.content.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+            </ReactCSSTransitionGroup>
+          );
+        }
+      }
