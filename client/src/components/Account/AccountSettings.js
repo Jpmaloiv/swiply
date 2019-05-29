@@ -89,8 +89,8 @@ export default class AccountSettings extends Component {
         const { user } = this.state;
 
         let role = ''
-        if (this.state.role === 'users') role = 'users'
-        if (this.state.role === 'customers') role = 'customers'
+        if (this.state.role === 'user') role = 'users'
+        if (this.state.role === 'customer') role = 'customers'
 
         // let file = page.file
         // // Split the filename to get the name and type
