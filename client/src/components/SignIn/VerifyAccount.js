@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import axios from 'axios';
+import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import axios from 'axios'
+import Button from 'react-bootstrap/Button';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 
-import Button from 'react-bootstrap/Button'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
 
 
 export default class VerifyAccount extends Component {
@@ -26,7 +26,7 @@ export default class VerifyAccount extends Component {
         let role = ''
         if (this.props.state.role === 'user') role = 'users'
         if (this.props.state.role === 'customer') role = 'customers'
-        
+
         // Switches to the Profile Summary screen
         if (this.state.code === JSON.stringify(this.props.state.verifyCode)) {
             axios.post(`api/${role}/login?phone=` + this.props.state.phone)
