@@ -195,6 +195,7 @@ export default class AccountSettings extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
+                            
                             {role === 'user' ?
                                 <Form.Group>
                                     <Form.Label>Profile Summary</Form.Label>
