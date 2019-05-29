@@ -109,51 +109,8 @@ router.get("/search", (req, res) => {
   };
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;
-  if (req.query.name) {
-    if (req.query.name.trim().indexOf(" ") != -1) {
-      const names = req.query.name.split(" ");
-      const firstName = names[0];
-      const lastName = names[1];
-
-      searchParams = {
-        where: {
-          [Op.and]: [
-            {
-              firstName: {
-                like: "%" + firstName + "%"
-              }
-            },
-            {
-              lastName: {
-                like: "%" + lastName + "%"
-              }
-            }
-          ]
-        }
-      };
-    } else {
-      searchParams = {
-        where: {
-          [Op.and]: [
-            {
-              [Op.or]: [
-                {
-                  firstName: {
-                    like: "%" + req.query.name + "%"
-                  }
-                },
-                {
-                  lastName: {
-                    like: "%" + req.query.name + "%"
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      };
-    }
-  }
+  
+  
   db.Customer.findAll(query)
     .then(resp => {
       res.json({

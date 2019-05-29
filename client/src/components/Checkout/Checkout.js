@@ -39,7 +39,6 @@ class Checkout extends Component {
           "/api/pages/search?pageId=" + window.localStorage.getItem("pageId")
         )
         .then(resp => {
-          console.log(resp, 'TESTER1');
           this.setState({
             price: resp.data.response[0].price,
             page: resp.data.response[0],

@@ -30,7 +30,7 @@ export default class AccountSettings extends Component {
         let role = ''
         if (decoded.role === 'user') role = 'users'
         if (decoded.role === 'customer') role = 'customers'
-        this.setState({ role: role })
+        this.setState({ role: decoded.role })
 
         axios.get(`/api/${role}/search?id=` + decoded.id)
             .then((resp) => {
@@ -116,6 +116,7 @@ export default class AccountSettings extends Component {
     render() {
 
         const { role, user } = this.state
+        console.log(this.state)
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
