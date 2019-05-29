@@ -145,14 +145,38 @@ router.get("/search", (req, res) => {
 
 // Update a user
 router.put("/update", upload.single("imgFile"), (req, res) => {
-  console.log("REQ", req.file);
+  console.log("REQ", req.query);
 
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
 
+  // Check if old password was entered correctly
+  if (req.query.oldPassword) {
+    db.User.findOne({
+    where: {
+      email: req.query.email
+    }
+  })
+    .then(resp => {
+      let inputHash = getHash(req.query.oldPassword, resp.salt);
+      console.log(inputHash.toString(), resp.hash);
+      console.log("HERE", inputHash, resp.hash)
+      if (inputHash === resp.hash) {
+        return;
+      } else {
+        return res.json({ message: "Wrong original password"});
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "User not found", error: err });
+    });
+  }
+
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
 
+  console.log("MADE IT")
   const user = {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
@@ -175,6 +199,8 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
 
   let AWS = "N/A";
   if (req.file) AWS = "Image uploaded!";
+
+  console.log("UPDATE OBJECT", user)
 
   db.User.update(user, { where: { id: req.query.id } })
     .then(resp => {
