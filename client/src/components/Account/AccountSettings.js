@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
-
-import 'react-notifications/lib/notifications.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import 'react-notifications/lib/notifications.css';
+
 
 
 export default class AccountSettings extends Component {
@@ -100,7 +100,7 @@ export default class AccountSettings extends Component {
         // console.log("Preparing the upload", file);
         let data = new FormData();
         data.append("imgFile", this.state.file)
-        axios.put(`/api/${role}/update?id=` + this.state.user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + '&title=' + user.title + '&phone=' + user.phone +
+        axios.put(`/api/${role}/update?id=` + this.state.user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + '&password=' + user.password + '&title=' + user.title + '&phone=' + user.phone +
             '&email=' + user.email + '&summary=' + user.summary, data)
             .then(res => {
                 console.log(res)
@@ -164,6 +164,24 @@ export default class AccountSettings extends Component {
                                 <Form.Control
                                     placeholder={user.lastName}
                                     name='lastName'
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>New Password</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder='New Password'
+                                    name='password'
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder='Confirm Password'
+                                    name='password'
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>

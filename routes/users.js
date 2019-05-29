@@ -115,22 +115,6 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.put("/password", async (req, res) => {
-  try {
-    const { password, email } = req.body;
-    await passport.authenticate("local");
-    console.log(password, email, "pwemail");
-    const user = await User.findOne({ email }).exec();
-    console.log(user, "iserss");
-    user.password = password;
-    await user.save();
-    res.send(user);
-  } catch (error) {
-    console.log(error, "err<-");
-    res.send({ error: `${error}` });
-  }
-});
-
 router.get("/search", (req, res) => {
   let query = {
     where: {},
@@ -166,11 +150,16 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
 
+  const salt = getSalt();
+  const hash = getHash(req.query.password, salt);
+
   const user = {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
     title: req.query.title,
     email: req.query.email,
+    hash: hash,
+    salt: salt,
     profile: req.query.profile,
     phone: req.query.phone,
     summary: req.query.summary,
