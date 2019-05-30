@@ -8,8 +8,8 @@ import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import DragSortableList from "react-drag-sortable";
-import Moment from 'react-moment';
-import { NavLink } from 'react-router-dom';
+import Moment from "react-moment";
+import { NavLink } from "react-router-dom";
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -90,17 +90,7 @@ export default class EditProfile extends Component {
 
   render() {
     const { baseUrl, user } = this.state;
-    // var listGrid = [
-    //     {content: (<div>test1</div>)},
-    //      {content: (<div>test2</div>)},
-    //      {content: (<div>test3</div>)},
-    //     {content: (<div>test4</div>)},
-    //     {content: (<div>test5</div>)},
-    //     {content: (<div>test6</div>)},
-    //     {content: (<div>test7</div>)},
-    //     {content: (<div>test8</div>)},
-    //      {content: (<div>test9</div>)}
-    // ];
+
     let listGrid = this.state.user.Pages.map((page, i) => {
       return {
         content: (
@@ -346,19 +336,7 @@ export default class EditProfile extends Component {
                       <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
                     )}
                     <DragSortableList items={listGrid} onSort={() => {}} />
-                    {/**
-                    var listGrid = [
-	{content: (<div>test1</div>)},
- 	{content: (<div>test2</div>)},
- 	{content: (<div>test3</div>)},
-	{content: (<div>test4</div>)},
-	{content: (<div>test5</div>)},
-	{content: (<div>test6</div>)},
-	{content: (<div>test7</div>)},
-	{content: (<div>test8</div>)},
- 	{content: (<div>test9</div>)}
-];
-                    */}
+
                     {/* {this.state.user.Pages.map((page, i) =>
                                             <NavLink to={`/pages/${page.id}`} style={{ color: 'initial', width: '100%' }} key={i}>
                                                 <div className='page' style={{ display: 'flex', width: 'initial', margin: '5px 0' }}>
