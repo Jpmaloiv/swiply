@@ -102,6 +102,7 @@ router.put('/update', (req, res) => {
     summary: req.query.summary,
     price: req.query.price,
     published: req.query.published,
+    order: req.query.order
   }
 
   let AWS = 'N/A'

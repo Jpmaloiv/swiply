@@ -10,6 +10,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import DragSortableList from "react-drag-sortable";
 import Moment from "react-moment";
 import { NavLink } from "react-router-dom";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export default class EditProfile extends Component {
     this.state = {
       image: "",
       pages: [],
+      sortedList: [],
       user: {
         firstName: "",
         lastName: "",
@@ -31,6 +33,8 @@ export default class EditProfile extends Component {
       },
       copied: false
     };
+
+    this.onSort = this.onSort.bind(this)
   }
 
   componentWillMount() {
@@ -68,45 +72,73 @@ export default class EditProfile extends Component {
     axios
       .put(
         "/api/users/update?id=" +
-          user.id +
-          "&profile=" +
-          user.profile +
-          "&instagram=" +
-          user.instagram +
-          "&facebook=" +
-          user.facebook +
-          "&twitter=" +
-          user.twitter +
-          "&linkedin=" +
-          user.linkedin +
-          "&whatsapp=" +
-          user.whatsapp +
-          "&website=" +
-          user.website
+        user.id +
+        "&profile=" +
+        user.profile +
+        "&instagram=" +
+        user.instagram +
+        "&facebook=" +
+        user.facebook +
+        "&twitter=" +
+        user.twitter +
+        "&linkedin=" +
+        user.linkedin +
+        "&whatsapp=" +
+        user.whatsapp +
+        "&website=" +
+        user.website
       )
       .then(res => {
         console.log(res);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch(err => {
         console.error(err);
       });
+
+    if (this.state.sortedList) {
+      console.log("HIIIII", this.state.sortedList)
+      for (var i = 0; i < this.state.sortedList.length; i++) {
+        const {sortedList} = this.state
+        axios.put(`/api/pages/update?id=${sortedList[i].key}&order=${sortedList[i].rank}`)
+          .then(res => {
+            console.log(res);
+            // window.location.reload();
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    }
+  }
+
+  onSort(sortedList) {
+    console.log("sortedList", sortedList);
+    // this.setState({ sorted: sortedList })
   }
 
 
   render() {
+    console.log(this.state.sortedList)
     const { baseUrl, user } = this.state;
 
-    const onSort = function(sortedList, dropEvent) {
-      console.log("sortedList", sortedList, dropEvent);
-   }
+    const onSort = function (sortedList, dropEvent) {
+      console.log(sortedList)
+      // for (var i = 0; i < sortedList.length; i++) {
+      //   this.state.sortedList.push(sortedList.key)
+      // }
+    // this.setState({ sort: sortedList })
+
+      console.log(this.state.sortedList)
+    }
+
     let listGrid = this.state.user.Pages.map((page, i) => {
       return {
         content: (
           <NavLink
             to={`/pages/${page.id}`}
             style={{ color: "initial", width: "100%" }}
-            key={i}
+            key={page.id}
           >
             <div
               className="page"
@@ -115,7 +147,7 @@ export default class EditProfile extends Component {
               <img
                 src={`https://s3-us-west-1.amazonaws.com/${
                   this.state.s3Bucket
-                }/${page.imageLink}`}
+                  }/${page.imageLink}`}
                 style={{ width: 75, objectFit: "cover", marginRight: 20 }}
               />
               <div style={{ width: "100%", textAlign: "left" }}>
@@ -285,8 +317,8 @@ export default class EditProfile extends Component {
                       src={
                         user.Pages.length > 0
                           ? `https://s3-us-west-1.amazonaws.com/${
-                              this.state.s3Bucket
-                            }/${user.imageLink}`
+                          this.state.s3Bucket
+                          }/${user.imageLink}`
                           : ""
                       }
                       style={{
@@ -305,7 +337,7 @@ export default class EditProfile extends Component {
                           <img
                             src={`https://s3-us-west-1.amazonaws.com/${
                               this.state.s3Bucket
-                            }/${user.imageLink}`}
+                              }/${user.imageLink}`}
                             style={{
                               width: 75,
                               height: 75,
@@ -315,13 +347,13 @@ export default class EditProfile extends Component {
                             alt=""
                           />
                         ) : (
-                          <FontAwesomeIcon
-                            icon="user-plus"
-                            size="2x"
-                            color="white"
-                            style={{ opacity: 0.8, cursor: "initial" }}
-                          />
-                        )}
+                            <FontAwesomeIcon
+                              icon="user-plus"
+                              size="2x"
+                              color="white"
+                              style={{ opacity: 0.8, cursor: "initial" }}
+                            />
+                          )}
                       </div>
                       <br />
                       <div>
@@ -342,11 +374,11 @@ export default class EditProfile extends Component {
                     {this.state.user.Pages.length > 0 ? (
                       <h6 style={{ textAlign: "left" }}>Pages</h6>
                     ) : (
-                      <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
-                    )}
+                        <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
+                      )}
                     <DragSortableList
                       items={listGrid}
-                      onSort={this.onSort}
+                      onSort={this.onSort.bind(this)}
                     />
 
                     {/* {this.state.user.Pages.map((page, i) =>

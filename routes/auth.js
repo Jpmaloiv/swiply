@@ -30,6 +30,7 @@ router.post("/login", (req, res) => {
     }
   })
     .then(function(resp) {
+      console.log("RESP", resp)
       //login
       var inputHash = getHash(password, resp.salt);
       console.log(inputHash.toString(), resp.hash);

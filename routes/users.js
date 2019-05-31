@@ -17,10 +17,10 @@ const cloudStorage = multerS3({
   bucket: process.env.S3_BUCKET,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   ACL: "public-read",
-  metadata: function(request, file, ab_callback) {
+  metadata: function (request, file, ab_callback) {
     ab_callback(null, { fieldname: file.fieldname });
   },
-  key: function(request, file, ab_callback) {
+  key: function (request, file, ab_callback) {
     const newFileName =
       "images/profile/users/" + file.originalname + "-" + Date.now();
     ab_callback(null, newFileName);
@@ -150,40 +150,11 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
 
-  // Check if old password was entered correctly
-  if (req.query.oldPassword) {
-    db.User.findOne({
-    where: {
-      email: req.query.email
-    }
-  })
-    .then(resp => {
-      let inputHash = getHash(req.query.oldPassword, resp.salt);
-      console.log(inputHash.toString(), resp.hash);
-      console.log("HERE", inputHash, resp.hash)
-      if (inputHash === resp.hash) {
-        return;
-      } else {
-        return res.json({ message: "Wrong original password"});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ message: "User not found", error: err });
-    });
-  }
-
-  const salt = getSalt();
-  const hash = getHash(req.query.password, salt);
-
-  console.log("MADE IT")
   const user = {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
     title: req.query.title,
     email: req.query.email,
-    hash: hash,
-    salt: salt,
     profile: req.query.profile,
     phone: req.query.phone,
     summary: req.query.summary,
@@ -196,6 +167,31 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     website: req.query.website,
     remember: req.query.remember
   };
+
+  // Check if old password was entered correctly
+  if (req.query.oldPassword) {
+    db.User.findOne({
+      where: {
+        email: req.query.email
+      }
+    })
+      .then(resp => {
+        let inputHash = getHash(req.query.oldPassword, resp.salt);
+        console.log(inputHash.toString(), resp.hash);
+
+        if (inputHash === resp.hash) {
+          user.salt = getSalt();
+          user.hash = getHash(req.query.password, salt);
+        } else {
+          return res.json({ message: "Wrong original password" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ message: "User not found", error: err });
+      });
+  }
+
 
   let AWS = "N/A";
   if (req.file) AWS = "Image uploaded!";
