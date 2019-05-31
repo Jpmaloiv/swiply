@@ -16,7 +16,7 @@ export default class EditProfile extends Component {
     super(props);
     this.state = {
       image: "",
-      // pages: [],
+      pages: [],
       user: {
         firstName: "",
         lastName: "",
@@ -40,7 +40,7 @@ export default class EditProfile extends Component {
 
     // console.log(this.state.user.Pages, "pages");
     // const positions = window.localStorage.getItem("ids");
-    // // let listGrid = []
+    // let listGrid = []
     // let pages = [];
 
     axios
@@ -93,9 +93,14 @@ export default class EditProfile extends Component {
       });
   }
 
+
   render() {
     const { baseUrl, user } = this.state;
-    let listGrid = this.state.pages.map((page, i) => {
+
+    const onSort = function(sortedList, dropEvent) {
+      console.log("sortedList", sortedList, dropEvent);
+   }
+    let listGrid = this.state.user.Pages.map((page, i) => {
       return {
         content: (
           <NavLink
@@ -341,7 +346,7 @@ export default class EditProfile extends Component {
                     )}
                     <DragSortableList
                       items={listGrid}
-                      onSort={() => {}}
+                      onSort={this.onSort}
                     />
 
                     {/* {this.state.user.Pages.map((page, i) =>

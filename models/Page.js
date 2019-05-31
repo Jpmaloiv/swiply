@@ -22,7 +22,10 @@ module.exports = function (sequelize, DataTypes) {
         views: {
             type: DataTypes.STRING,
             defaultValue: 0
-        }
+        },
+        order: {
+            type: DataTypes.STRING
+        },
     });
 
     Page.associate = function (models) {
