@@ -16,6 +16,7 @@ export default class EditProfile extends Component {
     super(props);
     this.state = {
       image: "",
+      // pages: [],
       user: {
         firstName: "",
         lastName: "",
@@ -37,10 +38,14 @@ export default class EditProfile extends Component {
     let decoded = "";
     if (loginToken) decoded = jwt_decode(loginToken);
 
+    // console.log(this.state.user.Pages, "pages");
+    // const positions = window.localStorage.getItem("ids");
+    // // let listGrid = []
+    // let pages = [];
+
     axios
       .get("/api/users/search?id=" + decoded.id)
       .then(resp => {
-        console.log(resp);
         this.setState({
           user: resp.data.response[0],
           s3Bucket: resp.data.bucket,
@@ -90,8 +95,7 @@ export default class EditProfile extends Component {
 
   render() {
     const { baseUrl, user } = this.state;
-
-    let listGrid = this.state.user.Pages.map((page, i) => {
+    let listGrid = this.state.pages.map((page, i) => {
       return {
         content: (
           <NavLink
@@ -335,7 +339,10 @@ export default class EditProfile extends Component {
                     ) : (
                       <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
                     )}
-                    <DragSortableList items={listGrid} onSort={() => {}} />
+                    <DragSortableList
+                      items={listGrid}
+                      onSort={() => {}}
+                    />
 
                     {/* {this.state.user.Pages.map((page, i) =>
                                             <NavLink to={`/pages/${page.id}`} style={{ color: 'initial', width: '100%' }} key={i}>
