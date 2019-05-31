@@ -24,7 +24,8 @@ const createOptions = () => {
 class Checkout extends Component {
   state = {
     page: "",
-    errorMessage: ""
+    errorMessage: "",
+    time: ""
   };
 
 
@@ -52,6 +53,21 @@ class Checkout extends Component {
     }
   }
 
+  // timeConverter(UNIX_timestamp){
+  //   var a = new Date(UNIX_timestamp * 1000);
+  //   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  //   var year = a.getFullYear();
+  //   var month = months[a.getMonth()];
+  //   var date = a.getDate();
+  //   var hour = a.getHours();
+  //   var min = a.getMinutes();
+  //   var sec = a.getSeconds();
+  //   var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  //   return time;
+  // };
+
+// 1559332792
+
   handleChange = ({ error }) => {
     if (error) {
       this.setState({ errorMessage: error.message });
@@ -59,6 +75,19 @@ class Checkout extends Component {
   };
 
   handleSubmit = ev => {
+    function timeConverter(UNIX_timestamp){
+      var a = new Date(UNIX_timestamp * 1000);
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var year = a.getFullYear();
+      var month = months[a.getMonth()];
+      var date = a.getDate();
+      var hour = a.getHours();
+      var min = a.getMinutes();
+      var sec = a.getSeconds();
+      var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+      return time;
+    };
+
     ev.preventDefault();
 
     this.props.stripe
@@ -70,7 +99,13 @@ class Checkout extends Component {
         amount: Number(this.state.price) * 100
       })
       .then(({ source }) => {
+        const convertedUnix = timeConverter(source.created)
         console.log("Source:", source);
+        console.log("Unix Time:", timeConverter(source.created));
+        this.setState({
+          time: convertedUnix
+        })
+        console.log(convertedUnix, "Time!")
         axios
           .post(
             `api/auth/page?customerId=${
@@ -89,6 +124,7 @@ class Checkout extends Component {
         console.log(err);
       });
   };
+
   render() {
     const { page } = this.state;
 

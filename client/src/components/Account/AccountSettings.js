@@ -37,7 +37,6 @@ export default class AccountSettings extends Component {
     axios
       .get(`/api/${role}/search?id=` + decoded.id)
       .then(resp => {
-        console.log(resp);
         this.setState(
           {
             user: resp.data.response[0],
