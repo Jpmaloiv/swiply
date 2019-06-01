@@ -51,6 +51,27 @@ export default class Dashboard extends Component {
             })
         }
 
+        sortCount = () => {
+            function count(a, b) {
+        return b.views - a.views;
+    };
+            this.state.pages.sort(count)
+            this.setState({
+                pages: this.state.pages
+            })
+        }
+
+    //     sortRating = () => {
+    //         function rating(a, b) {
+    //     return b.rating - a.rating;
+    // };
+    //         this.state.pages.sort(rating)
+    //         this.setState({
+    //             pages: this.state.pages
+    //         })
+    //     }
+
+
     render() {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
@@ -85,8 +106,10 @@ export default class Dashboard extends Component {
                             <div>
                                 <DropdownButton title="Popular Pages">
                                     <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Highest Rated</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Most Content</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortCount} href="#/action-2">Highest Rated</Dropdown.Item>
+                                    <Dropdown.Item
+                                    // onClick={this.sortRating}
+                                    href="#/action-3">Most Content</Dropdown.Item>
                                 </DropdownButton>
                             </div>
 
