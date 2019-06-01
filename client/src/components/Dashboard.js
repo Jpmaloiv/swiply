@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import Moment from 'react-moment';
-import { NavLink } from 'react-router-dom'
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+import { NavLink } from 'react-router-dom';
 
-import Button from 'react-bootstrap/Button'
-import Dropdown from 'react-bootstrap/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export default class Dashboard extends Component {
@@ -27,7 +27,8 @@ export default class Dashboard extends Component {
 
         axios.get('api/pages/search?userId=' + decoded.id)
             .then((resp) => {
-                console.log(resp)
+                console.log(resp, "Hello Response!")
+                console.log(resp.data.response[1].User.createdAt, "Date content created")
                 this.setState({
                     pages: resp.data.response,
                     S3_BUCKET: resp.data.bucket
@@ -36,9 +37,19 @@ export default class Dashboard extends Component {
             .catch((error) => {
                 console.error(error)
             })
-    }
+    };
 
-
+        sortDates = () => {
+            function date(a, b) {
+        var dateA = new Date(a.date).getTime();
+        var dateB = new Date(b.date).getTime();
+        return dateA > dateB ? 1 : -1;
+    };
+            this.state.pages.sort(date)
+            this.setState({
+                pages: this.state.pages
+            })
+        }
 
     render() {
         return (
@@ -73,7 +84,7 @@ export default class Dashboard extends Component {
                         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto' }}>
                             <div>
                                 <DropdownButton title="Popular Pages">
-                                    <Dropdown.Item href="#/action-1">Date Published</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Highest Rated</Dropdown.Item>
                                     <Dropdown.Item href="#/action-3">Most Content</Dropdown.Item>
                                 </DropdownButton>
