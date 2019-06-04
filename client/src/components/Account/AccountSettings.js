@@ -111,13 +111,6 @@ export default class AccountSettings extends Component {
     if (this.state.role === "user") role = "users";
     if (this.state.role === "customer") role = "customers";
 
-    // let file = page.file
-    // // Split the filename to get the name and type
-    // let fileParts = file.name.split('.');
-    // let fileName = fileParts[0];
-    // let fileType = fileParts[1];
-    // console.log("Preparing the upload", file);
-
     let data = new FormData();
     data.append("imgFile", this.state.file);
 

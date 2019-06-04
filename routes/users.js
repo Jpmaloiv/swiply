@@ -145,7 +145,7 @@ router.get("/search", (req, res) => {
 
 // Update a user
 router.put("/update", upload.single("imgFile"), (req, res) => {
-  console.log("REQ", req.query);
+  console.log("REQ", req.query, req.file);
 
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
@@ -162,7 +162,7 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     instagram: req.query.instagram,
     facebook: req.query.facebook,
     twitter: req.query.twitter,
-    linkedin: req.query.linkedin,
+    linkedIn: req.query.linkedIn,
     whatsapp: req.query.whatsapp,
     website: req.query.website,
     remember: req.query.remember

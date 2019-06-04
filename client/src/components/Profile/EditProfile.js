@@ -10,7 +10,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import DragSortableList from "react-drag-sortable";
 import Moment from "react-moment";
 import { NavLink } from "react-router-dom";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
+
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -24,13 +24,8 @@ export default class EditProfile extends Component {
         lastName: "",
         Pages: [],
         profile: "",
-        instagram: "",
-        facebook: "",
-        twitter: "",
-        linkedin: "",
-        whatsapp: "",
-        website: ""
       },
+      socialMedia: ['instagram', 'facebook', 'twitter', 'linkedIn', 'whatsapp', 'website'],
       copied: false
     };
 
@@ -54,7 +49,7 @@ export default class EditProfile extends Component {
           user: resp.data.response[0],
           s3Bucket: resp.data.bucket,
           baseUrl: resp.data.BASE_URL
-        });
+        }, this.imageCheck);
       })
       .catch(error => {
         console.error(error);
@@ -64,33 +59,51 @@ export default class EditProfile extends Component {
   // Handles user input
   handleChange = e => {
     this.state.user[e.target.name] = e.target.value;
+    this.setState({ render: !this.state.render })
   };
 
-  updateUser() {
+  // Preview image once seleted
+  onImageChange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      this.state.user.imageLink = URL.createObjectURL(file);
+      this.setState({
+        file: file,
+        fileName: file.name,
+        fileType: file.type
+      });
+    }
+  };
+
+  imageCheck() {
     const { user } = this.state;
-    console.log(user);
-    axios
-      .put(
-        "/api/users/update?id=" +
-        user.id +
-        "&profile=" +
-        user.profile +
-        "&instagram=" +
-        user.instagram +
-        "&facebook=" +
-        user.facebook +
-        "&twitter=" +
-        user.twitter +
-        "&linkedin=" +
-        user.linkedin +
-        "&whatsapp=" +
-        user.whatsapp +
-        "&website=" +
-        user.website
-      )
+    if (user.imageLink) {
+      user.imageLink = `https://s3-us-west-1.amazonaws.com/${
+        this.state.s3Bucket
+        }/${user.imageLink}`;
+      this.setState({ render: !this.state.render });
+    }
+  }
+
+  updateUser() {
+    const { socialMedia, user } = this.state;
+    let query = ''
+
+    // Check if social media links were changed
+    for (let i = 0; i < socialMedia.length; i++) {
+      console.log(user[socialMedia[i]])
+      if (user[socialMedia[i]]) query += `&${socialMedia[i]}=${user[socialMedia[i]]}`
+      else query += `&${socialMedia[i]}=`
+    }
+    console.log(query)
+
+    let data = new FormData();
+    data.append("imgFile", this.state.file);
+
+    axios.put("/api/users/update?id=" + user.id + "&profile=" + user.profile + query, data)
       .then(res => {
         console.log(res);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch(err => {
         console.error(err);
@@ -99,7 +112,7 @@ export default class EditProfile extends Component {
     if (this.state.sortedList) {
       console.log("HIIIII", this.state.sortedList)
       for (var i = 0; i < this.state.sortedList.length; i++) {
-        const {sortedList} = this.state
+        const { sortedList } = this.state
         axios.put(`/api/pages/update?id=${sortedList[i].key}&order=${sortedList[i].rank}`)
           .then(res => {
             console.log(res);
@@ -119,7 +132,7 @@ export default class EditProfile extends Component {
 
 
   render() {
-    console.log(this.state.sortedList)
+    console.log(this.state.user)
     const { baseUrl, user } = this.state;
 
     const onSort = function (sortedList, dropEvent) {
@@ -127,7 +140,7 @@ export default class EditProfile extends Component {
       // for (var i = 0; i < sortedList.length; i++) {
       //   this.state.sortedList.push(sortedList.key)
       // }
-    // this.setState({ sort: sortedList })
+      // this.setState({ sort: sortedList })
 
       console.log(this.state.sortedList)
     }
@@ -137,7 +150,7 @@ export default class EditProfile extends Component {
         content: (
           <NavLink
             to={`/pages/${page.id}`}
-            style={{ color: "initial", width: "100%" }}
+            style={{ color: "initial", fontWeight: 'bold', width: "100%" }}
             key={page.id}
           >
             <div
@@ -150,15 +163,10 @@ export default class EditProfile extends Component {
                   }/${page.imageLink}`}
                 style={{ width: 75, objectFit: "cover", marginRight: 20 }}
               />
-              <div style={{ width: "100%", textAlign: "left" }}>
-                <p>{page.name}</p>
-                <p style={{ fontSize: 14, color: "#a4A5A8" }}>
-                  Published: <Moment format="M.DD.YYYY" date={page.createdAt} />
-                </p>
-                <p style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>$38,250</span>
-                  <span>5.5k Followers</span>
-                  <span>+98%</span>
+              <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <p style={{ whiteSpace: 'nowrap' }}>{page.name}</p>
+                <p className='previewText'>
+                  {page.summary}
                 </p>
               </div>
             </div>
@@ -166,24 +174,7 @@ export default class EditProfile extends Component {
         )
       };
     });
-    {
-      /* {this.state.user.Pages.map((page, i) =>
-                                            <NavLink to={`/pages/${page.id}`} style={{ color: 'initial', width: '100%' }} key={i}>
-                                                <div className='page' style={{ display: 'flex', width: 'initial', margin: '5px 0' }}>
-                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                                    <div style={{ width: '100%', textAlign: 'left' }}>
-                                                        <p>{page.name}</p>
-                                                        <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
-                                                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>$38,250</span>
-                                                            <span>5.5k Followers</span>
-                                                            <span>+98%</span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </NavLink>
-                                        )} */
-    }
+
 
     return (
       <ReactCSSTransitionGroup
@@ -197,18 +188,18 @@ export default class EditProfile extends Component {
           <div style={{ flex: 1 }}>
             <div className="center" style={{ textAlign: "left" }}>
               <h5 style={{ textAlign: "center" }}>My PV3 Link</h5>
-              <InputGroup>
+              <InputGroup style={{ height: 55 }}>
                 <InputGroup.Prepend>
-                  <InputGroup.Text>{baseUrl}/profile/</InputGroup.Text>
+                  <InputGroup.Text style={{ borderTopLeftRadius: 27.5, borderBottomLeftRadius: 27.5 }}>{baseUrl}/profile/</InputGroup.Text>
                 </InputGroup.Prepend>
                 <FormControl
-                  placeholder={user.profile || user.id}
-                  style={{ borderRadius: 0 }}
+                  placeholder={user.profile}
+                  style={{ height: 55, borderRadius: 0 }}
                   name="profile"
                   onChange={this.handleChange}
                 />
                 <CopyToClipboard
-                  text={`${baseUrl}/profile/${user.profile || user.id}`}
+                  text={`${baseUrl}/profile/${user.profile}`}
                   onCopy={() => this.setState({ copied: true })}
                   style={{ cursor: "pointer" }}
                 >
@@ -217,9 +208,8 @@ export default class EditProfile extends Component {
                       style={{
                         background: "#01ae63",
                         color: "#fff",
-                        borderRadius: 30,
-                        borderTopLeftRadius: 0,
-                        borderBottomLeftRadius: 0
+                        borderTopRightRadius: 27.5,
+                        borderBottomRightRadius: 27.5
                       }}
                     >
                       Copy
@@ -227,65 +217,123 @@ export default class EditProfile extends Component {
                   </InputGroup.Append>
                 </CopyToClipboard>
               </InputGroup>
-              <br />
+              <br /><br />
               <h3>Connect Your Social Media</h3>
               <p>Add links to your social media accounts below:</p>
-              <label>Instagram</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.instagram}
-                  name="instagram"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>Facebook</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.facebook}
-                  name="facebook"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>Twitter</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.twitter}
-                  name="twitter"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>Linkedin</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.linkedin}
-                  name="linkedin"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>WhatsApp</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.whatsapp}
-                  name="whatsapp"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>Website (URL)</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.website}
-                  name="website"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
-              <label>Email Address</label>
-              <InputGroup>
-                <FormControl
-                  placeholder={user.email}
-                  name="email"
-                  onChange={this.handleChange}
-                />
-              </InputGroup>
+              <br />
+              <div className='smSettings'>
+                <label className='smLabel'>Instagram</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.instagram ? { borderRight: 'none' } : {}}
+                    placeholder={user.instagram}
+                    name="instagram"
+                    onChange={this.handleChange}
+                  />
+                  {user.instagram ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>Facebook</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.facebook ? { borderRight: 'none' } : {}}
+                    placeholder={user.facebook}
+                    name="facebook"
+                    onChange={this.handleChange}
+                  />
+                  {user.facebook ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>Twitter</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.twitter ? { borderRight: 'none' } : {}}
+                    placeholder={user.twitter}
+                    name="twitter"
+                    onChange={this.handleChange}
+                  />
+                  {user.twitter ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>Linkedin</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.linkedIn ? { borderRight: 'none' } : {}}
+                    placeholder={user.linkedIn}
+                    name="linkedIn"
+                    onChange={this.handleChange}
+                  />
+                  {user.linkedIn ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>WhatsApp</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.whatsapp ? { borderRight: 'none' } : {}}
+                    placeholder={user.whatsapp}
+                    name="whatsapp"
+                    onChange={this.handleChange}
+                  />
+                  {user.whatsapp ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>Website (URL)</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    style={user.website ? { borderRight: 'none' } : {}}
+                    placeholder={user.website}
+                    name="website"
+                    onChange={this.handleChange}
+                  />
+                  {user.website ?
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon='check' color='#00af63' />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                    : <span></span>}
+                </InputGroup><br />
+                <label>Email Address</label>
+                <InputGroup>
+                  <FormControl
+                    className='smInput'
+                    placeholder={user.email}
+                    name="email"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+              </div>
             </div>
 
             <Button
@@ -294,7 +342,7 @@ export default class EditProfile extends Component {
               style={{ display: "block" }}
               onClick={this.updateUser.bind(this)}
             >
-              Update Info
+              Update Settings
             </Button>
           </div>
 
@@ -311,14 +359,12 @@ export default class EditProfile extends Component {
                   <div
                     id="background"
                     className="imageBanner set"
-                    style={{ height: 335 }}
+                    style={{ height: 335, background: '#fff' }}
                   >
                     <img
                       src={
                         user.Pages.length > 0
-                          ? `https://s3-us-west-1.amazonaws.com/${
-                          this.state.s3Bucket
-                          }/${user.imageLink}`
+                          ? user.imageLink
                           : ""
                       }
                       style={{
@@ -333,32 +379,39 @@ export default class EditProfile extends Component {
 
                     <div className="textOverlay">
                       <div className="profilePic">
-                        {user.imageLink ? (
-                          <img
-                            src={`https://s3-us-west-1.amazonaws.com/${
-                              this.state.s3Bucket
-                              }/${user.imageLink}`}
-                            style={{
-                              width: 75,
-                              height: 75,
-                              borderRadius: "50%",
-                              objectFit: "cover"
-                            }}
-                            alt=""
-                          />
-                        ) : (
+                        {user.imageLink ?
+                          <div>
+                            <img
+                              src={user.imageLink}
+                              style={{
+                                width: 75,
+                                height: 75,
+                                borderRadius: "50%",
+                                objectFit: "cover"
+                              }}
+                              alt=""
+                            />
                             <FontAwesomeIcon
                               icon="user-plus"
-                              size="2x"
-                              color="white"
-                              style={{ opacity: 0.8, cursor: "initial" }}
+                              style={{ opacity: 0.2, position: "absolute" }}
+                              onClick={() => {
+                                this.upload.click();
+                              }}
                             />
-                          )}
+                          </div>
+                          :
+                          <FontAwesomeIcon
+                            icon="user-plus"
+                            size="2x"
+                            color="white"
+                            style={{ opacity: 0.8, cursor: "initial" }}
+                          />
+                        }
                       </div>
                       <br />
                       <div>
-                        <h3>{user.firstName + " " + user.lastName}</h3>
-                        <p>{user.title}</p>
+                        <h4 style={{ fontWeight: 'bold', margin: 0 }}>{user.firstName + " " + user.lastName}</h4>
+                        <p style={{ fontSize: 12, fontStyle: 'italic' }}>{user.title}</p>
                       </div>
                     </div>
                   </div>
@@ -372,7 +425,7 @@ export default class EditProfile extends Component {
                     }}
                   >
                     {this.state.user.Pages.length > 0 ? (
-                      <h6 style={{ textAlign: "left" }}>Pages</h6>
+                      <h6 style={{ textAlign: "left" }}>Courses</h6>
                     ) : (
                         <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
                       )}
@@ -397,6 +450,14 @@ export default class EditProfile extends Component {
                                                 </div>
                                             </NavLink>
                                         )} */}
+
+                    <input
+                      type="file"
+                      name="imgFile"
+                      ref={ref => (this.upload = ref)}
+                      onChange={this.onImageChange}
+                      style={{ display: "none" }}
+                    />
                   </div>
                 </div>
               </div>

@@ -82,7 +82,7 @@ export default class Profile extends Component {
                                 {/* {user.instagram ? <SocialIcon url={user.instagram} /> : <span></span>} */}
                                 {user.facebook ? <SocialIcon url={user.facebook} /> : <span></span>}
                                 {user.twitter ? <SocialIcon url={user.twitter} /> : <span></span>}
-                                {user.linkedin ? <SocialIcon url={user.linkedin} /> : <span></span>}
+                                {user.linkedIn ? <SocialIcon url={user.linkedIn} /> : <span></span>}
                                 {user.whatsapp ? <SocialIcon url={user.whatsapp} /> : <span></span>}
                                 {user.website ? <SocialIcon url={user.website} /> : <span></span>}
                             </div>

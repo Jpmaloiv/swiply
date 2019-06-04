@@ -1,3 +1,36 @@
+@font-face {
+  font-family: 'SF NS Display';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/sfnsdisplay-webfont.eot'); 
+  src: local('SF NS Display'), local('SFNSDisplay'),
+       url('./fonts/sfnsdisplay-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('./fonts/sfnsdisplay-webfont.woff2') format('woff2'), 
+       url('./fonts/sfnsdisplay-webfont.woff') format('woff'), 
+       url('./fonts/sfnsdisplay-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/sfnsdisplay-webfont.svg#SFNSDisplay') format('svg'); 
+}
+body {
+  font-family: 'SF NS Display' !important;
+}
+
+/* @font-face {
+  font-family: 'Averta Demo PE Cutted Demo Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/avertademopecutteddemo-regular-webfont.eot'); 
+  src: local('Averta Demo PE Cutted Demo Regular'), local('AvertaDemoPECuttedDemoRegular'),
+       url('./fonts/avertademopecutteddemo-regular-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('./fonts/avertademopecutteddemo-regular-webfont.woff2') format('woff2'), 
+       url('./fonts/avertademopecutteddemo-regular-webfont.woff') format('woff'), 
+       url('./fonts/avertademopecutteddemo-regular-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+       /* url('./fonts/avertademopecutteddemo-regular-webfont.svg#AvertaDemoPECuttedDemoRegular') format('svg'); 
+}
+body {
+  font-family: 'Averta Demo PE Cutted Demo Regular' !important;
+} */ *
+
+
 header {
   display: flex !important;
   justify-content: space-between;
@@ -186,12 +219,46 @@ button.circle {
   align-items: center
 }
 
+
+/* Preview Text */
+
+.previewText {
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 12px;
+  color: #333;
+  font-weight: lighter
+}
+
+
+
 /* Custom Input */
 
 .verificationInput {
   text-align: center;
   border: none !important;
   font-size: 30px !important;
+}
+
+.smInput {
+  height: 55px !important;
+}
+
+.smLabel {
+  font-size: 18px
+}
+
+.smSettings .input-group-text {
+  background-color: transparent !important
+}
+
+.form-control::placeholder {
+  color: #a5a5a8 !important
 }
 
 .App-logo {
@@ -272,7 +339,7 @@ button.circle {
   display: block;
   width: 35px;
   height: 35px;
-  position: absolute;
+  position: fixed;
   left: 50%;
   bottom: -65px;
   transform: translate(-50%, -50%);

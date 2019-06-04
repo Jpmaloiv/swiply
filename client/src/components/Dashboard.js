@@ -39,27 +39,27 @@ export default class Dashboard extends Component {
             })
     };
 
-        sortDates = () => {
-            function date(a, b) {
-        var dateA = new Date(a.date).getTime();
-        var dateB = new Date(b.date).getTime();
-        return dateA > dateB ? 1 : -1;
-    };
-            this.state.pages.sort(date)
-            this.setState({
-                pages: this.state.pages
-            })
-        }
+    sortDates = () => {
+        function date(a, b) {
+            var dateA = new Date(a.date).getTime();
+            var dateB = new Date(b.date).getTime();
+            return dateA > dateB ? 1 : -1;
+        };
+        this.state.pages.sort(date)
+        this.setState({
+            pages: this.state.pages
+        })
+    }
 
-        sortCount = () => {
-            function count(a, b) {
-        return b.views - a.views;
-    };
-            this.state.pages.sort(count)
-            this.setState({
-                pages: this.state.pages
-            })
-        }
+    sortCount = () => {
+        function count(a, b) {
+            return b.views - a.views;
+        };
+        this.state.pages.sort(count)
+        this.setState({
+            pages: this.state.pages
+        })
+    }
 
     //     sortRating = () => {
     //         function rating(a, b) {
@@ -108,8 +108,8 @@ export default class Dashboard extends Component {
                                     <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
                                     <Dropdown.Item onClick={this.sortCount} href="#/action-2">Highest Rated</Dropdown.Item>
                                     <Dropdown.Item
-                                    // onClick={this.sortRating}
-                                    href="#/action-3">Most Content</Dropdown.Item>
+                                        // onClick={this.sortRating}
+                                        href="#/action-3">Most Content</Dropdown.Item>
                                 </DropdownButton>
                             </div>
 
@@ -128,24 +128,24 @@ export default class Dashboard extends Component {
                         </div>
 
                         {/* List pages in table format */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                             {this.state.pages.map((page, i) =>
                                 <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
                                     <div key={i} className='page' style={{ display: 'flex' }}>
                                         <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
                                         <div style={{ width: '100%' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <div>
-                                                    <p>{page.name}</p>
+                                                    <p style={{ fontSize: 18 }}>{page.name}</p>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                 </div>
-                                                <div>{page.views || 0} Views</div>
+                                                {/* <div>{page.views || 0} Views</div> */}
                                             </div>
                                             <p style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                                 <span>5.5k Followers</span>
-                                                <span>+98%</span>
+                                                <span style={{ color: '#01ae63' }}>+98%</span>
                                             </p>
                                         </div>
                                     </div>
