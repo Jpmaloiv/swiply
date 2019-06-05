@@ -102,16 +102,16 @@ export default class Profile extends Component {
                             {this.state.user.Pages.map((page, i) =>
                                 <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
-                                    <div key={i} className='page' style={{ display: 'flex' }}>
-                                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                        <div style={{ width: '100%' }}>
-                                            <p>{page.name}</p>
-                                            <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
-                                            <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                <span>$38,250</span>
-                                                <span>5.5k Followers</span>
-                                                <span>+98%</span>
-                                            </p>
+                                    <div key={i} className='page'>
+                                        <div style={{ display: 'flex', padding: 7.5 }}>
+
+                                            <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                                            <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20 }}>
+                                                <p style={{ fontSize: 18, whiteSpace: 'nowrap' }}>{page.name}</p>
+                                                <p className='previewText'>
+                                                    {page.summary}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </NavLink>

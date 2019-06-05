@@ -26,17 +26,6 @@ import SignIn from './components/SignIn';
 import Welcome from './components/Welcome';
 
 
-
-
-
-
-
-
-
-
-
-
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -56,7 +45,7 @@ class App extends Component {
   render() {
 
     return (
-      <StripeProvider apiKey="pk_test_BPGq0NsIB5DoeRHctLqSA5tQ00R4ZG7vaT">
+      <StripeProvider apiKey="pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8">
         <Router>
           <div className='body'>
             <Navigation

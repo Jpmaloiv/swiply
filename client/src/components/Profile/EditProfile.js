@@ -434,23 +434,6 @@ export default class EditProfile extends Component {
                       onSort={this.onSort.bind(this)}
                     />
 
-                    {/* {this.state.user.Pages.map((page, i) =>
-                                            <NavLink to={`/pages/${page.id}`} style={{ color: 'initial', width: '100%' }} key={i}>
-                                                <div className='page' style={{ display: 'flex', width: 'initial', margin: '5px 0' }}>
-                                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                                    <div style={{ width: '100%', textAlign: 'left' }}>
-                                                        <p>{page.name}</p>
-                                                        <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
-                                                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>$38,250</span>
-                                                            <span>5.5k Followers</span>
-                                                            <span>+98%</span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </NavLink>
-                                        )} */}
-
                     <input
                       type="file"
                       name="imgFile"

@@ -2,14 +2,11 @@
   font-family: 'SF NS Display';
   font-style: normal;
   font-weight: 400;
-  src: url('./fonts/sfnsdisplay-webfont.eot'); 
-  src: local('SF NS Display'), local('SFNSDisplay'),
-       url('./fonts/sfnsdisplay-webfont.eot?#iefix') format('embedded-opentype'), 
-       url('./fonts/sfnsdisplay-webfont.woff2') format('woff2'), 
-       url('./fonts/sfnsdisplay-webfont.woff') format('woff'), 
-       url('./fonts/sfnsdisplay-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('./fonts/sfnsdisplay-webfont.svg#SFNSDisplay') format('svg'); 
+  src: url('./fonts/sfnsdisplay-webfont.eot');
+  src: local('SF NS Display'), local('SFNSDisplay'), url('./fonts/sfnsdisplay-webfont.eot?#iefix') format('embedded-opentype'), url('./fonts/sfnsdisplay-webfont.woff2') format('woff2'), url('./fonts/sfnsdisplay-webfont.woff') format('woff'), url('./fonts/sfnsdisplay-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('./fonts/sfnsdisplay-webfont.svg#SFNSDisplay') format('svg');
 }
+
 body {
   font-family: 'SF NS Display' !important;
 }
@@ -24,14 +21,14 @@ body {
        url('./fonts/avertademopecutteddemo-regular-webfont.woff2') format('woff2'), 
        url('./fonts/avertademopecutteddemo-regular-webfont.woff') format('woff'), 
        url('./fonts/avertademopecutteddemo-regular-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
-       /* url('./fonts/avertademopecutteddemo-regular-webfont.svg#AvertaDemoPECuttedDemoRegular') format('svg'); 
+
+/* url('./fonts/avertademopecutteddemo-regular-webfont.svg#AvertaDemoPECuttedDemoRegular') format('svg'); 
 }
 body {
   font-family: 'Averta Demo PE Cutted Demo Regular' !important;
-} */ *
+} */
 
-
-header {
+* header {
   display: flex !important;
   justify-content: space-between;
   align-items: center;
@@ -127,7 +124,6 @@ form.login {
   cursor: pointer
 }
 
-
 /* Buttons */
 
 button {
@@ -160,7 +156,6 @@ button.circle {
   text-decoration: none
 }
 
-
 /* Links */
 
 .link {
@@ -175,7 +170,7 @@ button.circle {
   margin: 50px auto;
 }
 
-.statistics > div {
+.statistics>div {
   width: 290px;
   height: 190px;
   padding: 30px;
@@ -197,9 +192,8 @@ button.circle {
   width: 395px;
   height: 105px;
   border-radius: 7px;
-  box-shadow: 0 5px 15px #d2d2d2;
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.1);
   margin: 1em;
-  padding: 1em
 }
 
 .page p {
@@ -219,7 +213,6 @@ button.circle {
   align-items: center
 }
 
-
 /* Preview Text */
 
 .previewText {
@@ -234,8 +227,6 @@ button.circle {
   color: #333;
   font-weight: lighter
 }
-
-
 
 /* Custom Input */
 
@@ -448,6 +439,140 @@ Note: Beware of modifying this element as it can break the animations - you shou
   display: none;
 }
 
+
+/* Stripe */
+
+/* @font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  src: local("Open Sans"), local("OpenSans"), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format("woff2");
+  unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+* {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 15px;
+  font-variant: normal;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+*/
+
+/* body {
+  background: #F6F9FC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+} */
+
+form.stripe {
+  background: #F6F9FC;
+  width: 480px;
+  padding: 0;
+  margin: 50px auto;
+  padding: 35px;
+  box-shadow: 0 5px 15px #e2e2e2;
+}
+
+form.stripe label {
+  position: relative;
+  color: #6A7C94;
+  font-weight: 400;
+  height: 48px;
+  line-height: 48px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+label > span {
+  width: 115px;
+}
+
+.field {
+  background: white;
+  box-sizing: border-box;
+  font-weight: 400;
+  border: 1px solid #CFD7DF;
+  border-radius: 24px;
+  color: #32315E;
+  outline: none;
+  flex: 1;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 20px;
+  cursor: text;
+}
+
+.field::-webkit-input-placeholder { color: #CFD7DF; }
+.field::-moz-placeholder { color: #CFD7DF; }
+
+.field:focus,
+.field.StripeElement--focus {
+  border-color: #F99A52;
+}
+
+form.stripe button {
+  display: block;
+  background-image: linear-gradient(-180deg, #63f8b3 0%, #01ae63 100%);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10), inset 0 -1px 0 0 #45e59b;
+  color: white;
+  border-radius: 24px;
+  border: 0;
+  margin-top: 20px;
+  font-size: 17px;
+  font-weight: 500;
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  outline: none;
+}
+
+button:focus {
+  background: #EF8C41;
+}
+
+button:active {
+  background: #E17422;
+}
+
+.outcome {
+  float: left;
+  width: 100%;
+  padding-top: 8px;
+  min-height: 20px;
+  text-align: center;
+}
+
+.success, .error {
+  display: none;
+  font-size: 13px;
+}
+
+.success.visible, .error.visible {
+  display: inline;
+}
+
+.error {
+  color: #E4584C;
+}
+
+.success {
+  color: #F8B563;
+}
+
+.success .token {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+
+
 /* Responseiveness */
 
 @media (max-width: 767px) {
@@ -461,8 +586,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .statistics {
     flex-wrap: wrap;
   }
-
-  .statistics > div {
+  .statistics>div {
     margin: 15px;
     width: 40%;
   }
