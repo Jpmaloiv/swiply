@@ -210,7 +210,7 @@ export default class PageView extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <h3>{page.name}</h3>
+                                    <p style={{fontSize: 60}}>{page.name}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                         :

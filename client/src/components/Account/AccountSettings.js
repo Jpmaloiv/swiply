@@ -55,7 +55,7 @@ export default class AccountSettings extends Component {
     if (user.imageLink) {
       user.imageLink = `https://s3-us-west-1.amazonaws.com/${
         this.state.S3_BUCKET
-      }/${user.imageLink}`;
+        }/${user.imageLink}`;
       this.setState({ render: !this.state.render });
     }
   }
@@ -106,6 +106,7 @@ export default class AccountSettings extends Component {
   updateUser() {
     const { user } = this.state;
     const { password, confirmpw, oldPassword } = this.state.user;
+    console.log(password)
 
     let role = "";
     if (this.state.role === "user") role = "users";
@@ -115,27 +116,29 @@ export default class AccountSettings extends Component {
     data.append("imgFile", this.state.file);
 
     let query = "";
-    if (password === confirmpw)
-      query = `&password=${password}&oldPassword=${oldPassword}`;
-    else return this.warning.click();
+    if (password) {
+      if (password === confirmpw) query = `&password=${password}&oldPassword=${oldPassword}`;
+      else return this.warning.click();
+    }
 
+    console.log(query)
     axios
       .put(
         `/api/${role}/update?id=` +
-          this.state.user.id +
-          "&firstName=" +
-          user.firstName +
-          "&lastName=" +
-          user.lastName +
-          "&title=" +
-          user.title +
-          "&phone=" +
-          user.phone +
-          "&email=" +
-          user.email +
-          "&summary=" +
-          user.summary +
-          query,
+        this.state.user.id +
+        "&firstName=" +
+        user.firstName +
+        "&lastName=" +
+        user.lastName +
+        "&title=" +
+        user.title +
+        "&phone=" +
+        user.phone +
+        "&email=" +
+        user.email +
+        "&summary=" +
+        user.summary +
+        query,
         data
       )
       .then(res => {
@@ -192,30 +195,30 @@ export default class AccountSettings extends Component {
                     />
                   </div>
                 ) : (
-                  <FontAwesomeIcon
-                    icon="user-plus"
-                    size="2x"
-                    color="white"
-                    style={{ opacity: 0.8 }}
-                    onClick={() => {
-                      this.upload.click();
-                    }}
-                  />
-                )}
+                    <FontAwesomeIcon
+                      icon="user-plus"
+                      size="2x"
+                      color="white"
+                      style={{ opacity: 0.8 }}
+                      onClick={() => {
+                        this.upload.click();
+                      }}
+                    />
+                  )}
               </div>
               {user.imageLink ? (
                 <span />
               ) : (
-                <p
-                  style={{
-                    fontSize: 12,
-                    textAlign: "center",
-                    marginTop: ".5rem"
-                  }}
-                >
-                  Add Profile Image
+                  <p
+                    style={{
+                      fontSize: 12,
+                      textAlign: "center",
+                      marginTop: ".5rem"
+                    }}
+                  >
+                    Add Profile Image
                 </p>
-              )}
+                )}
 
               <Form.Group>
                 <input
@@ -242,15 +245,29 @@ export default class AccountSettings extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <Form.Group>
+              <Form.Group autoComplete='nope'>
                 <Form.Label>Old Password</Form.Label>
+
+                {/* Weird AutoComplete behavior */}
+                <input
+                  type="password"
+                  style={{ display: 'none' }}
+                  placeholder="Old Password"
+                  value={user.password}
+                  name="oldPassword"
+                  onChange={this.handleChange}
+                  autoComplete='pseudo'
+                />
+
                 <Form.Control
                   type="password"
                   placeholder="Old Password"
                   value={user.password}
                   name="oldPassword"
                   onChange={this.handleChange}
+                  autoComplete="nope"
                 />
+
               </Form.Group>
               <Form.Group>
                 <Form.Label>New Password</Form.Label>
@@ -280,8 +297,8 @@ export default class AccountSettings extends Component {
                   />
                 </Form.Group>
               ) : (
-                <span />
-              )}
+                  <span />
+                )}
               <Form.Group>
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
@@ -309,8 +326,8 @@ export default class AccountSettings extends Component {
                   />
                 </Form.Group>
               ) : (
-                <span />
-              )}
+                  <span />
+                )}
             </Form>
           </div>
 

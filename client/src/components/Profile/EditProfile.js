@@ -473,8 +473,6 @@ export default class EditProfile extends Component {
                   {/* List pages in table format */}
                   <div
                     style={{
-                      display: "flex",
-                      flexWrap: "wrap",
                       margin: "15px 10px"
                     }}
                   >
