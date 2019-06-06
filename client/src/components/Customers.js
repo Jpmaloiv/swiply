@@ -100,99 +100,82 @@ export default class CustomerList extends Component {
                   justifyContent: "center"
                 }}
               >
-                <InputGroup style={{ flex: 0.2 }}>
+                <InputGroup>
                   <FormControl
-                    style={{ width: "initial" }}
-                    label="Search By Name"
-                    placeholder="First or Last Name..."
+                    style={{ height: 45, borderTopLeftRadius: 22.5, borderBottomLeftRadius: 22.5, borderRight: 'none'}}
+                    placeholder='Search Your Customers ...'
                     onChange={event => {
                       this.setState({ customerName: event.target.value });
                     }}
                   />
-                  <FontAwesomeIcon
-                    icon="search"
-                    style={{ opacity: 0.2 }}
-                    onClick={this.searchQuery}
-                  />
-                </InputGroup>
+                    <InputGroup.Append>
+                      <InputGroup.Text style={{background: '#fff', borderTopRightRadius: 22.5, borderBottomRightRadius: 22.5}}>
+                        <FontAwesomeIcon icon='search' style={{opacity: 0.2}} onClick={this.searchQuery} />
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+              </InputGroup>
               </div>
-              <div style={{
+              </div>
+
+              <div
+                style={{
                   display: "flex",
-                  flex: 0.2,
-                  justifyContent: "center" }}>
-                <button
-                  search
-                  icon="search"
-                  title="SEARCH"
-                  onClick={this.searchQuery}
-                >
-                  {" "}
-                  Search{" "}
-                </button>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                flex: 1,
-                justifyContent: "center",
-                margin: "20px auto"
-              }}
-            >
-              <div>
-                <DropdownButton title="Recent Customers">
-                  <Dropdown.Item href="#/action-1">
-                    Recent Customers
+                  margin: "20px auto"
+                }}
+              >
+                <div>
+                  <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
+                    <Dropdown.Item href="#/action-1">
+                      Recent Customers
                   </Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">
-                    Pages Purchased
+                    <Dropdown.Item href="#/action-2">
+                      Pages Purchased
                   </Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
-                  <Dropdown.Item href="#/action-4">Sort Criteria</Dropdown.Item>
-                </DropdownButton>
+                    <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
+                    <Dropdown.Item href="#/action-4">Sort Criteria</Dropdown.Item>
+                  </DropdownButton>
+                </div>
               </div>
-            </div>
 
-            {/* List pages in table format */}
-            <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {this.state.customers.map((page, i) => (
-                  <NavLink
-                    to={`/pages/${page.id}`}
-                    style={{ color: "initial" }}
-                  >
-                    <div key={i} className="page" style={{ display: "flex", padding: 18, alignItems: 'center' }}>
-                      <img
-                        src={`https://s3-us-west-1.amazonaws.com/${
-                          this.state.S3_BUCKET
-                        }/${page.imageLink}`}
-                        style={{
-                          minWidth: 75, maxWidth: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover'
-                        }}
-                      />
-                      <div style={{ width: "100%" }}>
-                        <p>{page.name}</p>
-                        <p style={{ fontSize: 14 }}>
-                          {page.firstName} {page.lastName}
-                        </p>
-                        <p>Item: Manatee Grooming</p>
+              {/* List pages in table format */}
+              <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+                <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
+                  {this.state.customers.map((page, i) => (
+                    <NavLink
+                      to={`/pages/${page.id}`}
+                      style={{ color: "initial" }}
+                    >
+                      <div key={i} className="page" style={{ display: "flex", padding: 18, margin: '7.5px auto', alignItems: 'center', width: 'initial' }}>
+                        <img
+                          src={`https://s3-us-west-1.amazonaws.com/${
+                            this.state.S3_BUCKET
+                            }/${page.imageLink}`}
+                          style={{
+                            minWidth: 75, maxWidth: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover'
+                          }}
+                        />
+                        <div style={{ width: "100%" }}>
+                          <p>{page.name}</p>
+                          <p style={{ fontSize: 18 }}>
+                            {page.firstName} {page.lastName}
+                          </p>
+                          <p style={{ color: '#88898c' }}>Item: Manatee Grooming</p>
 
-                        <p style={{ alignItems: "left" }}>
-                          <span style={{ fontSize: 14 }}>Status: </span>
-                          <span style={{ fontSize: 14, color: "green" }}>
-                            Paid
+                          <p style={{ alignItems: "left" }}>
+                            <span style={{ fontSize: 14 }}>Status: </span>
+                            <span style={{ fontSize: 14, color: "green" }}>
+                              Paid
                           </span>
-                        </p>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </NavLink>
-                ))}
+                    </NavLink>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </ReactCSSTransitionGroup>
-    );
-  }
-}
+        );
+      }
+    }
