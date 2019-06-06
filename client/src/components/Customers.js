@@ -162,15 +162,13 @@ export default class CustomerList extends Component {
                     to={`/pages/${page.id}`}
                     style={{ color: "initial" }}
                   >
-                    <div key={i} className="page" style={{ display: "flex" }}>
+                    <div key={i} className="page" style={{ display: "flex", padding: 18, alignItems: 'center' }}>
                       <img
                         src={`https://s3-us-west-1.amazonaws.com/${
                           this.state.S3_BUCKET
                         }/${page.imageLink}`}
                         style={{
-                          width: 75,
-                          objectFit: "cover",
-                          marginRight: 20
+                          minWidth: 75, maxWidth: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover'
                         }}
                       />
                       <div style={{ width: "100%" }}>
@@ -178,6 +176,8 @@ export default class CustomerList extends Component {
                         <p style={{ fontSize: 14 }}>
                           {page.firstName} {page.lastName}
                         </p>
+                        <p>Item: Manatee Grooming</p>
+
                         <p style={{ alignItems: "left" }}>
                           <span style={{ fontSize: 14 }}>Status: </span>
                           <span style={{ fontSize: 14, color: "green" }}>

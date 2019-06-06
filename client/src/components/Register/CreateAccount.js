@@ -176,17 +176,17 @@ export default class CreateAccount extends Component {
             <div style={{ textAlign: "center" }}>
               <div
                 className="page"
-                style={{ display: "flex", flex: "initial", margin: "1em auto" }}
+                style={{ display: "flex", flex: "initial", margin: "1em auto" , padding: 7.5}}
               >
                 <img
                   src={`https://s3-us-west-1.amazonaws.com/${
                     this.props.state.s3Bucket
                   }/${page.imageLink}`}
-                  style={{ width: 75, objectFit: "cover", marginRight: 20 }}
+                  style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }}
                 />
-                <div style={{ width: "100%", textAlign: "left" }}>
-                  <h4>{page.name}</h4>
-                  <p>{page.description}</p>
+                <div style={{ width: "100%", textAlign: "left", marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+                  <p style={{fontSize: 18, fontWeight: 'bold'}}>{page.name}</p>
+                  <p style={{fontSixe: 14}}>{page.description}</p>
                 </div>
                 <div>${page.price}</div>
               </div>

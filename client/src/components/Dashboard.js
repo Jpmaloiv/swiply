@@ -104,7 +104,7 @@ export default class Dashboard extends Component {
                     <div className='main'>
                         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto' }}>
                             <div>
-                                <DropdownButton title="Popular Pages">
+                                <DropdownButton className='plain' title="Popular Pages" variant='secondary'>
                                     <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
                                     <Dropdown.Item onClick={this.sortCount} href="#/action-2">Highest Rated</Dropdown.Item>
                                     <Dropdown.Item
@@ -130,22 +130,25 @@ export default class Dashboard extends Component {
                         {/* List pages in table format */}
                         <div>
                             <div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                <div className='test' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', maxWidth: 1300, margin: '0 auto' }}>
                                     {this.state.pages.map((page, i) =>
                                         <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
                                             <div key={i} className='page'>
                                                 <div style={{ display: 'flex', padding: 7.5 }}>
                                                     <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
-                                                    <div style={{ width: '100%', marginLeft: 15, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+                                                    <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
                                                         <div>
-                                                            <p style={{ fontSize: 18 }}>{page.name}</p>
+                                                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                                <p style={{ fontSize: 18 }}>{page.name}</p>
+                                                                <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
+                                                            </div>
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>
                                                         <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                                                            <span>5.5k Followers</span>
-                                                            <span style={{ color: '#01ae63' }}>+98%</span>
+                                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;5.5k Followers
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#01ae63' }}>+98%</span></span>
                                                         </p>
                                                     </div>
                                                 </div>

@@ -1,6 +1,6 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheck, faDollarSign, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -12,7 +12,7 @@ import Checkout from './components/Checkout/Checkout';
 import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation';
 import AddContent from './components/Content/AddContent';
 import ContentView from './components/Content/ContentView';
-import CustomerList from './components/Content/CustomerList';
+import Customers from './components/Customers';
 import MyPurchases from './components/Customer/MyPurchases';
 import Dashboard from './components/Dashboard';
 import Example from './components/Example';
@@ -70,7 +70,7 @@ class App extends Component {
             }
 
             <Switch>
-              <Route path='/customers' component={CustomerList} />
+              <Route path='/customers' component={Customers} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />
 
@@ -111,7 +111,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faCheck, faDollarSign, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
 
 
 export default App;

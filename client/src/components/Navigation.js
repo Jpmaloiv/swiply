@@ -25,16 +25,17 @@ export default class Navigation extends Component {
             <header>
                 <div>
                     <NavLink to='/'>
-                        <img
+                        {/* <img
                             src={require(`../images/pv3_logo.png`)}
                             style={{ width: 150 }}
                             alt='PV3'
-                        />
+                        /> */}
+                        <h1 style={{color: '#333', margin: '0 30px'}}>Swiply</h1>
                     </NavLink>
                 </div>
                 {this.props.decoded ?
-                    <div>
-                        <div className='navigation'>
+                    <div style={{height: '100%'}}>
+                        <div className='navigation' style={{height: '100%'}}>
                             {role === 'user' ?
                                 <div style={{display: 'inherit'}}>
                                     <NavLink to='/dashboard'>
@@ -68,7 +69,7 @@ export default class Navigation extends Component {
                                 :
                                 <span></span>
                             }
-                            <NavLink to='/' onClick={this.logout}>
+                            <NavLink to='/' onClick={this.logout} className='signOut'>
                                 <FontAwesomeIcon icon='sign-out-alt' />Sign out
                             </NavLink>
                         </div>
@@ -92,9 +93,9 @@ export default class Navigation extends Component {
                     :
                     <div>
                         {this.props.login ?
-                            <div className='link' onClick={() => this.props.setState({ login: false })}>Register</div>
+                            <div className='link' onClick={() => this.props.setState({ login: false })} style={{padding: '0 30px'}}>Register</div>
                             :
-                            <div className='link' onClick={() => this.props.setState({ login: true })}>Sign In</div>
+                            <div className='link' onClick={() => this.props.setState({ login: true })} style={{padding: '0 30px'}}>Sign In</div>
                         }
 
                     </div>

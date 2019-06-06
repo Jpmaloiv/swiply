@@ -18,7 +18,8 @@ export default class VerifyAccount extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='center'>
                     <h3>Create a profile summary</h3>
-                    <Form>
+                    <br />
+                    <Form style={{paddingTop: 0, paddingBottom: 0}}>
                         <Form.Group>
                             <Form.Label>Content Provider Summary</Form.Label>
                             <Form.Control

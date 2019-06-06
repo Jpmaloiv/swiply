@@ -151,9 +151,6 @@ export default class PageView extends Component {
         const { edit, page } = this.state
         const user = page.User
 
-        console.log(edit)
-
-
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
@@ -208,6 +205,7 @@ export default class PageView extends Component {
                                         name='name'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
+                                        autoFocus
                                     />
                                 </InputGroup>
                                 :
@@ -227,6 +225,7 @@ export default class PageView extends Component {
                                     name='description'
                                     onChange={this.handleChange}
                                     onBlur={this.handleEditing}
+                                    autoFocus
                                 />
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -258,6 +257,7 @@ export default class PageView extends Component {
                                                     name='price'
                                                     onChange={this.handleChange}
                                                     onBlur={this.handleEditing}
+                                                    autoFocus
                                                 />
                                                 :
                                                 <div>
@@ -328,6 +328,7 @@ export default class PageView extends Component {
                                         name='summary'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
+                                        autoFocus
                                     />
                                 </InputGroup>
                                 :

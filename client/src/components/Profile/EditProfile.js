@@ -26,7 +26,9 @@ export default class EditProfile extends Component {
         profile: "",
       },
       socialMedia: ['instagram', 'facebook', 'twitter', 'linkedIn', 'whatsapp', 'website'],
-      copied: false
+      copied: false,
+      nameEdit: false,
+      titleEdit: false
     };
 
     this.onSort = this.onSort.bind(this)
@@ -58,9 +60,22 @@ export default class EditProfile extends Component {
 
   // Handles user input
   handleChange = e => {
-    this.state.user[e.target.name] = e.target.value;
+    let { name, value } = e.target
+    if (name === 'name') {
+      let arr = value.split(' ')
+      this.state.user.firstName = arr[0]
+      this.state.user.lastName = arr[1]
+      return
+    }
+    this.state.user[name] = value;
     this.setState({ render: !this.state.render })
   };
+
+  // Controls editing state
+  handleEditing = e => {
+    let name = e.currentTarget.getAttribute('name') + 'Edit'
+    this.setState({ [name]: !this.state[name] });
+  }
 
   // Preview image once seleted
   onImageChange = e => {
@@ -95,12 +110,12 @@ export default class EditProfile extends Component {
       if (user[socialMedia[i]]) query += `&${socialMedia[i]}=${user[socialMedia[i]]}`
       else query += `&${socialMedia[i]}=`
     }
-    console.log(query)
 
     let data = new FormData();
     data.append("imgFile", this.state.file);
 
-    axios.put("/api/users/update?id=" + user.id + "&profile=" + user.profile + query, data)
+    axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + 
+    '&title=' + user.title + "&profile=" + user.profile + query, data)
       .then(res => {
         console.log(res);
         window.location.reload();
@@ -155,15 +170,15 @@ export default class EditProfile extends Component {
           >
             <div
               className="page"
-              style={{ display: "flex", width: "initial", margin: "5px 0" }}
+              style={{ display: "flex", padding: 7.5, width: "initial", margin: "10px 0", background: '#fff' }}
             >
               <img
                 src={`https://s3-us-west-1.amazonaws.com/${
                   this.state.s3Bucket
                   }/${page.imageLink}`}
-                style={{ width: 75, objectFit: "cover", marginRight: 20 }}
+                style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }}
               />
-              <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', marginLeft: 20 }}>
                 <p style={{ whiteSpace: 'nowrap' }}>{page.name}</p>
                 <p className='previewText'>
                   {page.summary}
@@ -370,8 +385,8 @@ export default class EditProfile extends Component {
                       style={{
                         width: "100%",
                         height: "100%",
-                        opacity: 0.3,
-                        filter: "blur(8px)",
+                        opacity: 0.35,
+                        filter: "blur(4px)",
                         objectFit: "cover"
                       }}
                       alt=""
@@ -410,8 +425,47 @@ export default class EditProfile extends Component {
                       </div>
                       <br />
                       <div>
-                        <h4 style={{ fontWeight: 'bold', margin: 0 }}>{user.firstName + " " + user.lastName}</h4>
-                        <p style={{ fontSize: 12, fontStyle: 'italic' }}>{user.title}</p>
+                        {this.state.nameEdit ?
+                          <InputGroup>
+                            <FormControl
+                              placeholder={user.firstName + (user.lastName ? ' ' + user.lastName : '')}
+                              name='name'
+                              onChange={this.handleChange}
+                              onBlur={this.handleEditing}
+                              autoFocus
+                            />
+                          </InputGroup>
+                          :
+                          <div>
+                            <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}
+                              {this.state.nameEdit || this.state.titleEdit ?
+                                <span></span>
+                                :
+                                <FontAwesomeIcon icon='pen' size='sm' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ nameEdit: true })} />
+                              }</h4>
+                          </div>
+                        }
+                        {this.state.titleEdit ?
+                          <InputGroup>
+                            <FormControl
+                              placeholder={user.title}
+                              name='title'
+                              onChange={this.handleChange}
+                              onBlur={this.handleEditing}
+                              autoFocus
+                            />
+                          </InputGroup>
+                          :
+                          <div>
+                            <p style={{ fontSize: 13, fontStyle: 'italic' }}>{user.title}
+                              {this.state.nameEdit || this.state.titleEdit ?
+                                <span></span>
+                                :
+                                <FontAwesomeIcon icon='pen' size='xs' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ titleEdit: true })} />
+                              }</p>
+
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>
@@ -425,7 +479,7 @@ export default class EditProfile extends Component {
                     }}
                   >
                     {this.state.user.Pages.length > 0 ? (
-                      <h6 style={{ textAlign: "left" }}>Courses</h6>
+                      <h6 style={{ textAlign: "left", fontWeight: 'bold' }}>Courses</h6>
                     ) : (
                         <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
                       )}

@@ -33,12 +33,13 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 70px;
-  padding: 20px;
-  background-color: #000;
-  color: #fff
+  background-color: #fff;
+  border-bottom: 1px solid #e1e4ec
 }
 
 .main {
+  max-width: 1300px;
+  /* margin: 0 auto; */
   margin: 50px 75px;
   text-align: left
 }
@@ -57,9 +58,22 @@ body {
 }
 
 .navigation a {
-  margin: 30px;
-  color: #fff
+  padding: 0 30px;
+  color: #333;
+  display: flex;
+  align-items: center
 }
+
+.navigation a.active:not(.signOut)  {
+  border-bottom: 3px solid #00af63;
+}
+
+a:hover {
+  color: initial !important;
+  text-decoration: initial !important
+}
+
+
 
 form {
   /* margin: 0 auto; */
@@ -252,6 +266,27 @@ button.circle {
   color: #a5a5a8 !important
 }
 
+.dropdown.plain button {
+  background-color: #fff;
+  color: #000;
+  width: 213px;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #E1E4EC;
+  border-radius: 3px;
+}
+
+.dropdown.plain .dropdown-menu {
+  width: 100%
+}
+
+.show > .btn-secondary.dropdown-toggle {
+  background-color: #02ae63 !important;
+  color: #fff !important
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -439,7 +474,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
   display: none;
 }
 
-
 /* Stripe */
 
 /* @font-face {
@@ -490,7 +524,7 @@ form.stripe label {
   flex-direction: row;
 }
 
-label > span {
+label>span {
   width: 115px;
 }
 
@@ -509,18 +543,22 @@ label > span {
   cursor: text;
 }
 
-.field::-webkit-input-placeholder { color: #CFD7DF; }
-.field::-moz-placeholder { color: #CFD7DF; }
+.field::-webkit-input-placeholder {
+  color: #CFD7DF;
+}
 
-.field:focus,
+.field::-moz-placeholder {
+  color: #CFD7DF;
+}
+
 .field.StripeElement--focus {
-  border-color: #F99A52;
+  border-color: #01ae63;
 }
 
 form.stripe button {
   display: block;
   background-image: linear-gradient(-180deg, #63f8b3 0%, #01ae63 100%);
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10), inset 0 -1px 0 0 #45e59b;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 0 #45e59b;
   color: white;
   border-radius: 24px;
   border: 0;
@@ -531,14 +569,6 @@ form.stripe button {
   height: 48px;
   line-height: 48px;
   outline: none;
-}
-
-button:focus {
-  background: #EF8C41;
-}
-
-button:active {
-  background: #E17422;
 }
 
 .outcome {
@@ -571,9 +601,19 @@ button:active {
   font-size: 13px;
 }
 
-
-
 /* Responseiveness */
+
+@media (max-width: 1300px) {
+  .main {
+    margin: 50px 75px;
+  }
+}
+
+@media (max-width: 1018px) {
+  .test {
+    justify-content: center !important;
+  }
+}
 
 @media (max-width: 767px) {
   .navigation {
