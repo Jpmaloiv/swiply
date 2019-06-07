@@ -38,23 +38,22 @@ export default class MyPurchases extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
 
                 <div className='main'>
-                    <h2 style={{textAlign: 'center'}}>My Purchases</h2>
+                    <h2 style={{ textAlign: 'center' }}>My Purchases</h2>
 
                     {/* List pages in table format */}
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         {this.state.pages.map((page, i) =>
                             <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
-                                <div key={i} className='page' style={{ display: 'flex' }}>
-                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                    <div style={{ width: '100%' }}>
-                                        <p>{page.name}</p>
-                                        <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
-                                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                                            <span>5.5k Followers</span>
-                                            <span>+98%</span>
-                                        </p>
+                                <div key={i} className='page'>
+                                    <div style={{ display: 'flex', padding: 7.5 }}>
+                                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                                        <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', marginLeft: 20 }}>
+                                            <p style={{ whiteSpace: 'nowrap' }}>{page.name}</p>
+                                            <p className='previewText'>
+                                                {page.summary}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </NavLink>

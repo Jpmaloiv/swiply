@@ -6,8 +6,8 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 
+
 export default class Login extends Component {
-  x;
 
   // Handle user input
   handleChange = e => {
@@ -15,29 +15,18 @@ export default class Login extends Component {
     this.props.setState({ [e.target.name]: e.target.value });
   };
 
-  // verifyPhone() {
-  //     axios.post(`api/auth/verify?phone=${this.props.state.phone}&role=${this.props.state.role}`)
-  //         .then((resp) => {
-  //             console.log(resp)
-  //             if (resp.data.success === true) {
-  //                 // Sets the verification code and switches to the Verify Account screen
-  //                 this.props.setState({
-  //                     verifyCode: resp.data.verifyCode,
-  //                     view: 'VerifyAccount'
-  //                 })
-  //             } else {
-  //                 window.alert('Invalid phone number. Please try again');
-  //             }
-  //         }).catch((error) => {
-  //             console.error(error);
-  //         })
-  // }
+  enterPressed(event) {
+    var code = event.keyCode || event.which;
+    if (code === 13) {
+      //13 is the enter keycode
+      this.login();
+    }
+  }
+
   login() {
     axios
       .post(
-        `api/auth/login?email=${this.props.state.email}&password=${
-          this.props.state.password
-        }`
+        `api/auth/login?email=${this.props.state.email}&password=${this.props.state.password}&role=${this.props.state.role}`
       )
       .then(resp => {
         console.log(resp);
@@ -112,6 +101,7 @@ export default class Login extends Component {
               type="password"
               name="password"
               onChange={this.handleChange}
+              onKeyPress={this.enterPressed.bind(this)}
             />
           </InputGroup>
           {/* <InputGroup> */}

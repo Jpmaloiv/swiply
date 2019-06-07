@@ -21,15 +21,37 @@ router.post("/send", (req, res) => {
 
 // Verify if user login
 router.post("/login", (req, res) => {
-  console.log("QUERY", req.query);
-  const { password } = req.query;
 
-  db.User.findOne({
+  const { password, role } = req.query;
+
+  if (req.query.role === 'user') {
+    db.User.findOne({
+      where: {
+        email: req.query.email
+      }
+    })
+      .then(function (resp) {
+        console.log("RESP", resp)
+        //login
+        var inputHash = getHash(password, resp.salt);
+        console.log(inputHash.toString(), resp.hash);
+        if (inputHash === resp.hash) {
+          res.json({ success: true, token: auth.generateJWT(resp, role) });
+        } else {
+          return res.status(400).end("Wrong Password");
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.status(500).json({ message: "User not found", error: err });
+      });
+  } else { }
+  db.Customer.findOne({
     where: {
       email: req.query.email
     }
   })
-    .then(function(resp) {
+    .then(function (resp) {
       console.log("RESP", resp)
       //login
       var inputHash = getHash(password, resp.salt);
@@ -40,9 +62,9 @@ router.post("/login", (req, res) => {
         return res.status(400).end("Wrong Password");
       }
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(err);
-      res.status(500).json({ message: "User not found", error: err });
+      res.status(500).json({ message: "Customer not found", error: err });
     });
 });
 

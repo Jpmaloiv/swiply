@@ -35,10 +35,11 @@ export default class VerifyAccount extends Component {
     // Register the new customer
     register() {
         const user = this.props.state;
+        if (user.password === user.confirmpw) {
         let data = new FormData();
         data.append("imgFile", user.file)
         axios.post('api/customers/register?firstName=' + user.firstName + '&lastName=' + user.lastName + '&email=' + user.email +
-            '&phone=' + user.phone + '&summary=' + user.summary, data)
+            '&password=' + user.password + '&phone=' + user.phone + '&summary=' + user.summary, data)
             .then((resp) => {
                 console.log(resp)
                 window.localStorage.setItem("token", resp.data.token);
@@ -46,6 +47,7 @@ export default class VerifyAccount extends Component {
             }).catch((error) => {
                 console.error(error);
             })
+        }
     }
 
 

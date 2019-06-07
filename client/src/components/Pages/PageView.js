@@ -367,7 +367,6 @@ export default class PageView extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
-
                                 <a
                                     href={this.state.viewAccess || this.state.edit
                                         ? content.type === 'video'

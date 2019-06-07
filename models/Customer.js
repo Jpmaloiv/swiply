@@ -21,6 +21,14 @@ module.exports = function (sequelize, DataTypes) {
         imageLink: {
             type: DataTypes.STRING
         },
+        hash: {
+            type: DataTypes.STRING(1500),
+            allowNull: false
+        },
+        salt: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     });
 
     Customer.associate = function (models) {

@@ -38,23 +38,22 @@ class App extends Component {
   }
 
   componentWillMount() {
+
     const loginToken = window.localStorage.getItem("token");
+    let decoded = ''
     if (loginToken) {
       this.setState({ decoded: jwt_decode(loginToken) })
-    }
-    let decoded = jwt_decode(loginToken)
-    if (decoded.role === 'user') {
-      console.log("HI")
-    }
+      decoded = jwt_decode(loginToken)
 
-    axios.get(`/api/users/search?id=${decoded.id}`)
-      .then((resp) => {
-        console.log(resp)
-        if (resp.data.response[0].Pages.length === 0) this.setState({ newUser: true })
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+      axios.get(`/api/users/search?id=${decoded.id}`)
+        .then((resp) => {
+          console.log(resp)
+          if (resp.data.response[0].Pages.length === 0) this.setState({ newUser: true })
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
   }
 
   render() {
@@ -71,11 +70,17 @@ class App extends Component {
 
             {this.state.decoded ?
               <div>
+                {this.state.decoded.role === 'user' ?
+                <div>
                 {this.state.newUser ?
                   <Route exact path='/' component={Welcome} />
                   :
                   <Route exact path='/' component={Dashboard} />
                 }
+                </div>
+                :
+                <Route exact path='/' component={AccountSettings} />
+              }
               </div>
               :
               <div>

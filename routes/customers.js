@@ -2,6 +2,7 @@ require("dotenv").config();
 const db = require("../models");
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
 
 const auth = require("../controllers/auth");
 
@@ -43,19 +44,33 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
+function getHash(password, salt) {
+  return crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
+}
+
+function getSalt() {
+  return crypto.randomBytes(16).toString("hex");
+}
+
 const role = "customer";
 
 // Register a new customer
 router.post("/register", upload.single("imgFile"), (req, res) => {
   let imageLink = "";
   if (req.file) imageLink = req.file.key;
+  console.log("REQ", req.query)
+
+  const salt = getSalt();
+  const hash = getHash(req.query.password, salt);
 
   const customer = {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
     phone: req.query.phone,
-    imageLink: imageLink
+    imageLink: imageLink,
+    hash: hash,
+    salt: salt
   };
 
   let AWS = "N/A";
