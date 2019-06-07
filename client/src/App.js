@@ -1,6 +1,6 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios'
 import React, { Component } from 'react';
@@ -16,7 +16,6 @@ import ContentView from './components/Content/ContentView';
 import Customers from './components/Customers';
 import MyPurchases from './components/Customer/MyPurchases';
 import Dashboard from './components/Dashboard';
-import Example from './components/Example';
 import Navigation from './components/Navigation';
 import AddPage from './components/Pages/AddPage';
 import PageView from './components/Pages/PageView';
@@ -109,8 +108,6 @@ class App extends Component {
 
               <Route path='/purchases' component={MyPurchases} />
 
-              <Route path='/example' component={Example} />
-
               <Elements>
                 <Route exact path='/checkout' component={Checkout} />
               </Elements>
@@ -134,7 +131,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
 
 
 export default App;
