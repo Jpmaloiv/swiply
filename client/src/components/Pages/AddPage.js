@@ -65,7 +65,7 @@ export default class AddPage extends Component {
             '&summary=' + page.summary + '&fileName=' + fileName + '&fileType=' + fileType, data)
             .then((response) => {
                 console.log(response)
-                window.location = '/dashboard'
+                window.location = '/'
             }).catch((error) => {
                 console.error(error);
             })
@@ -76,22 +76,24 @@ export default class AddPage extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
                     <div className={this.state.image === '' ? 'imageBanner' : 'imageBanner set'}>
-                    <form action="/add" method="post" enctype="multipart/form-data" style={{padding: 0}}>
-                        <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
+                        <form action="/add" method="post" enctype="multipart/form-data" style={{ padding: 0 }}>
+                            <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                         </form>
                         <img src={this.state.image} style={{ width: '100%', opacity: .2 }} alt='' />
+                        <div style={{ position: 'absolute', bottom: 45, right: 95 }}>
+                            <Button
+                                variant='dark'
+                                className='circle'
+                                style={{ width: 40, height: 40, border: '1.5px solid #fff' }}
+                                onClick={() => this.upload.click()}
+                            >
+                                <FontAwesomeIcon
+                                    icon='camera'
+                                />
+                            </Button>
+                        </div>
 
                         <div className='textOverlay'>
-                            {this.state.image ?
-                                <span></span>
-                                :
-                                <FontAwesomeIcon
-                                    icon='plus'
-                                    size='6x'
-                                    style={{ opacity: .2 }}
-                                    onClick={() => { this.upload.click() }}
-                                />
-                            }
                             {this.state.nameEdit ?
                                 <InputGroup>
                                     <FormControl
@@ -104,7 +106,7 @@ export default class AddPage extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p style={{fontSize: 60}}>{this.state.name}</p>
+                                    <p style={{ fontSize: 20 }} className='pageName' style={{ fontSize: 60 }}>{this.state.name}</p>
                                     <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                 </div>
                             }
@@ -118,7 +120,7 @@ export default class AddPage extends Component {
                                 />
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p>{this.state.description}</p>
+                                    <p style={{ fontSize: 20 }}>{this.state.description}</p>
                                     <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
                                 </div>
                             }

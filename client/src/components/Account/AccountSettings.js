@@ -169,7 +169,7 @@ export default class AccountSettings extends Component {
         transitionLeave={false}
       >
         <div>
-          <div className="center" style={{ textAlign: "initial" }}>
+          <div className="center" style={{ textAlign: "initial", marginBottom: 0 }}>
             <h2 style={{ textAlign: "center" }}>Account Settings</h2>
 
             <Form style={{ padding: "25px 75px" }}>
@@ -245,7 +245,7 @@ export default class AccountSettings extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <Form.Group autoComplete='nope'>
+              <Form.Group>
                 <Form.Label>Old Password</Form.Label>
 
                 {/* Weird AutoComplete behavior */}
@@ -328,17 +328,17 @@ export default class AccountSettings extends Component {
               ) : (
                   <span />
                 )}
-            </Form>
-          </div>
-
-          <Button
-            variant="success"
-            size="lg"
-            style={{ display: "block" }}
-            onClick={this.updateUser.bind(this)}
-          >
-            Update Account
+              <Button
+                variant="success"
+                size="lg"
+                style={{ display: "block" }}
+                onClick={this.updateUser.bind(this)}
+              >
+                Update Account
           </Button>
+            </Form>
+
+          </div>
         </div>
 
         <button

@@ -38,7 +38,7 @@ export default class Navigation extends Component {
                         <div className='navigation' style={{height: '100%'}}>
                             {role === 'user' ?
                                 <div style={{display: 'inherit'}}>
-                                    <NavLink to='/dashboard'>
+                                    <NavLink to='/' exact={true}>
                                         Dashboard
                                     </NavLink>
                                     <NavLink to='/sales'>

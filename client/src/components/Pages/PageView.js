@@ -40,9 +40,14 @@ export default class PageView extends Component {
         axios.get('/api/pages/search?pageId=' + this.props.match.params.pageId)
             .then((resp) => {
                 console.log(resp)
+
+                if (resp.data.response[0].imageLink) {
+                    this.setState({
+                        image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`,
+                    })
+                }
                 this.setState({
                     page: resp.data.response[0],
-                    image: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].imageLink}`,
                     s3Bucket: resp.data.bucket
                 }, this.checkPermissions)
             })
@@ -92,6 +97,17 @@ export default class PageView extends Component {
         this.state.page[e.target.name] = e.target.value
     };
 
+    // Preview image once seleted
+    onImageChange = e => {
+        const file = e.target.files[0]
+        this.setState({
+            image: URL.createObjectURL(file),
+            file: file,
+            fileName: file.name,
+            fileType: file.type
+        })
+    }
+
     // Controls editing state
     handleEditing = e => {
         let name = e.currentTarget.getAttribute('name') + 'Edit'
@@ -117,7 +133,7 @@ export default class PageView extends Component {
 
     // Updates page with any changes made
     updatePage() {
-        const { page } = this.state;
+        const { file, page } = this.state;
 
         // let file = page.file
         // // Split the filename to get the name and type
@@ -125,10 +141,10 @@ export default class PageView extends Component {
         // let fileName = fileParts[0];
         // let fileType = fileParts[1];
         // console.log("Preparing the upload", file);
-        // let data = new FormData();
-        // data.append("imgFile", file)
+        let data = new FormData();
+        data.append("imgFile", file)
         axios.put('/api/pages/update?id=' + page.id + '&name=' + page.name + '&description=' + page.description +
-            '&summary=' + page.summary + '&price=' + page.price)
+            '&summary=' + page.summary + '&price=' + page.price, data)
             .then(res => {
                 console.log(res)
                 window.location.reload();
@@ -147,6 +163,7 @@ export default class PageView extends Component {
 
 
     render() {
+        console.log(this.state.image)
 
         const { edit, page } = this.state
         const user = page.User
@@ -154,49 +171,53 @@ export default class PageView extends Component {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
-                    <div className='imageBanner set'>
+                    <div className={this.state.image === '' ? 'imageBanner' : 'imageBanner set'}>
                         <input type='file' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                         <img src={this.state.image} style={{ width: '100%', opacity: .3 }} alt='' />
 
                         {edit ?
-                            <div style={{ position: 'absolute', top: 10, right: 25 }}>
-                                {page.published ?
+                            <div>
+                                <div style={{ position: 'absolute', top: 10, right: 25 }}>
+                                    {page.published ?
+                                        <Button
+                                            variant='dark'
+                                            size='sm'
+                                            value={false}
+                                            onClick={this.handlePublish.bind(this)}
+                                            style={{ width: 'initial' }}
+                                        >
+                                            Unpublish
+                                    </Button>
+                                        :
+                                        <Button
+                                            variant='dark'
+                                            size='sm'
+                                            value={true}
+                                            onClick={this.handlePublish.bind(this)}
+                                            style={{ width: 'initial' }}
+                                        >
+                                            Publish
+                                    </Button>
+                                    }
+                                </div>
+                                <div style={{ position: 'absolute', bottom: 45, right: 95 }}>
                                     <Button
                                         variant='dark'
-                                        size='sm'
-                                        value={false}
-                                        onClick={this.handlePublish.bind(this)}
-                                        style={{ width: 'initial' }}
+                                        className='circle'
+                                        style={{ width: 40, height: 40, border: '1.5px solid #fff' }}
+                                        onClick={() => this.upload.click()}
                                     >
-                                        Unpublish
+                                        <FontAwesomeIcon
+                                            icon='camera'
+                                        />
                                     </Button>
-                                    :
-                                    <Button
-                                        variant='dark'
-                                        size='sm'
-                                        value={true}
-                                        onClick={this.handlePublish.bind(this)}
-                                        style={{ width: 'initial' }}
-                                    >
-                                        Publish
-                                    </Button>
-                                }
+                                </div>
                             </div>
                             :
                             <span></span>
                         }
 
                         <div className='textOverlay'>
-                            {this.state.image ?
-                                <span></span>
-                                :
-                                <FontAwesomeIcon
-                                    icon='plus'
-                                    size='6x'
-                                    style={{ opacity: .1 }}
-                                    onClick={() => { this.upload.click() }}
-                                />
-                            }
                             {this.state.nameEdit ?
                                 <InputGroup>
                                     <FormControl
@@ -210,7 +231,7 @@ export default class PageView extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p style={{fontSize: 60}}>{page.name}</p>
+                                    <p className='pageName' style={{ fontSize: 60 }}>{page.name}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                         :

@@ -94,7 +94,9 @@ router.get('/search', (req, res) => {
 })
 
 
-router.put('/update', (req, res) => {
+router.put('/update', upload.single('imgFile'), (req, res) => {
+
+  upload.single('imgFile')
 
   const page = {
     name: req.query.name,
@@ -104,6 +106,8 @@ router.put('/update', (req, res) => {
     published: req.query.published,
     order: req.query.order
   }
+
+  if (req.file) page.imageLink = req.file.key;
 
   let AWS = 'N/A'
   if (req.file) AWS = 'Image uploaded!'

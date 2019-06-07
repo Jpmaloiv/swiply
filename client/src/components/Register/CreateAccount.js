@@ -54,7 +54,6 @@ export default class CreateAccount extends Component {
   };
 
   render() {
-    console.log(this.props);
 
     const { page } = this.props.state;
 
@@ -66,138 +65,165 @@ export default class CreateAccount extends Component {
         transitionEnter={false}
         transitionLeave={false}
       >
-        <div className="center">
-          <h2>Create Account</h2>
-          <br />
-          <Form className="login">
-            <Form.Group>
-              <input
-                type="file"
-                name="imgFile"
-                ref={ref => (this.upload = ref)}
-                onChange={this.onImageChange}
-                style={{ display: "none" }}
-              />
-              <div className="profilePic">
-                {this.props.state.image ? (
-                  <div>
-                    <img
-                      src={this.props.state.image}
-                      style={{
-                        width: 75,
-                        height: 75,
-                        borderRadius: "50%",
-                        objectFit: "cover"
-                      }}
-                      alt=""
-                    />
-                    <FontAwesomeIcon
-                      icon="user-plus"
-                      style={{ opacity: 0.2, position: "absolute" }}
-                      onClick={() => {
-                        this.upload.click();
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <FontAwesomeIcon
-                    icon="user-plus"
-                    size="2x"
-                    color="white"
-                    style={{ opacity: 0.8 }}
-                    onClick={() => {
-                      this.upload.click();
-                    }}
-                  />
-                )}
+        <Form.Group style={{ backgroundColor: '#f7f8f9', height: 160, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <input
+            type="file"
+            name="imgFile"
+            ref={ref => (this.upload = ref)}
+            onChange={this.onImageChange}
+            style={{ display: "none" }}
+          />
+          <div className="profilePic" onClick={() => {
+            this.upload.click();
+          }}>
+            {this.props.state.image ? (
+              <div>
+                <img
+                  src={this.props.state.image}
+                  style={{
+                    width: 75,
+                    height: 75,
+                    borderRadius: "50%",
+                    objectFit: "cover"
+                  }}
+                  alt=""
+                />
+                <FontAwesomeIcon
+                  icon="user-plus"
+                  style={{ opacity: 0.2, position: "absolute" }}
+                />
               </div>
-              {this.props.state.image ? (
-                <span />
-              ) : (
-                <p style={{ fontSize: 12, marginTop: ".5rem" }}>
-                  Add Profile Image
-                </p>
+            ) : (
+                // <FontAwesomeIcon
+                //   icon="user-plus"
+                //   size="2x"
+                //   color="white"
+                //   style={{ opacity: 0.8 }}
+                //   onClick={() => {
+                //     this.upload.click();
+                //   }}
+                // />
+                <img src={require(`../../images/profile-image.png`)} alt='Profile image' onClick={() => this.upload.click()} style={{ cursor: 'pointer' }} />
+
               )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="First Name"
-                name="firstName"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Last Name"
-                name="lastName"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Email Address"
-                name="email"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
+          </div>
+          {this.props.state.image ? (
+            <span />
+          ) : (
+              <p style={{ fontSize: 16, marginTop: ".5rem", marginBottom: 0, textAlign: 'center' }}>
+                Add Profile Image
+                </p>
+            )}
+        </Form.Group>
+        <div className="center" style={{ textAlign: 'initial' }}>
 
-            <Form.Group>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                name="password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
+          <Form>
+            <div style={{ padding: '0 75px' }}>
+              <Form.Group>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  placeholder="First Name"
+                  name="firstName"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  placeholder="Last Name"
+                  name="lastName"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Email Address</Form.Label>
+                <input
+                  type='email'
+                  style={{ display: 'none' }}
+                  placeholder="Email Address"
+                  value={this.state.email}
 
-            <Form.Group>
-              <Form.Control
-                type="password"
-                placeholder="Confirm Password"
-                name="confirmpw"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
+                  name="email"
+                  onChange={this.handleChange}
+                  autoComplete='pseudo'
+                />
+                <Form.Control
+                  type='email'
 
-            <Form.Group>
-              <Form.Control
-                placeholder="Phone Number"
-                name="phone"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
+                  placeholder="Email Address"
+                  value={this.state.email}
+                  name="email"
+                  onChange={this.handleChange}
+                  autoComplete="nope"
+                />
+              </Form.Group>
 
-            <Form.Group>
-              <Form.Check type="checkbox" label="Remember me" />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label>Password</Form.Label>
+                <input type="password" name="pwd" autocomplete="new-password" style={{ display: 'none' }}></input>
+
+
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  onChange={this.handleChange}
+                  autoComplete='off'
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm Password"
+                  name="confirmpw"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control
+                  placeholder="Phone Number"
+                  name="phone"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Check type="checkbox" label="Remember me" style={{ textAlign: 'center' }} />
+              </Form.Group>
+            </div>
           </Form>
 
           {this.props.state.customer ? (
             <div style={{ textAlign: "center" }}>
               <div
                 className="page"
-                style={{ display: "flex", flex: "initial", margin: "1em auto" , padding: 7.5}}
+                style={{ display: "flex", flex: "initial", margin: "1em auto", padding: 7.5 }}
               >
                 <img
                   src={`https://s3-us-west-1.amazonaws.com/${
                     this.props.state.s3Bucket
-                  }/${page.imageLink}`}
+                    }/${page.imageLink}`}
                   style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }}
                 />
                 <div style={{ width: "100%", textAlign: "left", marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-                  <p style={{fontSize: 18, fontWeight: 'bold'}}>{page.name}</p>
-                  <p style={{fontSixe: 14}}>{page.description}</p>
+                  <p style={{ fontSize: 18, fontWeight: 'bold' }}>{page.name}</p>
+                  <p style={{ fontSixe: 14 }}>{page.description}</p>
                 </div>
                 <div>${page.price}</div>
               </div>
             </div>
           ) : (
-            <span />
-          )}
+              <span />
+            )}
 
           <Button
             variant="success"
             size="lg"
+            style={{ display: 'block' }}
             onClick={this.verifyPhone.bind(this)}
           >
             Continue
