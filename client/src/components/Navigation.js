@@ -75,7 +75,7 @@ export default class Navigation extends Component {
                         </div>
 
                         <Menu className='nav-mobile' right>
-                            <a id="dashboard" className="menu-item" href="/dashboard">Dashboard</a>
+                            <a id="dashboard" className="menu-item" href="/">Dashboard</a>
                             <a id="sales" className="menu-item" href="/sales">Sales</a>
 
                             <a id="customers" className="menu-item" href="/customers">Customers</a>
