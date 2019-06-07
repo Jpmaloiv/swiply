@@ -25,6 +25,11 @@ export default class Navigation extends Component {
         this.setState({ menuOpen: state.isOpen })
     }
 
+    closeMenu() {
+        console.log("HERE")
+        this.setState({ menuOpen: false })
+    }
+
     render() {
 
         const { role } = this.props.decoded
@@ -83,17 +88,17 @@ export default class Navigation extends Component {
                             </NavLink>
                         </div>
 
-                        <Menu isOpen={false} width={350} className='nav-mobile'>
+                        <Menu isOpen={this.state.menuOpen} width={350} className='nav-mobile' onStateChange={(state) => this.handleStateChange(state)}>
                             {role === 'user' ?
                                 <div>
-                                    <NavLink to='/' exact={true} className='bm-item menu-item'>
+                                    <NavLink to='/' exact={true} className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Dashboard</h5>
                                             <p>View your pages and their statistics</p>
                                         </div>
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
                                     </NavLink>
-                                    <NavLink to='/sales' className='bm-item menu-item'>
+                                    <NavLink to='/sales' className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Sales</h5>
                                             <p>Review the sales details of your pages</p>
@@ -101,27 +106,26 @@ export default class Navigation extends Component {
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
 
                                     </NavLink>
-                                    <NavLink to='/customers' className='bm-item menu-item' isOpen={this.state.menuOpen} onStateChange={(state) => this.handleStateChange(state)}>
+                                    <NavLink to='/customers' className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Customers</h5>
                                             <p>Analyze your customer data</p>
                                         </div>
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
                                     </NavLink>
-                                    <NavLink to={`/profile/edit/${this.props.decoded.id}`} className='bm-item menu-item'>
+                                    <NavLink to={`/profile/edit/${this.props.decoded.id}`} className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Public Profile</h5>
                                             <p>View how customers see your profile</p>
                                         </div>
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
-
                                     </NavLink>
                                 </div>
                                 :
                                 <span></span>
                             }
 
-                            <NavLink to='/' className="menu-item">
+                            <NavLink to='/' className="menu-item" onClick={() => this.closeMenu()}>
                                 <div>
                                     <h5>My Account</h5>
                                     <p>View your profile and content</p>
@@ -131,14 +135,14 @@ export default class Navigation extends Component {
 
                             {role === 'customer' ?
                                 <div>
-                                    <NavLink to='/purchases' className="menu-item">
+                                    <NavLink to='/purchases' className="menu-item" onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>My Purchases</h5>
                                             <p>View all content purchases</p>
                                         </div>
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
                                     </NavLink>
-                                    <NavLink to='contact-us' className="menu-item">
+                                    <NavLink to='contact-us' className="menu-item" onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Contact Us</h5>
                                             <p>Get help from our support team</p>
@@ -149,12 +153,14 @@ export default class Navigation extends Component {
                                 :
                                 <span></span>
                             }
-                            <NavLink className="menu-item" href="/contact">
+                            <NavLink className="menu-item" onClick={this.logout}>
                                 <div>
-                                    <h5>Sign Out</h5>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                        <FontAwesomeIcon icon='sign-out-alt' />
+                                        <h5>Sign Out</h5>
+                                    </div>
                                     <p>Last login: June 7, 2019 at 3:30pm</p>
                                 </div>
-                                <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
                             </NavLink>
                         </Menu>
 
