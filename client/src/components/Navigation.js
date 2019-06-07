@@ -5,6 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export default class Navigation extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            menuOpen: false
+        }
+    }
 
     logout() {
         if (window.confirm('Would you like to log out of PV3?')) {
@@ -15,11 +21,9 @@ export default class Navigation extends Component {
         }
     }
 
-    showSettings(event) {
-        event.preventDefault();
-
+    handleStateChange(state) {
+        this.setState({ menuOpen: state.isOpen })
     }
-
 
     render() {
 
@@ -79,7 +83,7 @@ export default class Navigation extends Component {
                             </NavLink>
                         </div>
 
-                        <Menu width={350} className='nav-mobile'>
+                        <Menu isOpen={false} width={350} className='nav-mobile'>
                             {role === 'user' ?
                                 <div>
                                     <NavLink to='/' exact={true} className='bm-item menu-item'>
@@ -97,7 +101,7 @@ export default class Navigation extends Component {
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
 
                                     </NavLink>
-                                    <NavLink to='/customers' className='bm-item menu-item'>
+                                    <NavLink to='/customers' className='bm-item menu-item' isOpen={this.state.menuOpen} onStateChange={(state) => this.handleStateChange(state)}>
                                         <div>
                                             <h5>Customers</h5>
                                             <p>Analyze your customer data</p>
