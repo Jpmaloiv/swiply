@@ -64,7 +64,7 @@ body {
   align-items: center
 }
 
-.navigation a.active:not(.signOut)  {
+.navigation a.active:not(.signOut) {
   border-bottom: 3px solid #00af63;
 }
 
@@ -77,7 +77,6 @@ form {
   /* margin: 0 auto; */
   /* padding: 0 75px; */
 }
-
 
 form.login {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f2f2+0,e5e5e5+100 */
@@ -110,14 +109,18 @@ form.login {
 }
 
 .pageName:after {
-    content: ""; /* This is necessary for the pseudo element to work. */ 
-    display: block; /* This will put the pseudo element on its own line. */
-    margin: 0 auto; /* This will center the border. */
-    margin-top: -10px;
-    width: 40%; /* Change this to whatever width you want. */
-    border-bottom: 3px solid black; /* This creates the border. Replace black with whatever color you want.*/
+  content: "";
+  /* This is necessary for the pseudo element to work. */
+  display: block;
+  /* This will put the pseudo element on its own line. */
+  margin: 0 auto;
+  /* This will center the border. */
+  margin-top: -10px;
+  width: 40%;
+  /* Change this to whatever width you want. */
+  border-bottom: 3px solid black;
+  /* This creates the border. Replace black with whatever color you want.*/
 }
-
 
 /* Images */
 
@@ -291,7 +294,7 @@ button.circle {
   width: 100%
 }
 
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   background-color: #02ae63 !important;
   color: #fff !important
 }
@@ -391,8 +394,10 @@ button.circle {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
+  width: 0px;
+  /* Remove scrollbar space */
+  background: transparent;
+  /* Optional: just make scrollbar invisible */
 }
 
 /* Social Media */
@@ -400,8 +405,6 @@ button.circle {
 .social a {
   margin: 0 5px
 }
-
-
 
 /* Stripe */
 
@@ -530,10 +533,18 @@ form.stripe button {
   font-size: 13px;
 }
 
-.bm-burger-button, .nav-mobile {display: none;}
-.nav-mobile a {color: initial;}
+.bm-burger-button, .nav-mobile {
+  display: none;
+}
+
+.nav-mobile a {
+  color: initial;
+}
+
 /* Burger Menu */
+
 /* Position and sizing of burger button */
+
 .bm-burger-button {
   position: fixed;
   width: 36px;
@@ -541,65 +552,85 @@ form.stripe button {
   right: 36px;
   top: 20px;
 }
- 
+
 /* Color/shape of burger icon bars */
+
 .bm-burger-bars {
   background: #373a47;
   height: 3px !important;
   left: initial !important
 }
 
-span.bm-burger-bars:first-child {width: 30px}
-span.bm-burger-bars:nth-child(2) {width: 20px; top: 30% !important}
-span.bm-burger-bars:nth-child(3) {width: 15px; top: 60% !important}
- 
+span.bm-burger-bars:first-child {
+  width: 30px
+}
+
+span.bm-burger-bars:nth-child(2) {
+  width: 20px;
+  top: 30% !important
+}
+
+span.bm-burger-bars:nth-child(3) {
+  width: 15px;
+  top: 60% !important
+}
+
 /* Color/shape of burger icon bars on hover*/
+
 .bm-burger-bars-hover {
   background: #a90000;
 }
- 
+
 /* Position and sizing of clickable cross button */
+
 .bm-cross-button {
   height: 24px;
   width: 24px;
 }
- 
+
 /* Color/shape of close button cross */
+
 .bm-cross {
   background: #bdc3c7;
 }
- 
+
 /*
 Sidebar wrapper styles
 Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
 */
+
 .bm-menu-wrap {
   position: fixed;
   height: 100%;
 }
- 
+
 /* General sidebar styles */
+
 .bm-menu {
   background: #fff;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
- 
+
 .bm-menu h5 {
   margin-bottom: 2.5px
 }
+
 /* Morph shape necessary with bubble or elastic */
+
 .bm-morph-shape {
   fill: #373a47;
 }
- 
+
 /* Wrapper for item list */
+
 .bm-item-list {
   color: #000b00;
   padding: 0.8em;
 }
- 
+
 /* Individual item */
+
 .bm-item.menu-item {
   display: inline-block;
   border-bottom: 1px solid #dfe1e6;
@@ -614,11 +645,12 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 .bm-item p {
-  font-size: 14px; 
+  font-size: 14px;
   margin: 0
 }
- 
+
 /* Styling of overlay */
+
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
@@ -629,6 +661,15 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .main {
     margin: 50px 75px;
   }
+
+  .statistics > div {
+    padding: 15px;
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+  }
 }
 
 @media (max-width: 1018px) {
@@ -637,7 +678,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 992px) {
+
   .bm-burger-button, .nav-mobile {
     display: initial
   }
@@ -652,5 +694,11 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .statistics>div {
     margin: 15px;
     width: 40%;
+  }
+}
+
+@media (max-width: 600px) {
+  .statistics>div {
+    width: 100%
   }
 }
