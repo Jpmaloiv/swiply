@@ -44,7 +44,7 @@ export default class Navigation extends Component {
                             style={{ width: 150 }}
                             alt='PV3'
                         /> */}
-                        <h1 style={{ color: '#333', margin: '0 30px' }}>Swiply</h1>
+                        <h1 className='logo'>Swiply</h1>
                     </NavLink>
                 </div>
                 {this.props.decoded ?

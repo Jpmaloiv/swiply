@@ -19,6 +19,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+        displayProfile: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
         views: {
             type: DataTypes.STRING,
             defaultValue: 0

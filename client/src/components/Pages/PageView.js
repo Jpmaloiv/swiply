@@ -23,8 +23,7 @@ export default class PageView extends Component {
             page: { User: {}, Contents: [] },
             edit: false,
             priceEdit: false,
-            viewAccess: false,
-            checked: false
+            viewAccess: false
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
@@ -115,7 +114,8 @@ export default class PageView extends Component {
     }
 
     handleSwitch(checked) {
-        this.setState({ checked });
+        this.state.page.displayProfile = checked
+        this.setState({ render: !this.state.render });
     }
 
     // Toggles whether page is published
@@ -135,16 +135,10 @@ export default class PageView extends Component {
     updatePage() {
         const { file, page } = this.state;
 
-        // let file = page.file
-        // // Split the filename to get the name and type
-        // let fileParts = file.name.split('.');
-        // let fileName = fileParts[0];
-        // let fileType = fileParts[1];
-        // console.log("Preparing the upload", file);
         let data = new FormData();
         data.append("imgFile", file)
         axios.put('/api/pages/update?id=' + page.id + '&name=' + page.name + '&description=' + page.description +
-            '&summary=' + page.summary + '&price=' + page.price, data)
+            '&summary=' + page.summary + '&price=' + page.price + '&displayProfile=' + page.displayProfile, data)
             .then(res => {
                 console.log(res)
                 window.location.reload();
@@ -163,7 +157,6 @@ export default class PageView extends Component {
 
 
     render() {
-        console.log(this.state.image)
 
         const { edit, page } = this.state
         const user = page.User
@@ -250,7 +243,7 @@ export default class PageView extends Component {
                                 />
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p>{page.description}</p>
+                                    <p style={{ fontSize: 20 }}>{page.description}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
                                         :
@@ -298,70 +291,98 @@ export default class PageView extends Component {
                             }
                         </div>
                     </div>
+                </div>
 
-                    <div className='main'>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            {this.state.checked ?
-                                <div style={{ display: 'flex', marginBottom: 10 }}>
-                                    <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover' }} alt='' />
-                                    <div>
-                                        <h5>{user.firstName} {user.lastName}</h5>
-                                        <p><i>{user.title}</i></p>
+
+                <div style={{ width: '100%', borderBottom: '1px solid #ebecef' }}>
+                    <div className='main' style={{marginBottom: 0}}>
+                        <div className='profile'>
+                            {page.displayProfile ?
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ display: 'flex', marginBottom: 20 }}>
+                                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 30, borderRadius: '50%', objectFit: 'cover' }} alt='' />
+                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 30 }}>
+                                            <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}</h5>
+                                            <p className='title'><i>{user.title}</i></p>
+                                        </div>
+                                        <div>
+                                            <NavLink to={`/account/${this.state.decoded.id}`}>
+                                                <Button
+                                                    size='sm'
+                                                    style={{ width: 76, border: '1px solid #DFE1E6', borderRadius: 2, backgroundColor: 'transparent', color: '#181818' }}
+                                                >
+                                                    EDIT
+                                        </Button>
+                                            </NavLink>
+                                        </div>
                                     </div>
+                                    <p style={{ fontSize: 18, lineHeight: '28px' }}>{user.summary}</p>
+
                                 </div>
                                 :
                                 <span></span>
                             }
                             {edit ?
-                                <label style={{ display: 'flex' }}>
-                                    <span style={{ marginRight: 10 }}>Display Profile</span>
-                                    <Switch onChange={this.handleSwitch} checked={this.state.checked} checkedIcon={false} uncheckedIcon={false} />
-                                </label>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                                        <span style={{ marginRight: 10, fontSize: 14 }}>DISPLAY PROFILE</span>
+                                        <Switch onChange={this.handleSwitch.bind(this)} checked={page.displayProfile} checkedIcon={false} uncheckedIcon={false} />
+                                    </div>
+                                </div>
                                 :
                                 <span></span>
                             }
                         </div>
-                        {this.state.checked ? <p>{user.summary}</p> : <span></span>}
+                    </div>
+                </div>
 
-                        {edit ?
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 35 }}>
-                                <h5 style={{ margin: 0 }}>Add Content</h5>
-                                <NavLink to={`/pages/${this.props.match.params.pageId}/add-content`}>
-                                    <Button
-                                        variant='success'
-                                        size='lg'
-                                        className='circle'
-                                    >
-                                        <FontAwesomeIcon icon='plus' />
-                                    </Button>
-                                </NavLink>
-                            </div>
-                            :
-                            <span></span>
-                        }
-                        <div>
-                            {this.state.summaryEdit ?
-                                <InputGroup>
-                                    <FormControl
-                                        as='textarea'
-                                        style={{ width: 'initial' }}
-                                        placeholder={this.state.summary}
-                                        name='summary'
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleEditing}
-                                        autoFocus
-                                    />
-                                </InputGroup>
-                                :
+                <div style={{ width: '100%', background: '#f9fafc' }}>
+                    <div className='main' style={{marginTop: 0}}>
+                        <div style={{ display: 'flex', paddingTop: 30, justifyContent: 'space-between' }}>
+                            <div style={this.state.summaryEdit ? { paddingRight: 35, width: '80%' } : { paddingRight: 35 }}>
                                 <div style={{ display: 'flex' }}>
-                                    <p>{page.summary}</p>
+                                    <p style={{ fontSize: 24 }}>Page Summary</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
                                         :
                                         <span></span>
                                     }
                                 </div>
-                            }
+                                {this.state.summaryEdit ?
+                                    <p>
+                                        <InputGroup>
+                                            <FormControl
+                                                as='textarea'
+                                                placeholder={this.state.summary}
+                                                name='summary'
+                                                onChange={this.handleChange}
+                                                onBlur={this.handleEditing}
+                                                autoFocus
+                                            />
+                                        </InputGroup>
+                                    </p>
+                                    :
+                                    <p>{page.summary}</p>
+                                }
+                            </div>
+                            <div>
+                                {edit ?
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 35, whiteSpace: 'nowrap' }}>
+                                        <h5 style={{ margin: 0 }}>Add Content</h5>
+                                        <NavLink to={`/pages/${this.props.match.params.pageId}/add-content`}>
+                                            <Button
+                                                variant='success'
+                                                size='lg'
+                                                className='circle'
+                                            >
+                                                <FontAwesomeIcon icon='plus' />
+                                            </Button>
+                                        </NavLink>
+                                    </div>
+                                    :
+                                    <span></span>
+                                }
+                            </div>
                         </div>
 
                         {/* List pages in table format */}
@@ -376,19 +397,26 @@ export default class PageView extends Component {
                                     style={{ color: 'initial' }}
                                 >
 
-                                    <div key={i} className='page' style={{ display: 'flex' }}>
-                                        {content.type === 'video'
-                                            ? <img src={`https://img.youtube.com/vi/${content.link}/0.jpg`} style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                            : <FontAwesomeIcon icon='file' size='4x' style={{ width: 75, objectFit: 'cover', marginRight: 20 }} />
-                                        }
-                                        <div style={{ width: '100%' }}>
-                                            <p>{content.name}</p>
-                                            <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
-                                            <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                                                <span>5.5k Followers</span>
-                                                <span>+98%</span>
-                                            </p>
+                                    <div key={i} className='page'>
+                                        <div style={{ display: 'flex', padding: 7.5 }}>
+                                            {content.type === 'video'
+                                                ? <img src={`https://img.youtube.com/vi/${content.link}/0.jpg`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                                                : <FontAwesomeIcon icon='file' size='4x' style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                                            }
+                                            <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+                                                <div>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <p style={{ fontSize: 18 }}>{content.name}</p>
+                                                        <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
+                                                    </div>
+                                                    <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
+                                                </div>
+                                                <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;5.5k Followers
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#01ae63' }}>+98%</span></span>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>
