@@ -166,7 +166,7 @@ export default class PageView extends Component {
                 <div>
                     <div className={this.state.image === '' ? 'imageBanner' : 'imageBanner set'}>
                         <input type='file' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
-                        <img src={this.state.image} style={{ width: '100%', opacity: .3 }} alt='' />
+                        <img src={this.state.image} className='page-image' alt='' />
 
                         {edit ?
                             <div>
@@ -193,7 +193,7 @@ export default class PageView extends Component {
                                     </Button>
                                     }
                                 </div>
-                                <div style={{ position: 'absolute', bottom: 45, right: 95 }}>
+                                <div className='image-change_icon'>
                                     <Button
                                         variant='dark'
                                         className='circle'
@@ -224,7 +224,7 @@ export default class PageView extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p className='pageName' style={{ fontSize: 60 }}>{page.name}</p>
+                                    <p className='page-name'>{page.name}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                         :
@@ -243,7 +243,7 @@ export default class PageView extends Component {
                                 />
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p style={{ fontSize: 20 }}>{page.description}</p>
+                                    <p className='page-description'>{page.description}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
                                         :
@@ -299,9 +299,9 @@ export default class PageView extends Component {
                         <div className='profile'>
                             {page.displayProfile ?
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ display: 'flex', marginBottom: 20 }}>
+                                    <div className='profile-header'>
                                         <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 30, borderRadius: '50%', objectFit: 'cover' }} alt='' />
-                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 30 }}>
+                                        <div className='profile-name'>
                                             <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}</h5>
                                             <p className='title'><i>{user.title}</i></p>
                                         </div>
@@ -316,7 +316,7 @@ export default class PageView extends Component {
                                             </NavLink>
                                         </div>
                                     </div>
-                                    <p style={{ fontSize: 18, lineHeight: '28px' }}>{user.summary}</p>
+                                    <p className='profile-summary'>{user.summary}</p>
 
                                 </div>
                                 :
@@ -324,7 +324,7 @@ export default class PageView extends Component {
                             }
                             {edit ?
                                 <div>
-                                    <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                                    <div className='profile-switch'>
                                         <span style={{ marginRight: 10, fontSize: 14 }}>DISPLAY PROFILE</span>
                                         <Switch onChange={this.handleSwitch.bind(this)} checked={page.displayProfile} checkedIcon={false} uncheckedIcon={false} />
                                     </div>
@@ -338,7 +338,7 @@ export default class PageView extends Component {
 
                 <div style={{ width: '100%', background: '#f9fafc' }}>
                     <div className='main' style={{marginTop: 0}}>
-                        <div style={{ display: 'flex', paddingTop: 30, justifyContent: 'space-between' }}>
+                        <div className='page-summary'>
                             <div style={this.state.summaryEdit ? { paddingRight: 35, width: '80%' } : { paddingRight: 35 }}>
                                 <div style={{ display: 'flex' }}>
                                     <p style={{ fontSize: 24 }}>Page Summary</p>

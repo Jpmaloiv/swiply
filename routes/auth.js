@@ -45,28 +45,29 @@ router.post("/login", (req, res) => {
         console.log(err);
         res.status(500).json({ message: "User not found", error: err });
       });
-  } else { }
-  db.Customer.findOne({
-    where: {
-      email: req.query.email
-    }
-  })
-    .then(function (resp) {
-      console.log("RESP", resp)
-      //login
-      var inputHash = getHash(password, resp.salt);
-      console.log(inputHash.toString(), resp.hash);
-      if (inputHash === resp.hash) {
-        res.json({ success: true, token: auth.generateJWT(resp, role) });
-      } else {
-        return res.status(400).end("Wrong Password");
+  } else {
+    db.Customer.findOne({
+      where: {
+        email: req.query.email
       }
     })
-    .catch(function (err) {
-      console.log(err);
-      res.status(500).json({ message: "Customer not found", error: err });
-    });
-});
+      .then(function (resp) {
+        console.log("RESP-C", resp)
+        //login
+        var inputHash = getHash(password, resp.salt);
+        console.log(inputHash.toString(), resp.hash);
+        if (inputHash === resp.hash) {
+          res.json({ success: true, token: auth.generateJWT(resp, role) });
+        } else {
+          return res.status(400).end("Wrong Password");
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.status(500).json({ message: "Customer not found", error: err });
+      });
+  }
+})
 
 // Verify if user's phone number exists in database
 router.post("/verify", (req, res) => {

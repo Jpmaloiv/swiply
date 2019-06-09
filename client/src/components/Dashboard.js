@@ -102,7 +102,7 @@ export default class Dashboard extends Component {
 
                 <div style={{ backgroundColor: '#f9fafc', borderTop: '1px solid #ebecef' }}>
                     <div className='main'>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto' }}>
+                        <div className='page-controls'>
                             <div>
                                 <DropdownButton className='plain' title="Popular Pages" variant='secondary'>
                                     <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
@@ -132,7 +132,7 @@ export default class Dashboard extends Component {
                             <div>
                                 <div className='test' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', maxWidth: 1300, margin: '0 auto' }}>
                                     {this.state.pages.map((page, i) =>
-                                        <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
+                                        <NavLink to={`/pages/${page.id}`} className='page' style={{ color: 'initial' }}>
 
                                             <div key={i} className='page'>
                                                 <div style={{ display: 'flex', padding: 7.5 }}>
@@ -145,7 +145,7 @@ export default class Dashboard extends Component {
                                                             </div>
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>
-                                                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <p className='page-stats'>
                                                             <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;5.5k Followers
                                                             &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#01ae63' }}>+98%</span></span>

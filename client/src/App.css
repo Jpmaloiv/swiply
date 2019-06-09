@@ -64,6 +64,29 @@ body {
   padding-bottom: 30px
 }
 
+.profile-switch {
+    display: flex;
+    align-items: center;
+    white-space: nowrap
+}
+
+.profile-header {
+  display: flex;
+  margin-bottom: 20
+}
+
+.profile-name {
+  display: flex; flex-direction: column; justify-content: center; margin-right: 30px
+}
+
+.profile-summary {
+  font-size: 18px; line-height: 28px
+}
+
+.page-summary {
+  display: flex; padding-top: 30px; justify-content: space-between
+}
+
 /* Navigation */
 
 .navigation {
@@ -120,20 +143,6 @@ form.login {
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eef0f4', endColorstr='#ffffff', GradientType=0);
   /* IE6-9 */
-}
-
-.pageName:after {
-  content: "";
-  /* This is necessary for the pseudo element to work. */
-  display: block;
-  /* This will put the pseudo element on its own line. */
-  margin: 0 auto;
-  /* This will center the border. */
-  margin-top: -10px;
-  width: 40%;
-  /* Change this to whatever width you want. */
-  border-bottom: 3px solid black;
-  /* This creates the border. Replace black with whatever color you want.*/
 }
 
 /* Images */
@@ -232,7 +241,9 @@ button.circle {
   font-size: 3em
 }
 
-.page {
+/* Pages */
+
+div.page {
   flex: 0 0 30%;
   width: 395px;
   height: 105px;
@@ -241,8 +252,42 @@ button.circle {
   margin: 1em;
 }
 
-.page p {
+div.page p {
   margin: 0
+}
+
+.page-image {
+  width: 100%;
+  opacity: .3
+}
+
+.page-name {
+  font-size: 60px
+}
+
+.page-name:after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  margin-top: -10px;
+  width: 40%;
+  border-bottom: 3px solid black;
+}
+
+.page-description {
+  font-size: 20px
+}
+
+.image-change_icon {
+  position: absolute;
+  bottom: 45px;
+  right: 95px
+}
+
+.page-controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto
 }
 
 /* Images */
@@ -573,7 +618,7 @@ form.stripe button {
 /* Position and sizing of burger button */
 
 .bm-burger-button {
-  position: fixed;
+  position: absolute;
   width: 36px;
   height: 30px;
   right: 36px;
@@ -722,10 +767,62 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 @media(max-width: 767px) {
+  .logo {font-size: 30px}
+  .main, .center {
+    width: 90%
+  }
   .main {
     margin: 20px auto;
     width: 90%
   }
+  /* Pages */
+  a.page {
+    width: 100%
+  }
+  div.page {
+    width: 100%;
+    margin: 1em 0
+  }
+  .imageBanner {height: 345px}
+  .page-image {
+    height: 345px;
+    object-fit: cover
+  }
+  .textOverlay button {
+    width: 235px;
+    font-size: 16px
+  }
+  .page-name {
+    font-size: 28px !important
+  }
+  .page-name:after {
+    margin-top: 0
+  }
+  .page-description {
+    font-size: 16px
+  }
+  .image-change_icon {bottom: 5%; right: 5%}
+  .page-controls {
+    flex-direction: column-reverse;
+    align-items: center;
+    margin: 0
+  }
+  .page-stats {
+    font-size: 14px
+  }
+
+  .profile {
+    flex-direction: column; padding-bottom: 0
+  }
+  .profile-switch {justify-content: space-between; margin-bottom: 10px}
+  .profile-header {flex-direction: column; align-items: center}
+  .profile-header img {margin-right: 0 !important}
+  .profile-header button {width: 55px; height: 27px; margin-top: 5px !important}
+  .profile-name {align-items: center; margin-right: 0}
+  .profile-summary {text-align: center}
+
+  .page-summary {flex-direction: column; align-items: center}
+  .page-summary > div {padding-right: 0 !important}
 }
 
 @media (max-width: 600px) {
