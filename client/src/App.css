@@ -65,9 +65,9 @@ body {
 }
 
 .profile-switch {
-    display: flex;
-    align-items: center;
-    white-space: nowrap
+  display: flex;
+  align-items: center;
+  white-space: nowrap
 }
 
 .profile-header {
@@ -76,15 +76,21 @@ body {
 }
 
 .profile-name {
-  display: flex; flex-direction: column; justify-content: center; margin-right: 30px
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 30px
 }
 
 .profile-summary {
-  font-size: 18px; line-height: 28px
+  font-size: 18px;
+  line-height: 28px
 }
 
 .page-summary {
-  display: flex; padding-top: 30px; justify-content: space-between
+  display: flex;
+  padding-top: 30px;
+  justify-content: space-between
 }
 
 /* Navigation */
@@ -111,8 +117,7 @@ a:hover {
 }
 
 form {
-  /* margin: 0 auto; */
-  /* padding: 0 75px; */
+  padding: 25px 75px
 }
 
 form.login {
@@ -301,6 +306,16 @@ div.page p {
   display: flex;
   justify-content: center;
   align-items: center
+}
+
+/* Public Profile */
+
+.public-profile {
+  display: flex
+}
+
+.profile-tabs {
+  display: none !important
 }
 
 /* Preview Text */
@@ -767,13 +782,21 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 @media(max-width: 767px) {
-  .logo {font-size: 30px}
+  .logo {
+    font-size: 30px
+  }
   .main, .center {
     width: 90%
   }
   .main {
     margin: 20px auto;
     width: 90%
+  }
+  form {
+    padding: 25px !important
+  }
+  form button {
+    width: 100%
   }
   /* Pages */
   a.page {
@@ -783,7 +806,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
     width: 100%;
     margin: 1em 0
   }
-  .imageBanner {height: 345px}
+  .imageBanner {
+    height: 345px
+  }
   .page-image {
     height: 345px;
     object-fit: cover
@@ -801,7 +826,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .page-description {
     font-size: 16px
   }
-  .image-change_icon {bottom: 5%; right: 5%}
+  .image-change_icon {
+    bottom: 5%;
+    right: 5%
+  }
   .page-controls {
     flex-direction: column-reverse;
     align-items: center;
@@ -810,19 +838,67 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .page-stats {
     font-size: 14px
   }
-
   .profile {
-    flex-direction: column; padding-bottom: 0
+    flex-direction: column;
+    padding-bottom: 0
   }
-  .profile-switch {justify-content: space-between; margin-bottom: 10px}
-  .profile-header {flex-direction: column; align-items: center}
-  .profile-header img {margin-right: 0 !important}
-  .profile-header button {width: 55px; height: 27px; margin-top: 5px !important}
-  .profile-name {align-items: center; margin-right: 0}
-  .profile-summary {text-align: center}
-
-  .page-summary {flex-direction: column; align-items: center}
-  .page-summary > div {padding-right: 0 !important}
+  .profile-switch {
+    justify-content: space-between;
+    margin-bottom: 10px
+  }
+  .profile-header {
+    flex-direction: column;
+    align-items: center
+  }
+  .profile-header img {
+    margin-right: 0 !important
+  }
+  .profile-header button {
+    width: 55px;
+    height: 27px;
+    margin-top: 5px !important
+  }
+  .profile-name {
+    align-items: center;
+    margin-right: 0
+  }
+  .profile-summary {
+    text-align: center
+  }
+  .page-summary {
+    flex-direction: column;
+    align-items: center
+  }
+  .page-summary>div {
+    padding-right: 0 !important
+  }
+  /* Public Profile */
+  .public-profile {
+    flex-direction: column
+  }
+  .profile-link .input-group-prepend .input-group-text {
+    font-size: 12px
+  }
+  .profile-link input {
+    font-size: 14px
+  }
+  .profile-tabs {
+    display: inline-flex !important
+  }
+  .profile-tabs button {margin-bottom: 0 !important}
+  .public-profile .center {margin-bottom: 0}
+  .editProfile .center {
+    width: 100%;
+    margin: 0
+  }
+  .smartphone {
+    width: initial;
+    height: initial;
+    border: none;
+    border-radius: 0;
+    box-shadow: none !important;
+    overflow: none
+  }
 }
 
 @media (max-width: 600px) {

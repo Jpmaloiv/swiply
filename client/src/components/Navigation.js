@@ -32,8 +32,11 @@ export default class Navigation extends Component {
 
     render() {
 
-        const { role } = this.props.decoded
-        console.log(this.props.decoded)
+        const { id, name, role } = this.props.decoded
+        let arr = ''
+        let firstName = ''
+        if (name) arr = name.split(' ')
+        if (name) firstName = arr[0]
 
         return (
             <header>
@@ -44,7 +47,11 @@ export default class Navigation extends Component {
                             style={{ width: 150 }}
                             alt='PV3'
                         /> */}
-                        <h1 className='logo'>Swiply</h1>
+                        {role === 'customer' ?
+                            <h6 style={{color: 'initial', marginLeft: 25}}>Welcome,<br />{firstName}</h6>
+                            :
+                            <h1 className='logo'>Swiply</h1>
+                        }
                     </NavLink>
                 </div>
                 {this.props.decoded ?
@@ -125,7 +132,7 @@ export default class Navigation extends Component {
                                 <span></span>
                             }
 
-                            <NavLink to='/' className="menu-item" onClick={() => this.closeMenu()}>
+                            <NavLink to={`/account/${id}`} className="menu-item" onClick={() => this.closeMenu()}>
                                 <div>
                                     <h5>My Account</h5>
                                     <p>View your profile and content</p>

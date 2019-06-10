@@ -118,7 +118,6 @@ export default class CreateAccount extends Component {
         <div className="center" style={{ textAlign: 'initial' }}>
 
           <Form>
-            <div style={{ padding: '0 75px' }}>
               <Form.Group>
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
@@ -194,7 +193,6 @@ export default class CreateAccount extends Component {
               <Form.Group>
                 <Form.Check type="checkbox" label="Remember me" style={{ textAlign: 'center' }} />
               </Form.Group>
-            </div>
           </Form>
 
           {this.props.state.customer ? (

@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -28,10 +29,13 @@ export default class EditProfile extends Component {
       socialMedia: ['instagram', 'facebook', 'twitter', 'linkedIn', 'whatsapp', 'website'],
       copied: false,
       nameEdit: false,
-      titleEdit: false
+      titleEdit: false,
+      width: 0,
+      tabs: 'preview'
     };
 
     this.onSort = this.onSort.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +61,21 @@ export default class EditProfile extends Component {
         console.error(error);
       });
   }
+
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth });
+  }
+
 
   // Handles user input
   handleChange = e => {
@@ -114,8 +133,8 @@ export default class EditProfile extends Component {
     let data = new FormData();
     data.append("imgFile", this.state.file);
 
-    axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName + 
-    '&title=' + user.title + "&profile=" + user.profile + query, data)
+    axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName +
+      '&title=' + user.title + "&profile=" + user.profile + query, data)
       .then(res => {
         console.log(res);
         window.location.reload();
@@ -147,8 +166,8 @@ export default class EditProfile extends Component {
 
 
   render() {
-    console.log(this.state.user)
-    const { baseUrl, user } = this.state;
+
+    const { baseUrl, tabs, user, width } = this.state;
 
     const onSort = function (sortedList, dropEvent) {
       console.log(sortedList)
@@ -199,11 +218,11 @@ export default class EditProfile extends Component {
         transitionEnter={false}
         transitionLeave={false}
       >
-        <div style={{ display: "flex" }}>
+        <div className='public-profile'>
           <div style={{ flex: 1 }}>
             <div className="center" style={{ textAlign: "left" }}>
-              <h5 style={{ textAlign: "center" }}>My PV3 Link</h5>
-              <InputGroup style={{ height: 55 }}>
+              <h5 style={{ textAlign: "center" }}>My Swiply Link</h5>
+              <InputGroup className='profile-link' style={{ height: 55 }}>
                 <InputGroup.Prepend>
                   <InputGroup.Text style={{ borderTopLeftRadius: 27.5, borderBottomLeftRadius: 27.5 }}>{baseUrl}/profile/</InputGroup.Text>
                 </InputGroup.Prepend>
@@ -232,272 +251,304 @@ export default class EditProfile extends Component {
                   </InputGroup.Append>
                 </CopyToClipboard>
               </InputGroup>
-              <br /><br />
-              <h3>Connect Your Social Media</h3>
-              <p>Add links to your social media accounts below:</p>
-              <br />
-              <div className='smSettings'>
-                <label className='smLabel'>Instagram</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.instagram ? { borderRight: 'none' } : {}}
-                    placeholder={user.instagram}
-                    name="instagram"
-                    onChange={this.handleChange}
-                  />
-                  {user.instagram ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>Facebook</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.facebook ? { borderRight: 'none' } : {}}
-                    placeholder={user.facebook}
-                    name="facebook"
-                    onChange={this.handleChange}
-                  />
-                  {user.facebook ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>Twitter</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.twitter ? { borderRight: 'none' } : {}}
-                    placeholder={user.twitter}
-                    name="twitter"
-                    onChange={this.handleChange}
-                  />
-                  {user.twitter ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>Linkedin</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.linkedIn ? { borderRight: 'none' } : {}}
-                    placeholder={user.linkedIn}
-                    name="linkedIn"
-                    onChange={this.handleChange}
-                  />
-                  {user.linkedIn ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>WhatsApp</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.whatsapp ? { borderRight: 'none' } : {}}
-                    placeholder={user.whatsapp}
-                    name="whatsapp"
-                    onChange={this.handleChange}
-                  />
-                  {user.whatsapp ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>Website (URL)</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    style={user.website ? { borderRight: 'none' } : {}}
-                    placeholder={user.website}
-                    name="website"
-                    onChange={this.handleChange}
-                  />
-                  {user.website ?
-                    <InputGroup.Append>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon='check' color='#00af63' />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-                    : <span></span>}
-                </InputGroup><br />
-                <label>Email Address</label>
-                <InputGroup>
-                  <FormControl
-                    className='smInput'
-                    placeholder={user.email}
-                    name="email"
-                    onChange={this.handleChange}
-                  />
-                </InputGroup>
-              </div>
+            </div>
+            <div>
+
+              <ButtonGroup className='profile-tabs' style={{ width: "100%" }}>
+                <Button
+                  variant='link'
+                  active={tabs === 'preview'}
+                  onClick={() => this.setState({ tabs: 'preview' })}
+                >
+                  Preview
+              </Button>
+                <Button
+                  variant='link'
+                  active={tabs === 'settings'}
+                  onClick={() => this.setState({ tabs: 'settings' })}
+                >
+                  Settings
+                </Button>
+              </ButtonGroup>
             </div>
 
-            <Button
-              variant="success"
-              size="lg"
-              style={{ display: "block" }}
-              onClick={this.updateUser.bind(this)}
-            >
-              Update Settings
+
+            {tabs === 'settings' || width >= 767 ?
+              <div className='center' style={{ textAlign: 'left' }}>
+                <div className='smSettings'>
+                  <br /><br />
+                  <h3>Connect Your Social Media</h3>
+                  <p>Add links to your social media accounts below:</p>
+                  <br />
+                  <label className='smLabel'>Instagram</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.instagram ? { borderRight: 'none' } : {}}
+                      placeholder={user.instagram}
+                      name="instagram"
+                      onChange={this.handleChange}
+                    />
+                    {user.instagram ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>Facebook</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.facebook ? { borderRight: 'none' } : {}}
+                      placeholder={user.facebook}
+                      name="facebook"
+                      onChange={this.handleChange}
+                    />
+                    {user.facebook ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>Twitter</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.twitter ? { borderRight: 'none' } : {}}
+                      placeholder={user.twitter}
+                      name="twitter"
+                      onChange={this.handleChange}
+                    />
+                    {user.twitter ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>Linkedin</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.linkedIn ? { borderRight: 'none' } : {}}
+                      placeholder={user.linkedIn}
+                      name="linkedIn"
+                      onChange={this.handleChange}
+                    />
+                    {user.linkedIn ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>WhatsApp</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.whatsapp ? { borderRight: 'none' } : {}}
+                      placeholder={user.whatsapp}
+                      name="whatsapp"
+                      onChange={this.handleChange}
+                    />
+                    {user.whatsapp ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>Website (URL)</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      style={user.website ? { borderRight: 'none' } : {}}
+                      placeholder={user.website}
+                      name="website"
+                      onChange={this.handleChange}
+                    />
+                    {user.website ?
+                      <InputGroup.Append>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon='check' color='#00af63' />
+                        </InputGroup.Text>
+                      </InputGroup.Append>
+                      : <span></span>}
+                  </InputGroup><br />
+                  <label>Email Address</label>
+                  <InputGroup>
+                    <FormControl
+                      className='smInput'
+                      placeholder={user.email}
+                      name="email"
+                      onChange={this.handleChange}
+                    />
+                  </InputGroup>
+
+                  <Button
+                    variant="success"
+                    size="lg"
+                    style={{ display: "block" }}
+                    onClick={this.updateUser.bind(this)}
+                  >
+                    Update Settings
             </Button>
+
+                </div>
+              </div>
+              :
+              <span></span>
+            }
           </div>
 
-          <div className="editProfile" style={{ flex: 1.5 }}>
-            <div className="center">
-              <div
-                className="smartphone"
-                style={{
-                  overflow: "scroll",
-                  boxShadow: "-5px 10px 35px 1px #333"
-                }}
-              >
-                <div className="content">
-                  <div
-                    id="background"
-                    className="imageBanner set"
-                    style={{ height: 335, background: '#fff' }}
-                  >
-                    <img
-                      src={
-                        user.Pages.length > 0
-                          ? user.imageLink
-                          : ""
-                      }
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        opacity: 0.35,
-                        filter: "blur(4px)",
-                        objectFit: "cover"
-                      }}
-                      alt=""
-                    />
+          {tabs === 'preview' || width >= 767 ?
+            <div className="editProfile" style={{ flex: 1.5 }}>
+              <div className="center">
+                <div
+                  className="smartphone"
+                  style={{
+                    overflow: "scroll",
+                    boxShadow: "-5px 10px 35px 1px #333"
+                  }}
+                >
+                  <div className="content">
+                    <div
+                      id="background"
+                      className="imageBanner set"
+                      style={{ height: 335, background: '#fff' }}
+                    >
+                      <img
+                        src={
+                          user.Pages.length > 0
+                            ? user.imageLink
+                            : ""
+                        }
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          opacity: 0.35,
+                          filter: "blur(4px)",
+                          objectFit: "cover"
+                        }}
+                        alt=""
+                      />
 
-                    <div className="textOverlay">
-                      <div className="profilePic">
-                        {user.imageLink ?
-                          <div>
-                            <img
-                              src={user.imageLink}
-                              style={{
-                                width: 75,
-                                height: 75,
-                                borderRadius: "50%",
-                                objectFit: "cover"
-                              }}
-                              alt=""
-                            />
+                      <div className="textOverlay">
+                        <div className="profilePic">
+                          {user.imageLink ?
+                            <div>
+                              <img
+                                src={user.imageLink}
+                                style={{
+                                  width: 75,
+                                  height: 75,
+                                  borderRadius: "50%",
+                                  objectFit: "cover"
+                                }}
+                                alt=""
+                              />
+                              <FontAwesomeIcon
+                                icon="user-plus"
+                                style={{ opacity: 0.2, position: "absolute" }}
+                                onClick={() => {
+                                  this.upload.click();
+                                }}
+                              />
+                            </div>
+                            :
                             <FontAwesomeIcon
                               icon="user-plus"
-                              style={{ opacity: 0.2, position: "absolute" }}
-                              onClick={() => {
-                                this.upload.click();
-                              }}
+                              size="2x"
+                              color="white"
+                              style={{ opacity: 0.8, cursor: "initial" }}
                             />
-                          </div>
-                          :
-                          <FontAwesomeIcon
-                            icon="user-plus"
-                            size="2x"
-                            color="white"
-                            style={{ opacity: 0.8, cursor: "initial" }}
-                          />
-                        }
-                      </div>
-                      <br />
-                      <div>
-                        {this.state.nameEdit ?
-                          <InputGroup>
-                            <FormControl
-                              placeholder={user.firstName + (user.lastName ? ' ' + user.lastName : '')}
-                              name='name'
-                              onChange={this.handleChange}
-                              onBlur={this.handleEditing}
-                              autoFocus
-                            />
-                          </InputGroup>
-                          :
-                          <div>
-                            <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}
-                              {this.state.nameEdit || this.state.titleEdit ?
-                                <span></span>
-                                :
-                                <FontAwesomeIcon icon='pen' size='sm' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ nameEdit: true })} />
-                              }</h4>
-                          </div>
-                        }
-                        {this.state.titleEdit ?
-                          <InputGroup>
-                            <FormControl
-                              placeholder={user.title}
-                              name='title'
-                              onChange={this.handleChange}
-                              onBlur={this.handleEditing}
-                              autoFocus
-                            />
-                          </InputGroup>
-                          :
-                          <div>
-                            <p style={{ fontSize: 13, fontStyle: 'italic' }}>{user.title}
-                              {this.state.nameEdit || this.state.titleEdit ?
-                                <span></span>
-                                :
-                                <FontAwesomeIcon icon='pen' size='xs' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ titleEdit: true })} />
-                              }</p>
+                          }
+                        </div>
+                        <br />
+                        <div>
+                          {this.state.nameEdit ?
+                            <InputGroup>
+                              <FormControl
+                                placeholder={user.firstName + (user.lastName ? ' ' + user.lastName : '')}
+                                name='name'
+                                onChange={this.handleChange}
+                                onBlur={this.handleEditing}
+                                autoFocus
+                              />
+                            </InputGroup>
+                            :
+                            <div>
+                              <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}
+                                {this.state.nameEdit || this.state.titleEdit ?
+                                  <span></span>
+                                  :
+                                  <FontAwesomeIcon icon='pen' size='sm' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ nameEdit: true })} />
+                                }</h4>
+                            </div>
+                          }
+                          {this.state.titleEdit ?
+                            <InputGroup>
+                              <FormControl
+                                placeholder={user.title}
+                                name='title'
+                                onChange={this.handleChange}
+                                onBlur={this.handleEditing}
+                                autoFocus
+                              />
+                            </InputGroup>
+                            :
+                            <div>
+                              <p style={{ fontSize: 13, fontStyle: 'italic' }}>{user.title}
+                                {this.state.nameEdit || this.state.titleEdit ?
+                                  <span></span>
+                                  :
+                                  <FontAwesomeIcon icon='pen' size='xs' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ titleEdit: true })} />
+                                }</p>
 
-                          </div>
-                        }
+                            </div>
+                          }
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* List pages in table format */}
-                  <div
-                    style={{
-                      margin: "15px 10px"
-                    }}
-                  >
-                    {this.state.user.Pages.length > 0 ? (
-                      <h6 style={{ textAlign: "left", fontWeight: 'bold' }}>Courses</h6>
-                    ) : (
-                        <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
-                      )}
-                    <DragSortableList
-                      items={listGrid}
-                      onSort={this.onSort.bind(this)}
-                    />
+                    {/* List pages in table format */}
+                    <div
+                      style={{
+                        margin: "15px 10px"
+                      }}
+                    >
+                      {this.state.user.Pages.length > 0 ? (
+                        <h6 style={{ textAlign: "left", fontWeight: 'bold' }}>Courses</h6>
+                      ) : (
+                          <h6 style={{ margin: "0 auto" }}>No pages yet!</h6>
+                        )}
+                      <DragSortableList
+                        items={listGrid}
+                        onSort={this.onSort.bind(this)}
+                      />
 
-                    <input
-                      type="file"
-                      name="imgFile"
-                      ref={ref => (this.upload = ref)}
-                      onChange={this.onImageChange}
-                      style={{ display: "none" }}
-                    />
+                      <input
+                        type="file"
+                        name="imgFile"
+                        ref={ref => (this.upload = ref)}
+                        onChange={this.onImageChange}
+                        style={{ display: "none" }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            :
+            <span></span>
+          }
         </div>
       </ReactCSSTransitionGroup>
     );
