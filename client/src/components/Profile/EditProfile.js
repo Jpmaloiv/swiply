@@ -96,6 +96,13 @@ export default class EditProfile extends Component {
     this.setState({ [name]: !this.state[name] });
   }
 
+  // Handles social media links
+  handleLinks = e => {
+    let name = e.target.alt
+    if (name === 'instagram' || name === 'twitter') window.open(`http://www.${name}.com/${this.state.user[name].replace('@', '')}`)
+    else window.open(this.state.user[name])
+  }
+
   // Preview image once seleted
   onImageChange = e => {
     const file = e.target.files[0];
@@ -399,7 +406,7 @@ export default class EditProfile extends Component {
                     onClick={this.updateUser.bind(this)}
                   >
                     Update Settings
-            </Button>
+                  </Button>
 
                 </div>
               </div>
@@ -486,7 +493,7 @@ export default class EditProfile extends Component {
                             :
                             <div>
                               <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}
-                                {this.state.nameEdit || this.state.titleEdit ?
+                                {this.state.nameEdit || this.state.titleEdit || !this.state.user.firstName ?
                                   <span></span>
                                   :
                                   <FontAwesomeIcon icon='pen' size='sm' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ nameEdit: true })} />
@@ -506,7 +513,7 @@ export default class EditProfile extends Component {
                             :
                             <div>
                               <p style={{ fontSize: 13, fontStyle: 'italic' }}>{user.title}
-                                {this.state.nameEdit || this.state.titleEdit ?
+                                {this.state.nameEdit || this.state.titleEdit || !this.state.user.title ?
                                   <span></span>
                                   :
                                   <FontAwesomeIcon icon='pen' size='xs' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ titleEdit: true })} />
@@ -514,6 +521,24 @@ export default class EditProfile extends Component {
 
                             </div>
                           }
+                          <div className='social'>
+                            {user.instagram ?
+                              <img src={require(`../../images/instagram.png`)} alt='instagram' onClick={this.handleLinks} />
+                              : <span></span>
+                            }
+                            {user.facebook ?
+                              <img src={require(`../../images/facebook.png`)} alt='facebook' onClick={this.handleLinks} />
+                              : <span></span>
+                            }
+                            {user.twitter ?
+                              <img src={require(`../../images/twitter.png`)} alt='twitter' onClick={this.handleLinks} />
+                              : <span></span>
+                            }
+                            {user.linkedIn ?
+                              <img src={require(`../../images/linkedIn.png`)} alt='linkedIn' onClick={this.handleLinks} />
+                              : <span></span>
+                            }
+                          </div>
                         </div>
                       </div>
                     </div>

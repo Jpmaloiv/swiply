@@ -2,7 +2,9 @@ import axios from "axios";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+
 
 export default class SubscriptionPlan extends Component {
   // Register the new user
@@ -48,32 +50,32 @@ export default class SubscriptionPlan extends Component {
         transitionLeave={false}
       >
         <div className="center">
-          <ButtonGroup vertical>
-            <Button variant="light">
+        <ToggleButtonGroup vertical name='subscription' className='subscription-plan'>
+            <ToggleButton variant="light">
               <h4>Small Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$0 Per Month</h4>
-            </Button>
-            <Button variant="light">
+            </ToggleButton>
+            <ToggleButton variant="light">
               <h4>Medium Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$199 Per Month</h4>
-            </Button>
-            <Button variant="light">
+            </ToggleButton>
+            <ToggleButton variant="light">
               <h4>Pro Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$399 Per Month</h4>
-            </Button>
-          </ButtonGroup>
+            </ToggleButton>
+          </ToggleButtonGroup>
 
           <Button
             variant="success"

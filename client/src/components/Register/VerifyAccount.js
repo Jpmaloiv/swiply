@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios'
 
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import Button from 'react-bootstrap/Button'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
@@ -27,7 +28,7 @@ export default class VerifyAccount extends Component {
         if (this.state.code === JSON.stringify(this.props.state.verifyCode)) {
             this.props.setState({ view: 'ProfileSummary' })
         } else {
-            window.alert('Verification code is invalid. Please try again.')
+            this.error.click()
         }
 
     }
@@ -36,17 +37,34 @@ export default class VerifyAccount extends Component {
     register() {
         const user = this.props.state;
         if (user.password === user.confirmpw) {
-        let data = new FormData();
-        data.append("imgFile", user.file)
-        axios.post('api/customers/register?firstName=' + user.firstName + '&lastName=' + user.lastName + '&email=' + user.email +
-            '&password=' + user.password + '&phone=' + user.phone + '&summary=' + user.summary, data)
-            .then((resp) => {
-                console.log(resp)
-                window.localStorage.setItem("token", resp.data.token);
-                window.location = '/checkout'
-            }).catch((error) => {
-                console.error(error);
-            })
+            let data = new FormData();
+            data.append("imgFile", user.file)
+            axios.post('api/customers/register?firstName=' + user.firstName + '&lastName=' + user.lastName + '&email=' + user.email +
+                '&password=' + user.password + '&phone=' + user.phone + '&summary=' + user.summary, data)
+                .then((resp) => {
+                    console.log(resp)
+                    window.localStorage.setItem("token", resp.data.token);
+                    window.location = '/checkout'
+                }).catch((error) => {
+                    console.error(error);
+                })
+        }
+    }
+
+    enterPressed(event) {
+        var code = event.keyCode || event.which;
+        if (code === 13) {
+            this.verifyAccount();
+        }
+    }
+
+    createNotification = type => {
+        return () => {
+            switch (type) {
+                case "error":
+                    NotificationManager.error("Please try again", "Invalid verification code", 2500);
+                    break;
+            };
         }
     }
 
@@ -63,6 +81,7 @@ export default class VerifyAccount extends Component {
                             placeholder='0000'
                             name='code'
                             onChange={this.handleChange}
+                            onKeyPress={this.enterPressed.bind(this)}
                         />
                     </InputGroup>
                     <p>We sent a 4 digit confirmation code to<br />
@@ -79,6 +98,17 @@ export default class VerifyAccount extends Component {
                         </Button>
                     }
                 </div>
+
+                <button
+                    className="btn btn-danger"
+                    onClick={this.createNotification("error")}
+                    ref={ref => (this.error = ref)}
+                    style={{ display: "none" }}
+                >
+                    Error
+        </button>
+
+                <NotificationContainer />
             </ReactCSSTransitionGroup>
         )
     }

@@ -5,7 +5,6 @@ import jwt_decode from 'jwt-decode'
 import Moment from 'react-moment';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { SocialIcon } from 'react-social-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -49,6 +48,12 @@ export default class Profile extends Component {
         this.setState({ [name]: !this.state[name] });
     }
 
+    // Handles social media links
+    handleLinks = e => {
+        let name = e.target.alt
+        if (name === 'instagram' || name === 'twitter') window.open(`http://www.${name}.com/${this.state.user[name].replace('@', '')}`)
+        else window.open(this.state.user[name])
+    }
 
     render() {
 
@@ -79,12 +84,22 @@ export default class Profile extends Component {
                                 <p>{user.title}</p>
                             </div>
                             <div className='social'>
-                                {/* {user.instagram ? <SocialIcon url={user.instagram} /> : <span></span>} */}
-                                {user.facebook ? <SocialIcon url={user.facebook} /> : <span></span>}
-                                {user.twitter ? <SocialIcon url={user.twitter} /> : <span></span>}
-                                {user.linkedIn ? <SocialIcon url={user.linkedIn} /> : <span></span>}
-                                {user.whatsapp ? <SocialIcon url={user.whatsapp} /> : <span></span>}
-                                {user.website ? <SocialIcon url={user.website} /> : <span></span>}
+                                {user.instagram ?
+                                    <img src={require(`../../images/instagram.png`)} alt='instagram' onClick={this.handleLinks} />
+                                    : <span></span>
+                                }
+                                {user.facebook ?
+                                    <img src={require(`../../images/facebook.png`)} alt='facebook' onClick={this.handleLinks} />
+                                    : <span></span>
+                                }
+                                {user.twitter ?
+                                    <img src={require(`../../images/twitter.png`)} alt='twitter' onClick={this.handleLinks} />
+                                    : <span></span>
+                                }
+                                {user.linkedIn ?
+                                    <img src={require(`../../images/linkedIn.png`)} alt='linkedIn' onClick={this.handleLinks} />
+                                    : <span></span>
+                                }
                             </div>
                         </div>
 

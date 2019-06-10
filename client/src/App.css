@@ -164,11 +164,17 @@ form.login {
 }
 
 .textOverlay {
+  width: 100%;
   position: absolute;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.textOverlay .input-group {
+  width: 70% !important;
+  margin: 10px auto
 }
 
 /* FontAwesome */
@@ -341,6 +347,16 @@ div.page p {
   font-size: 15px
 }
 
+.subscription-plan .btn-light {
+  margin-bottom: 25px !important;
+  cursor: pointer
+}
+
+.subscription-plan .btn-light.focus {
+  background: #01ae63;
+  color: #fff;
+}
+
 /* Custom Input */
 
 .verificationInput {
@@ -488,10 +504,8 @@ div.page p {
 }
 
 /* Social Media */
+.social img {width: 40px; margin: 0 5px; cursor: pointer}
 
-.social a {
-  margin: 0 5px
-}
 
 /* Stripe */
 
@@ -637,8 +651,10 @@ form.stripe button {
   width: 36px;
   height: 30px;
   right: 36px;
-  top: 20px;
+  top: 20px
 }
+
+.bm-burger-button button {margin: 0 !important}
 
 /* Color/shape of burger icon bars */
 
@@ -714,6 +730,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-item-list {
   color: #000b00;
   padding: 0.8em;
+}
+
+.bm-item:focus {
+  outline: none
 }
 
 /* Individual item */

@@ -3,7 +3,8 @@ const db = require("../models");
 const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
-
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const auth = require("../controllers/auth");
 
 const multer = require("multer");
@@ -53,6 +54,26 @@ switch (process.env.NODE_ENV) {
 }
 
 const role = "user";
+
+// Check if user already exists in database
+router.post('/verify', (req, res) => {
+
+  db.User.findOne({
+    where: {
+      [Op.or]: [{ email: req.query.email }, { phone: req.query.phone }]
+    }
+  })
+    .then(function (resp) {
+      console.log("RESP", resp)
+      if (resp) res.status(200).json({ message: 'Duplicate user found', response: resp})
+      else res.status(200).json({ message: 'No user data found', response: resp})
+
+    })
+    .catch(function (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error.", error: err });
+    });
+})
 
 // Register a new user
 router.post("/register", upload.single("imgFile"), (req, res) => {

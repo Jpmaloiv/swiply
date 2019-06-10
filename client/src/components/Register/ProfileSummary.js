@@ -12,6 +12,13 @@ export default class VerifyAccount extends Component {
         this.props.setState({ [e.target.name]: e.target.value });
     };
 
+    enterPressed(event) {
+        var code = event.keyCode || event.which;
+        if (code === 13) {
+            this.next.click()
+        }
+    }
+ 
 
     render() {
         return (
@@ -19,7 +26,7 @@ export default class VerifyAccount extends Component {
                 <div className='center'>
                     <h3>Create a profile summary</h3>
                     <br />
-                    <Form style={{paddingTop: 0, paddingBottom: 0}}>
+                    <Form style={{ paddingTop: 0, paddingBottom: 0 }}>
                         <Form.Group>
                             <Form.Label>Content Provider Summary</Form.Label>
                             <Form.Control
@@ -28,6 +35,7 @@ export default class VerifyAccount extends Component {
                                 placeholder='I grew up in Arizona and moved to SF when I was 5...'
                                 name='summary'
                                 onChange={this.handleChange}
+                                onKeyPress={this.enterPressed.bind(this)}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -38,11 +46,13 @@ export default class VerifyAccount extends Component {
                                 placeholder='Add a category'
                                 name='category'
                                 onChange={this.handleChange}
+                                onKeyPress={this.enterPressed.bind(this)}
+
                             />
                         </Form.Group>
                     </Form>
 
-                    <Button variant='success' size='lg' onClick={() => this.props.setState({ view: 'SubscriptionPlan' })}>
+                    <Button variant='success' size='lg' onClick={() => this.props.setState({ view: 'SubscriptionPlan' })} ref={ref => (this.next = ref)}>
                         Next
                 </Button>
                 </div>

@@ -1,9 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { Component } from "react";
+
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+
+
 
 export default class CreateAccount extends Component {
   constructor(props) {
@@ -16,6 +20,32 @@ export default class CreateAccount extends Component {
         window.localStorage.clear();
       }
     }
+  }
+
+  /* Checks to see if user already exists in database */
+  verifyUser() {
+
+    // Validates email
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.props.state.email)) {
+      this.invalidEmail.click()
+      return
+    }
+
+    if (this.props.state.password !== this.props.state.confirmpw) {
+      this.passwordMismatch.click()
+      return
+    }
+
+    axios.post(`api/users/verify?email=${this.props.state.email}&phone=${this.props.state.phone}`)
+      .then(resp => {
+        console.log(resp)
+        if (resp.data.response) this.duplicateUser.click();
+        else this.verifyPhone()
+      })
+      .catch(err => {
+        console.error(err)
+      })
+
   }
 
   /* Sends a verification code via SMS */
@@ -32,6 +62,7 @@ export default class CreateAccount extends Component {
       })
       .catch(error => {
         console.error(error);
+        this.invalidPhone.click()
       });
   }
 
@@ -52,6 +83,37 @@ export default class CreateAccount extends Component {
       });
     }
   };
+
+  enterPressed(event) {
+    const user = this.props.state
+    if (user.email && user.password && user.confirmpw && user.phone) {
+      var code = event.keyCode || event.which;
+      if (code === 13) {
+
+        this.verifyUser();
+      }
+    }
+  }
+
+  createNotification = type => {
+    return () => {
+      switch (type) {
+        case "duplicateUser":
+          NotificationManager.error("Please log in", "User already exists", 2500);
+          break;
+        case "passwordMismatch":
+          NotificationManager.warning("Passwords do not match", 'Error creating account')
+          break;
+        case "invalidEmail":
+          NotificationManager.error("Please try again", "Invalid email ", 2500);
+          break;
+        case "invalidPhone":
+          NotificationManager.error("Please try again", "Invalid phone number", 2500);
+          break;
+      };
+    };
+  }
+
 
   render() {
 
@@ -94,17 +156,7 @@ export default class CreateAccount extends Component {
                 />
               </div>
             ) : (
-                // <FontAwesomeIcon
-                //   icon="user-plus"
-                //   size="2x"
-                //   color="white"
-                //   style={{ opacity: 0.8 }}
-                //   onClick={() => {
-                //     this.upload.click();
-                //   }}
-                // />
-                <img src={require(`../../images/profile-image.png`)} alt='Profile image' onClick={() => this.upload.click()} style={{ cursor: 'pointer' }} />
-
+                <img src={require(`../../images/profile-image.png`)} alt='Profile image' style={{ cursor: 'pointer' }} />
               )}
           </div>
           {this.props.state.image ? (
@@ -118,81 +170,89 @@ export default class CreateAccount extends Component {
         <div className="center" style={{ textAlign: 'initial' }}>
 
           <Form>
-              <Form.Group>
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  placeholder="First Name"
-                  name="firstName"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  placeholder="Last Name"
-                  name="lastName"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Email Address</Form.Label>
-                <input
-                  type='email'
-                  style={{ display: 'none' }}
-                  placeholder="Email Address"
-                  value={this.state.email}
+            <Form.Group>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                placeholder="First Name"
+                name="firstName"
+                onChange={this.handleChange}
+                onKeyPress={this.enterPressed.bind(this)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                placeholder="Last Name"
+                name="lastName"
+                onChange={this.handleChange}
+                onKeyPress={this.enterPressed.bind(this)}
 
-                  name="email"
-                  onChange={this.handleChange}
-                  autoComplete='pseudo'
-                />
-                <Form.Control
-                  type='email'
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Email Address</Form.Label>
+              <input
+                type='email'
+                style={{ display: 'none' }}
+                placeholder="Email Address"
+                value={this.state.email}
+                name="email"
+                onChange={this.handleChange}
+                autoComplete='pseudo'
+              />
+              <Form.Control
+                type='email'
 
-                  placeholder="Email Address"
-                  value={this.state.email}
-                  name="email"
-                  onChange={this.handleChange}
-                  autoComplete="nope"
-                />
-              </Form.Group>
+                placeholder="Email Address"
+                value={this.state.email}
+                name="email"
+                onChange={this.handleChange}
+                autoComplete="nope"
+                onKeyPress={this.enterPressed.bind(this)}
+              />
+            </Form.Group>
 
-              <Form.Group>
-                <Form.Label>Password</Form.Label>
-                <input type="password" name="pwd" autocomplete="new-password" style={{ display: 'none' }}></input>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <input type="password" name="pwd" autocomplete="new-password" style={{ display: 'none' }}></input>
 
 
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={this.handleChange}
-                  autoComplete='off'
-                />
-              </Form.Group>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={this.handleChange}
+                autoComplete='off'
+                onKeyPress={this.enterPressed.bind(this)}
 
-              <Form.Group>
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="confirmpw"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
+              />
+            </Form.Group>
 
-              <Form.Group>
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                  placeholder="Phone Number"
-                  name="phone"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
+            <Form.Group>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmpw"
+                onChange={this.handleChange}
+                onKeyPress={this.enterPressed.bind(this)}
+              />
+            </Form.Group>
 
-              <Form.Group>
-                <Form.Check type="checkbox" label="Remember me" style={{ textAlign: 'center' }} />
-              </Form.Group>
+            <Form.Group>
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                placeholder="Phone Number"
+                name="phone"
+                onChange={this.handleChange}
+                onKeyPress={this.enterPressed.bind(this)}
+
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Check type="checkbox" label="Remember me" style={{ textAlign: 'center' }} />
+            </Form.Group>
           </Form>
 
           {this.props.state.customer ? (
@@ -222,11 +282,48 @@ export default class CreateAccount extends Component {
             variant="success"
             size="lg"
             style={{ display: 'block' }}
-            onClick={this.verifyPhone.bind(this)}
+            onClick={this.verifyUser.bind(this)}
+            disabled={!this.props.state.email || !this.props.state.password || !this.props.state.confirmpw || !this.props.state.phone}
           >
             Continue
           </Button>
         </div>
+
+        <button
+          className="btn btn-danger"
+          onClick={this.createNotification("invalidEmail")}
+          ref={ref => (this.invalidEmail = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+        <button
+          className="btn btn-danger"
+          onClick={this.createNotification("invalidPhone")}
+          ref={ref => (this.invalidPhone = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+        <button
+          className="btn btn-warning"
+          onClick={this.createNotification("passwordMismatch")}
+          ref={ref => (this.passwordMismatch = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+        <button
+          className="btn btn-danger"
+          onClick={this.createNotification("duplicateUser")}
+          ref={ref => (this.duplicateUser = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+
+        <NotificationContainer />
+
       </ReactCSSTransitionGroup>
     );
   }

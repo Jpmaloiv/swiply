@@ -25,6 +25,11 @@ export default class Navigation extends Component {
         this.setState({ menuOpen: state.isOpen })
     }
 
+    // Redirect to root path if not already there
+    handleSwitch() {
+        if (window.location.href !== window.location.origin + '/') window.location = window.location.origin
+    }
+
     closeMenu() {
         console.log("HERE")
         this.setState({ menuOpen: false })
@@ -48,7 +53,7 @@ export default class Navigation extends Component {
                             alt='PV3'
                         /> */}
                         {role === 'customer' ?
-                            <h6 style={{color: 'initial', marginLeft: 25}}>Welcome,<br />{firstName}</h6>
+                            <h6 style={{ color: 'initial', marginLeft: 25 }}>Welcome,<br />{firstName}</h6>
                             :
                             <h1 className='logo'>Swiply</h1>
                         }
@@ -177,7 +182,7 @@ export default class Navigation extends Component {
                         {this.props.login ?
                             <div className='link' onClick={() => this.props.setState({ login: false })} style={{ padding: '0 30px' }}>Register</div>
                             :
-                            <div className='link' onClick={() => this.props.setState({ login: true })} style={{ padding: '0 30px' }}>Sign In</div>
+                            <div className='link' onClick={() => this.props.setState({ login: true }, this.handleSwitch)} style={{ padding: '0 30px' }}>Sign In</div>
                         }
 
                     </div>
