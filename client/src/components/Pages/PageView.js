@@ -407,13 +407,12 @@ export default class PageView extends Component {
                                         <div style={{ display: 'flex', padding: 7.5 }}>
                                             {content.type === 'video'
                                                 ? <img src={`https://img.youtube.com/vi/${content.link}/0.jpg`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
-                                                : <FontAwesomeIcon icon='file' size='4x' style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                                                : <img src={require(`../../images/file.png`)} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
                                             }
                                             <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
                                                 <div>
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <p style={{ fontSize: 18 }}>{content.name}</p>
-                                                        <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>

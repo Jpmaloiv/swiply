@@ -45,6 +45,7 @@ router.post('/add', upload.single('imgFile'), (req, res) => {
     description: req.query.description,
     link: link,
     type: req.query.type,
+    fileLink: req.query.fileLink,
     PageId: req.query.pageId
   }
 

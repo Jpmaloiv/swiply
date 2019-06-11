@@ -233,6 +233,7 @@ class Checkout extends Component {
             <div>
                 <script src="https://js.stripe.com/v3/"></script>
                 <body>
+                    <h2 style={{margin: '25px auto', textAlign: 'center'}}>Checkout</h2>
                     <form className='stripe'>
                         <label>
                             <span>Name</span>
@@ -246,7 +247,7 @@ class Checkout extends Component {
                             <span>Note to Seller</span>
                             <input name="address-zip" class="field" placeholder="Hey! Looking forward to viewing..." />
                         </label>
-                        <label style={{display: 'none'}}>
+                        <label style={{ display: 'none' }}>
                             <div id="card-element" class="field"></div>
                         </label>
 
@@ -254,7 +255,7 @@ class Checkout extends Component {
 
 
 
-                        <button type="submit" onClick={this.handleSubmit.bind(this)} style={{width: '70%'}}>Pay ${page.price}</button>
+                        <button type="submit" onClick={this.handleSubmit.bind(this)} style={{ width: '70%' }}>Pay ${page.price}</button>
 
                         <div class="outcome">
                             <div class="error"></div>

@@ -102,6 +102,7 @@ export default class AddPage extends Component {
                                         name='name'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
+                                        autoFocus
                                     />
                                 </InputGroup>
                                 :
@@ -112,11 +113,12 @@ export default class AddPage extends Component {
                             }
                             {this.state.descriptionEdit ?
                                 <FormControl
-                                    style={{ width: 'initial' }}
+                                    style={{ width: 'initial', margin: '0 auto' }}
                                     placeholder={this.state.description}
                                     name='description'
                                     onChange={this.handleChange}
                                     onBlur={this.handleEditing}
+                                    autoFocus
                                 />
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -138,6 +140,7 @@ export default class AddPage extends Component {
                                         name='summary'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
+                                        autoFocus
                                     />
                                 </InputGroup>
                                 :

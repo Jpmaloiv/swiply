@@ -11,6 +11,9 @@ module.exports = function (sequelize, DataTypes) {
         },
         type: {
             type: DataTypes.STRING
+        },
+        fileLink: {
+            type: DataTypes.STRING
         }
     },
         {

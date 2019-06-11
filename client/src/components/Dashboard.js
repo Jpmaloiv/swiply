@@ -47,13 +47,13 @@ export default class Dashboard extends Component {
         }
     }
 
-    sortDates = () => {
-        function date(a, b) {
-            var dateA = new Date(a.date).getTime();
-            var dateB = new Date(b.date).getTime();
-            return dateA > dateB ? 1 : -1;
-        };
-        this.state.pages.sort(date)
+    sortDates() {
+        console.log(this.state.pages)
+        var pageList = this.state.pages.sort(function (a, b) {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          });
+        console.log(this.state.pages, pageList)
+
         this.setState({
             pages: this.state.pages
         })
@@ -154,8 +154,8 @@ export default class Dashboard extends Component {
                         <div className='page-controls'>
                             <div>
                                 <DropdownButton className='plain' title="Popular Pages" variant='secondary'>
-                                    <Dropdown.Item onClick={this.sortDates} href="#/action-1">Date Published</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortCount} href="#/action-2">Highest Rated</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortDates.bind(this)} >Date Published</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortCount}>Highest Rated</Dropdown.Item>
                                     <Dropdown.Item
                                         // onClick={this.sortRating}
                                         href="#/action-3">Most Content</Dropdown.Item>

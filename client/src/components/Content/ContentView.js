@@ -61,8 +61,10 @@ export default class ContentView extends Component {
                   {ReactHtmlParser(this.state.embed)}
                   </div>
                   <div style={{textAlign: 'left' }} >
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                   <h4>{this.state.content.name}</h4>
-                    <h5 style={{ display: "flex" }}>Content Summary</h5>
+                  <h6>{Math.floor(1000 + Math.random() * 1000)} Views</h6>
+                  </div>
                     {this.state.summaryEdit ? (
                       <InputGroup>
                         <FormControl

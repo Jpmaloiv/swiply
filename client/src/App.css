@@ -172,10 +172,8 @@ form.login {
   text-align: center;
 }
 
-.textOverlay .input-group {
-  width: 70% !important;
-  margin: 10px auto
-}
+.textOverlay .input-group {max-width: 50%; margin: 5px auto}
+.textOverlay input {margin: 5px auto}
 
 /* FontAwesome */
 
@@ -427,7 +425,11 @@ div.page p {
   background-color: transparent !important;
   border-color: transparent !important;
 }
-.dropdown.ellipsis .dropdown-item:active {background-color: initial; color: initial}
+
+.dropdown.ellipsis .dropdown-item:active {
+  background-color: initial;
+  color: initial
+}
 
 .show>.btn-secondary.dropdown-toggle {
   background-color: #02ae63 !important;
@@ -543,41 +545,12 @@ div.page p {
   cursor: pointer
 }
 
-/* Stripe */
-
-/* @font-face {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  src: local("Open Sans"), local("OpenSans"), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format("woff2");
-  unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-
-* {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 15px;
-  font-variant: normal;
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  height: 100%;
-}
-*/
-
-/* body {
-  background: #F6F9FC;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100%;
-} */
-
 form.stripe {
   background: #F6F9FC;
   width: 480px;
   padding: 0;
   margin: 50px auto;
+  margin-top: 0;
   padding: 35px;
   box-shadow: 0 5px 15px #e2e2e2;
 }
@@ -588,7 +561,7 @@ form.stripe label {
   font-weight: 400;
   height: 48px;
   line-height: 48px;
-  margin-bottom: 10px;
+  margin: 20px 0;
   display: flex;
   flex-direction: row;
 }
@@ -602,7 +575,7 @@ label>span {
   box-sizing: border-box;
   font-weight: 400;
   border: 1px solid #CFD7DF;
-  border-radius: 24px;
+  border-radius: .25rem;
   color: #32315E;
   outline: none;
   flex: 1;
@@ -626,10 +599,10 @@ label>span {
 
 form.stripe button {
   display: block;
-  background-image: linear-gradient(-180deg, #63f8b3 0%, #01ae63 100%);
+  background-color: #01ae63;
+  border-radius: .25rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 0 #45e59b;
   color: white;
-  border-radius: 24px;
   border: 0;
   margin-top: 20px;
   font-size: 17px;
@@ -874,6 +847,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .textOverlay button {
     width: 235px;
     font-size: 16px
+  }
+  .textOverlay .input-group {
+    width: 70% !important;
+    margin: 10px auto
   }
   .page-name {
     font-size: 28px !important
