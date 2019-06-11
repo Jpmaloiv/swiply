@@ -291,6 +291,7 @@ div.page p {
 
 .image-change_icon {
   position: absolute;
+  z-index: 10;
   bottom: 45px;
   right: 95px
 }
@@ -396,6 +397,37 @@ div.page p {
 .dropdown.plain .dropdown-menu {
   width: 100%
 }
+
+.dropdown.ellipsis button {
+  width: initial;
+  margin: 0 !important;
+  padding: 0;
+  background: none;
+  border: none
+}
+
+.dropdown.ellipsis .dropdown-toggle:after {
+  display: none
+}
+
+.dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:focus, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:hover, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:active {
+  background-color: transparent;
+  border-color: transparent !important;
+  box-shadow: none !important
+}
+
+.dropdown.ellipsis .btn-primary.focus, .btn-primary:focus {
+  background-color: transparent;
+  border-color: transparent !important;
+  box-shadow: none !important
+}
+
+.dropdown.ellipsis .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  box-shadow: none !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+.dropdown.ellipsis .dropdown-item:active {background-color: initial; color: initial}
 
 .show>.btn-secondary.dropdown-toggle {
   background-color: #02ae63 !important;
@@ -504,8 +536,12 @@ div.page p {
 }
 
 /* Social Media */
-.social img {width: 40px; margin: 0 5px; cursor: pointer}
 
+.social img {
+  width: 40px;
+  margin: 0 5px;
+  cursor: pointer
+}
 
 /* Stripe */
 
@@ -654,7 +690,9 @@ form.stripe button {
   top: 20px
 }
 
-.bm-burger-button button {margin: 0 !important}
+.bm-burger-button button {
+  margin: 0 !important
+}
 
 /* Color/shape of burger icon bars */
 
@@ -905,8 +943,12 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .profile-tabs {
     display: inline-flex !important
   }
-  .profile-tabs button {margin-bottom: 0 !important}
-  .public-profile .center {margin-bottom: 0}
+  .profile-tabs button {
+    margin-bottom: 0 !important
+  }
+  .public-profile .center {
+    margin-bottom: 0
+  }
   .editProfile .center {
     width: 100%;
     margin: 0

@@ -19,7 +19,7 @@ router.post("/send", (req, res) => {
   auth.verifyPhone(req, res);
 });
 
-// Verify if user login
+// User login
 router.post("/login", (req, res) => {
 
   const { password, role } = req.query;
@@ -31,19 +31,21 @@ router.post("/login", (req, res) => {
       }
     })
       .then(function (resp) {
-        console.log("RESP", resp)
-        //login
-        var inputHash = getHash(password, resp.salt);
-        console.log(inputHash.toString(), resp.hash);
-        if (inputHash === resp.hash) {
-          res.json({ success: true, token: auth.generateJWT(resp, role) });
+        if (resp) {
+          let inputHash = getHash(password, resp.salt);
+          console.log(inputHash.toString(), resp.hash);
+          if (inputHash === resp.hash) {
+            res.json({ success: true, token: auth.generateJWT(resp, role) });
+          } else {
+            res.json({ success: false, message: 'User not found' })
+          }
         } else {
-          return res.status(400).end("Wrong Password");
+          res.json({ success: false, message: 'User not found' })
         }
       })
       .catch(function (err) {
         console.log(err);
-        res.status(500).json({ message: "User not found", error: err });
+        res.status(500).json({ message: "Internal server error.", error: err });
       });
   } else {
     db.Customer.findOne({
@@ -52,14 +54,16 @@ router.post("/login", (req, res) => {
       }
     })
       .then(function (resp) {
-        console.log("RESP-C", resp)
-        //login
-        var inputHash = getHash(password, resp.salt);
-        console.log(inputHash.toString(), resp.hash);
-        if (inputHash === resp.hash) {
-          res.json({ success: true, token: auth.generateJWT(resp, role) });
+        if (resp) {
+          let inputHash = getHash(password, resp.salt);
+          console.log(inputHash.toString(), resp.hash);
+          if (inputHash === resp.hash) {
+            res.json({ success: true, token: auth.generateJWT(resp, role) });
+          } else {
+            res.json({ success: false, message: 'Customer not found' })
+          }
         } else {
-          return res.status(400).end("Wrong Password");
+          res.json({ success: false, message: 'Customer not found' })
         }
       })
       .catch(function (err) {

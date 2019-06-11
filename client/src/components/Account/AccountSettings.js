@@ -66,6 +66,14 @@ export default class AccountSettings extends Component {
     this.state.user[e.target.name] = e.target.value;
   };
 
+  // Handles when the user presses 'Enter' on input fields
+  enterPressed(event) {
+    var code = event.keyCode || event.which;
+    if (code === 13) {
+      this.updateUser();
+    }
+  }
+
   // Preview image once seleted
   onImageChange = e => {
     const file = e.target.files[0];
@@ -172,7 +180,7 @@ export default class AccountSettings extends Component {
           <div className="center" style={{ textAlign: "initial", marginBottom: 0 }}>
             <h2 style={{ textAlign: "center" }}>Account Settings</h2>
 
-            <Form style={{ padding: "25px 75px" }}>
+            <Form style={{ padding: "25px 75px" }} autoComplete='off'>
               <div className="profilePic">
                 {user.imageLink ? (
                   <div>
@@ -235,6 +243,7 @@ export default class AccountSettings extends Component {
                   placeholder={user.firstName}
                   name="firstName"
                   onChange={this.handleChange}
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
               </Form.Group>
               <Form.Group>
@@ -243,6 +252,7 @@ export default class AccountSettings extends Component {
                   placeholder={user.lastName}
                   name="lastName"
                   onChange={this.handleChange}
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
               </Form.Group>
               <Form.Group>
@@ -265,7 +275,7 @@ export default class AccountSettings extends Component {
                   value={user.password}
                   name="oldPassword"
                   onChange={this.handleChange}
-                  autoComplete="nope"
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
 
               </Form.Group>
@@ -276,6 +286,7 @@ export default class AccountSettings extends Component {
                   placeholder="New Password"
                   name="password"
                   onChange={this.handleChange}
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
               </Form.Group>
               <Form.Group>
@@ -285,6 +296,7 @@ export default class AccountSettings extends Component {
                   placeholder="Confirm Password"
                   name="confirmpw"
                   onChange={this.handleChange}
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
               </Form.Group>
               {role === "user" ? (
@@ -294,6 +306,7 @@ export default class AccountSettings extends Component {
                     placeholder={user.title}
                     name="title"
                     onChange={this.handleChange}
+                    onKeyPress={this.enterPressed.bind(this)}
                   />
                 </Form.Group>
               ) : (
@@ -309,11 +322,26 @@ export default class AccountSettings extends Component {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Email</Form.Label>
+                <input
+                type='email'
+                style={{ opacity: 0 }}
+                placeholder="Email Address"
+                value={this.state.email}
+                name="email"
+                onChange={this.handleChange}
+                autoComplete='new-email'
+              />
+
                 <Form.Control
+                  type='email'
                   placeholder={user.email}
+                  value={this.state.email}
                   name="email"
                   onChange={this.handleChange}
+                  autoComplete='nope'
+                  onKeyPress={this.enterPressed.bind(this)}
                 />
+              
               </Form.Group>
               {role === "user" ? (
                 <Form.Group>
@@ -323,6 +351,7 @@ export default class AccountSettings extends Component {
                     placeholder={user.summary}
                     name="summary"
                     onChange={this.handleChange}
+                    onKeyPress={this.enterPressed.bind(this)}
                   />
                 </Form.Group>
               ) : (

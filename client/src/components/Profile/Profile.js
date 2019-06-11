@@ -16,7 +16,8 @@ export default class Profile extends Component {
             name: 'Page Name',
             description: 'Short Description',
             summary: 'Page Summary',
-            user: { firstName: '', lastName: '', Pages: [] }
+            user: { firstName: '', lastName: '', Pages: [] },
+            pages: []
         }
     }
 
@@ -29,11 +30,17 @@ export default class Profile extends Component {
                     user: resp.data.response[0],
                     background: `https://s3-us-west-1.amazonaws.com/${resp.data.bucket}/${resp.data.response[0].Pages[0].imageLink}` || '',
                     S3_BUCKET: resp.data.bucket
-                })
+                }, this.filterPublishedPages)
             })
             .catch((error) => {
                 console.error(error)
             })
+    }
+
+    filterPublishedPages() {
+        let {Pages} = this.state.user
+        let pages = Pages.filter(el => { return el.published == true})
+        this.setState({ pages: pages})
     }
 
 
@@ -114,7 +121,7 @@ export default class Profile extends Component {
 
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {this.state.user.Pages.map((page, i) =>
+                            {this.state.pages.map((page, i) =>
                                 <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
                                     <div key={i} className='page'>

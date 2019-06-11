@@ -54,7 +54,8 @@ export default class VerifyAccount extends Component {
     enterPressed(event) {
         var code = event.keyCode || event.which;
         if (code === 13) {
-            this.verifyAccount();
+            if (this.props.state.customer) this.register()
+            else this.verifyAccount();
         }
     }
 
@@ -70,6 +71,7 @@ export default class VerifyAccount extends Component {
 
 
     render() {
+        console.log(this.props.state)
 
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>

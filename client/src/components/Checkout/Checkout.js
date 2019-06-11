@@ -236,29 +236,25 @@ class Checkout extends Component {
                     <form className='stripe'>
                         <label>
                             <span>Name</span>
-                            <input name="cardholder-name" class="field" placeholder="Jane Doe" />
+                            <input name="cardholder-name" class="field" placeholder={this.state.decoded.name} />
                         </label>
                         <label>
                             <span>Phone</span>
                             <input class="field" placeholder="(123) 456-7890" type="tel" />
                         </label>
                         <label>
-                            <span>ZIP code</span>
-                            <input name="address-zip" class="field" placeholder="94110" />
+                            <span>Note to Seller</span>
+                            <input name="address-zip" class="field" placeholder="Hey! Looking forward to viewing..." />
                         </label>
-                        <label>
-                            <span>Card</span>
+                        <label style={{display: 'none'}}>
                             <div id="card-element" class="field"></div>
-                            {/* <CardElement id='card-element' class='field' onChange={this.handleChange} {...createOptions()} /> */}
-                            {/* <CardElement id='card-element' class='field' onChange={this.handleChange} {...createOptions()} /> */}
-
                         </label>
-                        <span>Card</span>
+
                         <CardElement id='card-element' className='field' onChange={this.handleChange} {...createOptions()} />
 
 
 
-                        <button type="submit" onClick={this.handleSubmit.bind(this)}>Pay $25</button>
+                        <button type="submit" onClick={this.handleSubmit.bind(this)} style={{width: '70%'}}>Pay ${page.price}</button>
 
                         <div class="outcome">
                             <div class="error"></div>

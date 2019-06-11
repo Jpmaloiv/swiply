@@ -295,7 +295,7 @@ export default class PageView extends Component {
 
 
                 <div style={{ width: '100%', borderBottom: '1px solid #ebecef' }}>
-                    <div className='main' style={{marginBottom: 0}}>
+                    <div className='main' style={{ marginBottom: 0 }}>
                         <div className='profile'>
                             {page.displayProfile ?
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -337,7 +337,7 @@ export default class PageView extends Component {
                 </div>
 
                 <div style={{ width: '100%', background: '#f9fafc' }}>
-                    <div className='main' style={{marginTop: 0}}>
+                    <div className='main' style={{ marginTop: 0 }}>
                         <div className='page-summary'>
                             <div style={this.state.summaryEdit ? { paddingRight: 35, width: '80%' } : { paddingRight: 35 }}>
                                 <div style={{ display: 'flex' }}>

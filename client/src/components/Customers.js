@@ -43,7 +43,6 @@ export default class CustomerList extends Component {
   enterPressed(event) {
     var code = event.keyCode || event.which;
     if (code === 13) {
-      //13 is the enter keycode
       this.searchQuery();
     }
   }

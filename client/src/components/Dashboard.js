@@ -3,11 +3,13 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Moment from 'react-moment';
 import { NavLink } from 'react-router-dom';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 
 
@@ -38,6 +40,12 @@ export default class Dashboard extends Component {
                 console.error(error)
             })
     };
+
+    componentDidUpdate(prevState) {
+        if (prevState.copiedPage !== this.state.copiedPage) {
+            this.copied.click()
+        }
+    }
 
     sortDates = () => {
         function date(a, b) {
@@ -71,8 +79,49 @@ export default class Dashboard extends Component {
     //         })
     //     }
 
+    createNotification(type) {
+        const image =
+            <div style={{ display: 'flex', alignItems: 'center' }}><img className='profilePic' src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${this.state.copiedImage}`} style={{ width: 50, height: 50, objectFit: 'cover', marginLeft: 0, marginRight: 5 }} />
+                <span>{this.state.copiedPage}</span>
+            </div>
+
+        return () => {
+            switch (type) {
+                case "copied":
+                    NotificationManager.info(image, "Link copied to clipboard", 25000);
+                    console.log(this.state)
+                    break;
+            };
+        };
+    }
+
+    // Publishes or unpublishes the selected page
+    handlePublish(page) {
+        axios.put(`/api/pages/update?id=${page.id}&published=${!page.published}`)
+            .then(res => {
+                console.log(res)
+                window.location.reload();
+            }).catch(err => {
+                console.error(err);
+            })
+    }
+
+    // Deletes the selected page
+    deletePage(page) {
+        if (window.confirm(`Delete page ${page.name}?`)) {
+            axios.delete(`/api/pages/delete?id=${page.id}`)
+                .then(res => {
+                    console.log(res)
+                    window.location.reload();
+                }).catch(err => {
+                    console.error(err);
+                })
+        }
+    }
+
 
     render() {
+
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='main'>
@@ -141,7 +190,24 @@ export default class Dashboard extends Component {
                                                         <div>
                                                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                                 <p style={{ fontSize: 18 }}>{page.name}</p>
-                                                                <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
+                                                                <Dropdown className='ellipsis' onClick={e => e.preventDefault()}>
+                                                                    <Dropdown.Toggle>
+                                                                        <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
+                                                                    </Dropdown.Toggle>
+
+                                                                    <Dropdown.Menu>
+                                                                        <Dropdown.Item onClick={() => window.location = `/pages/${page.id}`}>Edit/Preview</Dropdown.Item>
+                                                                        <CopyToClipboard
+                                                                            text={`${window.location.href}pages/${page.id}`}
+                                                                            onCopy={() => this.setState({ copiedPage: page.name, copiedImage: page.imageLink })}
+                                                                            style={{ cursor: "pointer" }}
+                                                                        >
+                                                                            <Dropdown.Item>Share</Dropdown.Item>
+                                                                        </CopyToClipboard>
+                                                                        <Dropdown.Item onClick={() => this.handlePublish(page)}>{page.published ? 'Unpublish' : 'Publish'}</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => this.deletePage(page)}>Delete</Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
                                                             </div>
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>
@@ -160,6 +226,17 @@ export default class Dashboard extends Component {
                         </div>
                     </div >
                 </div>
+
+                <button
+                    className="btn btn-info"
+                    onClick={this.createNotification("copied")}
+                    ref={ref => (this.copied = ref)}
+                    style={{ display: "none" }}
+                >
+                    Info
+        </button>
+
+                <NotificationContainer />
             </ReactCSSTransitionGroup >
         )
     }

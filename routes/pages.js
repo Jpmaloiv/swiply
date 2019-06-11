@@ -96,6 +96,7 @@ router.get('/search', (req, res) => {
 
 router.put('/update', upload.single('imgFile'), (req, res) => {
 
+  console.log("UPDATE", req.query)
   upload.single('imgFile')
 
   const page = {
@@ -113,19 +114,37 @@ router.put('/update', upload.single('imgFile'), (req, res) => {
   let AWS = 'N/A'
   if (req.file) AWS = 'Image uploaded!'
 
+  console.log("PAGE", page)
   // Increment page view count
-  if (req.query.view) db.Page.increment('views', { where: { id: req.query.id }})
+  if (req.query.view) db.Page.increment('views', { where: { id: req.query.id } })
 
   db.Page.update(page, { where: { id: req.query.id } })
     .then(resp => {
       res.status(200);
-      res.json({ success: true, message: 'Page created!', AWS: AWS });
+      res.json({ success: true, message: 'Page updated!', AWS: AWS });
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: "Internal server error.", error: err });
     })
 })
+
+
+router.delete("/delete", (req, res) => {
+
+  db.Page.destroy({
+    where: {
+      id: req.query.id
+    }
+  })
+    .then(function (resp) {
+      res.json({ success: true });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).end(err.toString());
+    });
+});
 
 
 module.exports = router;

@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { NotificationContainer, NotificationManager } from "react-notifications";
+
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import FormControl from "react-bootstrap/FormControl";
@@ -15,12 +17,22 @@ export default class Login extends Component {
     this.props.setState({ [e.target.name]: e.target.value });
   };
 
+  // Handles when the user presses 'Enter' on input fields
   enterPressed(event) {
     var code = event.keyCode || event.which;
     if (code === 13) {
-      //13 is the enter keycode
       this.login();
     }
+  }
+
+  createNotification = type => {
+    return () => {
+      switch (type) {
+        case "error":
+          NotificationManager.error("Please try again", "Invalid information", 2500);
+          break;
+      };
+    };
   }
 
   login() {
@@ -31,13 +43,10 @@ export default class Login extends Component {
       .then(resp => {
         console.log(resp);
         if (resp.data.success === true) {
-          // this.props.setState({
-          //     view: 'VerifyAccount'
-          // })
           window.localStorage.setItem("token", resp.data.token);
           window.location.reload();
         } else {
-          window.alert("Invalid login information. Please try again");
+          this.error.click()
         }
       })
       .catch(error => {
@@ -73,7 +82,7 @@ export default class Login extends Component {
             </Button>
           </ButtonGroup>
           <br />
-          <h3 style={{padding: "5% 0"}}>Welcome Back</h3>
+          <h3 style={{ padding: "5% 0" }}>Welcome Back</h3>
           <InputGroup
             style={{
               display: "flex",
@@ -86,6 +95,7 @@ export default class Login extends Component {
               placeholder="Enter Email Address"
               name="email"
               onChange={this.handleChange}
+              onKeyPress={this.enterPressed.bind(this)}
             />
           </InputGroup>
           <InputGroup
@@ -104,20 +114,22 @@ export default class Login extends Component {
               onKeyPress={this.enterPressed.bind(this)}
             />
           </InputGroup>
-          {/* <InputGroup> */}
-          {/* <FormControl
-                            className='verificationInput'
-                            placeholder='+1 000 000 0000'
-                            name='phone'
-                            onChange={this.handleChange}
-                        />
-                    </InputGroup> */}
-          {/* <p>Please enter your phone number to sign in.</p> */}
 
           <Button variant="success" size="lg" onClick={this.login.bind(this)}>
             Continue
           </Button>
         </div>
+
+        <button
+          className="btn btn-danger"
+          onClick={this.createNotification("error")}
+          ref={ref => (this.error = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+
+        <NotificationContainer />
       </ReactCSSTransitionGroup>
     );
   }
