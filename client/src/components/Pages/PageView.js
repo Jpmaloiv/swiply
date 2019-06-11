@@ -305,16 +305,22 @@ export default class PageView extends Component {
                                             <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}</h5>
                                             <p className='title'><i>{user.title}</i></p>
                                         </div>
+
                                         <div>
-                                            <NavLink to={`/account/${this.state.decoded.id}`}>
-                                                <Button
-                                                    size='sm'
-                                                    style={{ width: 76, border: '1px solid #DFE1E6', borderRadius: 2, backgroundColor: 'transparent', color: '#181818' }}
-                                                >
-                                                    EDIT
-                                        </Button>
-                                            </NavLink>
+                                            {edit ?
+                                                <NavLink to={`/account/${this.state.decoded.id}`}>
+                                                    <Button
+                                                        size='sm'
+                                                        style={{ width: 76, border: '1px solid #DFE1E6', borderRadius: 2, backgroundColor: 'transparent', color: '#181818' }}
+                                                    >
+                                                        EDIT
+                                                </Button>
+                                                </NavLink>
+                                                :
+                                                <span></span>
+                                            }
                                         </div>
+
                                     </div>
                                     <p className='profile-summary'>{user.summary}</p>
 
