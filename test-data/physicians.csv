@@ -1,0 +1,12 @@
+id,firstName,lastName,group,rep,specialization,DEA,NPI,phone,fax,email,contact,addressStreet,addressCity,addressState,addressZipCode,physicianWarning,createdAt,updatedAt
+1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0000-00-00 00:00:00","0000-00-00 00:00:00"
+3,Roger,Klein,"Avera Med",ray,Pulmonology,345345,34534,3242343243,8884732963,8884732963,roger123,"435 Alicia Pkwy.","Aliso Viejo",AR,93845,"Always notify Deborah before doing this","2018-11-02 20:52:53","2019-03-12 21:20:37"
+5,Ray,Shirv,"Glendale Hospital","Arsen Jones",Hospital,89345,7890,7663453256,232456466,232456466,ray123,"124 S Glendale Ave.",Glendale,CA,91202,Don't,"2018-11-06 01:13:39","2018-11-12 23:45:25"
+6,Bob,Lupo,"Hill Valley Medical","Arsen Jones","Infectious Disease",23432,234324,679897975,999797977,999797977,bob123,"2340 Baltimore Ave.","Long Beach",CA,93935,"Don't let him prescribe this","2018-11-06 01:15:39","2018-11-12 23:13:38"
+7,James,King,"King Medical","Veronica Fletcher",Pulmonology,807087,878979,899789908,786969678,786969678,king123,"93029 Lakeshore Blvd.","Santa Monica",CA,93847,"Just don't","2018-11-06 01:16:44","2018-11-12 23:45:45"
+8,Renee,Md,"Watts Health Care","Veronica Fletcher",,FR123458,1234567,2131111111,2132222222,2132222222,Renee,"123 Street Ave",Street,CA,90032,"Yes you are","2018-11-14 19:07:06","2018-11-18 21:15:08"
+9,Raymond,Shirvanyan,"SortPak Group","Sos A","Internal Medicine",12345,67890,8181112222,8182221111,8182221111,Hello,"124 Street Ave",Glendale,CA,91205,"i am here","2018-11-15 03:31:28","2019-03-08 03:07:14"
+10,Arsen,Kurginyan,"SortPak Group","Veronica Fletcher","Home Health",55778,574,5225555,84542,84542,,"124 Street Ave",Glendale,CA,91205,Hello,"2018-11-15 03:32:54","2018-11-15 03:37:59"
+23,"Liviu ",Pasaboc,"Stockdale Podiatry","Michael Nyman",,,,,,,,"1519 Garces Hwy Ste 201",Delano,CA,,,"2018-11-18 01:14:10","2018-11-18 01:16:29"
+24,*Weng,Josh,,"Sos A",,,,,,,,"624 W Duarte Rd unit 106",Arcadia,CA,91007,,"2018-11-18 01:21:25","2018-11-18 02:09:03"
+25,will,sch,"sac ",ray,"Internal Medicine",,,,,,,,,,,,"2019-03-08 00:27:29","2019-03-08 00:27:29"

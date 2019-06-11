@@ -29,8 +29,6 @@ export default class Dashboard extends Component {
 
         axios.get('api/pages/search?userId=' + decoded.id)
             .then((resp) => {
-                console.log(resp, "Hello Response!")
-                console.log(resp.data.response[1].User.createdAt, "Date content created")
                 this.setState({
                     pages: resp.data.response,
                     S3_BUCKET: resp.data.bucket
