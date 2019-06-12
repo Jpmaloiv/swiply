@@ -67,7 +67,6 @@ router.post("/register", upload.single("imgFile"), (req, res) => {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
-    phone: req.query.phone,
     imageLink: imageLink,
     hash: hash,
     salt: salt
@@ -97,7 +96,7 @@ router.post("/login", (req, res) => {
 
   db.Customer.findOne({
     where: {
-      phone: req.query.phone
+      email: req.query.email
     }
   })
     .then(resp => {
@@ -154,7 +153,6 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     lastName: req.query.lastName,
     email: req.query.email,
     profile: req.query.profile,
-    phone: req.query.phone,
     imageLink: imageLink
   };
 

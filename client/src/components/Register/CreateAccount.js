@@ -35,34 +35,16 @@ export default class CreateAccount extends Component {
       return
     }
 
-    axios.post(`api/users/verify?email=${this.props.state.email}&phone=${this.props.state.phone}`)
+    axios.post(`api/users/verify?email=${this.props.state.email}`)
       .then(resp => {
         console.log(resp)
         if (resp.data.response) this.duplicateUser.click();
-        else this.verifyPhone()
+        else this.props.setState({ view: 'ProfileSummary' })
       })
       .catch(err => {
         console.error(err)
       })
 
-  }
-
-  /* Sends a verification code via SMS */
-  verifyPhone() {
-    axios
-      .post("api/auth/send?phone=" + this.props.state.phone)
-      .then(resp => {
-        console.log(resp);
-        // Sets the verification code and switches to the Verify Account screen
-        this.props.setState({
-          verifyCode: resp.data.verifyCode,
-          view: "VerifyAccount"
-        });
-      })
-      .catch(error => {
-        console.error(error);
-        this.invalidPhone.click()
-      });
   }
 
   // Handle user input
@@ -85,11 +67,11 @@ export default class CreateAccount extends Component {
 
   enterPressed(event) {
     const user = this.props.state
-    if (user.email && user.password && user.confirmpw && user.phone) {
+    if (user.email && user.password && user.confirmpw) {
       var code = event.keyCode || event.which;
       if (code === 13) {
-
-        this.verifyUser();
+        if (this.props.state.customer) this.register()
+        else this.verifyUser();
       }
     }
   }
@@ -106,15 +88,32 @@ export default class CreateAccount extends Component {
         case "invalidEmail":
           NotificationManager.error("Please try again", "Invalid email ", 2500);
           break;
-        case "invalidPhone":
-          NotificationManager.error("Please try again", "Invalid phone number", 2500);
-          break;
       };
     };
   }
 
+  // Register the new customer
+  register() {
+    const user = this.props.state;
+    if (user.password === user.confirmpw) {
+      let data = new FormData();
+      data.append("imgFile", user.file)
+      axios.post('api/customers/register?firstName=' + user.firstName + '&lastName=' + user.lastName + '&email=' + user.email +
+        '&password=' + user.password + '&phone=' + user.phone + '&summary=' + user.summary, data)
+        .then((resp) => {
+          console.log(resp)
+          window.localStorage.setItem("token", resp.data.token);
+          window.location = '/checkout'
+        }).catch((error) => {
+          console.error(error);
+        })
+    }
+  }
 
   render() {
+
+    console.log(this.props, this.state)
+
 
     const { page } = this.props.state;
 
@@ -239,17 +238,6 @@ export default class CreateAccount extends Component {
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                placeholder="Phone Number"
-                name="phone"
-                onChange={this.handleChange}
-                onKeyPress={this.enterPressed.bind(this)}
-
-              />
-            </Form.Group>
-
-            <Form.Group>
               <Form.Check type="checkbox" label="Remember me" style={{ textAlign: 'center' }} />
             </Form.Group>
           </Form>
@@ -277,29 +265,34 @@ export default class CreateAccount extends Component {
               <span />
             )}
 
-          <Button
-            variant="success"
-            size="lg"
-            style={{ display: 'block' }}
-            onClick={this.verifyUser.bind(this)}
-            disabled={!this.props.state.email || !this.props.state.password || !this.props.state.confirmpw || !this.props.state.phone}
-          >
-            Continue
+          {this.props.state.customer ?
+            <Button
+              variant='success'
+              size='lg'
+              style={{ display: 'block' }}
+              onClick={this.register.bind(this)}
+              disabled={!this.props.state.email || !this.props.state.password || !this.props.state.confirmpw}
+            >
+              Register
+                        </Button>
+            :
+            <Button
+              variant="success"
+              size="lg"
+              style={{ display: 'block' }}
+              onClick={this.verifyUser.bind(this)}
+              disabled={!this.props.state.email || !this.props.state.password || !this.props.state.confirmpw}
+            >
+              Continue
           </Button>
+          }
+
         </div>
 
         <button
           className="btn btn-danger"
           onClick={this.createNotification("invalidEmail")}
           ref={ref => (this.invalidEmail = ref)}
-          style={{ display: "none" }}
-        >
-          Error
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={this.createNotification("invalidPhone")}
-          ref={ref => (this.invalidPhone = ref)}
           style={{ display: "none" }}
         >
           Error

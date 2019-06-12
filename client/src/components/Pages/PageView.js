@@ -416,10 +416,10 @@ export default class PageView extends Component {
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>
-                                                <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;5.5k Followers
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#01ae63' }}>+98%</span></span>
+                                                <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
+                                                    <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                                    <span>{page.views} Views</span>
+                                                    <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
                                                 </p>
                                             </div>
                                         </div>

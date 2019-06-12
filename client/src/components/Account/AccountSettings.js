@@ -140,8 +140,6 @@ export default class AccountSettings extends Component {
         user.lastName +
         "&title=" +
         user.title +
-        "&phone=" +
-        user.phone +
         "&email=" +
         user.email +
         "&summary=" +
@@ -312,14 +310,6 @@ export default class AccountSettings extends Component {
               ) : (
                   <span />
                 )}
-              <Form.Group>
-                <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  placeholder={user.phone}
-                  name="phone"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
               <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <input

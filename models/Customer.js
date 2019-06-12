@@ -14,10 +14,6 @@ module.exports = function (sequelize, DataTypes) {
                 isEmail: true
             }
         },
-        phone: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         imageLink: {
             type: DataTypes.STRING
         },

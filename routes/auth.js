@@ -14,10 +14,6 @@ function getHash(password, salt) {
 
 const role = "user";
 
-// Send SMS verification
-router.post("/send", (req, res) => {
-  auth.verifyPhone(req, res);
-});
 
 // User login
 router.post("/login", (req, res) => {
@@ -73,44 +69,7 @@ router.post("/login", (req, res) => {
   }
 })
 
-// Verify if user's phone number exists in database
-router.post("/verify", (req, res) => {
-  if (req.query.role === "user") {
-    db.User.findOne({
-      where: {
-        phone: req.query.phone
-      }
-    })
-      .then(resp => {
-        if (resp != null) {
-          auth.verifyPhone(req, res);
-        } else {
-          res.json({ success: false, message: "User not found." });
-        }
-      })
-      .catch(err => {
-        console.error("ERR", err);
-        res.status(500).json({ message: "Internal server error.", error: err });
-      });
-  } else if (req.query.role === "customer") {
-    db.Customer.findOne({
-      where: {
-        phone: req.query.phone
-      }
-    })
-      .then(resp => {
-        if (resp != null) {
-          auth.verifyPhone(req, res);
-        } else {
-          res.json({ success: false, message: "Customer not found." });
-        }
-      })
-      .catch(err => {
-        console.error("ERR", err);
-        res.status(500).json({ message: "Internal server error.", error: err });
-      });
-  }
-});
+
 
 // Grants customer access to a page
 router.post("/page", (req, res) => {

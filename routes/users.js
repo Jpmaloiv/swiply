@@ -60,13 +60,13 @@ router.post('/verify', (req, res) => {
 
   db.User.findOne({
     where: {
-      [Op.or]: [{ email: req.query.email }, { phone: req.query.phone }]
+      email: req.query.email
     }
   })
     .then(function (resp) {
       console.log("RESP", resp)
-      if (resp) res.status(200).json({ message: 'Duplicate user found', response: resp})
-      else res.status(200).json({ message: 'No user data found', response: resp})
+      if (resp) res.status(200).json({ message: 'Duplicate user found', response: resp })
+      else res.status(200).json({ message: 'No user data found', response: resp })
 
     })
     .catch(function (err) {
@@ -89,7 +89,6 @@ router.post("/register", upload.single("imgFile"), (req, res) => {
     email: req.query.email.toLowerCase(),
     hash: hash,
     salt: salt,
-    phone: req.query.phone,
     summary: req.query.summary,
     imageLink: imageLink,
     remember: req.query.remember
@@ -119,7 +118,7 @@ router.post("/login", (req, res) => {
 
   db.User.findOne({
     where: {
-      phone: req.query.phone
+      email: req.query.email
     }
   })
     .then(resp => {
@@ -177,7 +176,6 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     title: req.query.title,
     email: req.query.email,
     profile: req.query.profile,
-    phone: req.query.phone,
     summary: req.query.summary,
     imageLink: imageLink,
     instagram: req.query.instagram,

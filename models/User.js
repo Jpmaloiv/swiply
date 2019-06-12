@@ -30,10 +30,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
     imageLink: {
       type: DataTypes.STRING
     },

@@ -23,8 +23,6 @@ export default class SubscriptionPlan extends Component {
             user.email +
             "&password=" +
             user.password +
-            "&phone=" +
-            user.phone +
             "&summary=" +
             user.summary,
           data

@@ -49,7 +49,7 @@ export default class Dashboard extends Component {
         console.log(this.state.pages)
         var pageList = this.state.pages.sort(function (a, b) {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          });
+        });
         console.log(this.state.pages, pageList)
 
         this.setState({
@@ -174,6 +174,22 @@ export default class Dashboard extends Component {
                             </div>
                         </div>
 
+                        {/* {['up', 'down', 'left', 'right'].map(direction => (
+                            <DropdownButton
+                                drop='left'
+                                variant="secondary"
+                                title={` Drop left `}
+                                id={`dropdown-button-drop-left`}
+                                key='left'
+                            >
+                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
+                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+                                <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                            </DropdownButton>
+                        ))} */}
+
                         {/* List pages in table format */}
                         <div>
                             <div>
@@ -209,10 +225,10 @@ export default class Dashboard extends Component {
                                                             </div>
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>
-                                                        <p className='page-stats'>
-                                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                                &nbsp;&nbsp;&nbsp;&nbsp;5.5k Followers
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#01ae63' }}>+98%</span></span>
+                                                        <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
+                                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                                            <span>{page.views} Views</span>
+                                                            <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
                                                         </p>
                                                     </div>
                                                 </div>
