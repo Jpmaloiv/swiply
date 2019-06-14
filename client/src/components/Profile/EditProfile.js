@@ -9,6 +9,7 @@ import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import DragSortableList from "react-drag-sortable";
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import Moment from "react-moment";
 import { NavLink } from "react-router-dom";
 
@@ -130,6 +131,12 @@ export default class EditProfile extends Component {
     const { socialMedia, user } = this.state;
     let query = ''
 
+    // Validates email
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) {
+      this.invalidEmail.click()
+      return
+    }
+
     // Check if social media links were changed
     for (let i = 0; i < socialMedia.length; i++) {
       console.log(user[socialMedia[i]])
@@ -141,7 +148,7 @@ export default class EditProfile extends Component {
     data.append("imgFile", this.state.file);
 
     axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName +
-      '&title=' + user.title + "&profile=" + user.profile + query, data)
+      '&email=' + user.email + '&title=' + user.title + "&profile=" + user.profile + '&summary=' + user.summary + query, data)
       .then(res => {
         console.log(res);
         window.location.reload();
@@ -151,7 +158,6 @@ export default class EditProfile extends Component {
       });
 
     if (this.state.sortedList) {
-      console.log("HIIIII", this.state.sortedList)
       for (var i = 0; i < this.state.sortedList.length; i++) {
         const { sortedList } = this.state
         axios.put(`/api/pages/update?id=${sortedList[i].key}&order=${sortedList[i].rank}`)
@@ -164,6 +170,16 @@ export default class EditProfile extends Component {
           });
       }
     }
+  }
+
+  createNotification = type => {
+    return () => {
+      switch (type) {
+        case "invalidEmail":
+          NotificationManager.error("Please try again", "Invalid email ", 2500);
+          break;
+      };
+    };
   }
 
   onSort(sortedList) {
@@ -293,6 +309,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.instagram ? { borderRight: 'none' } : {}}
                       placeholder={user.instagram}
+                      value={user.instagram}
                       name="instagram"
                       onChange={this.handleChange}
                     />
@@ -310,6 +327,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.facebook ? { borderRight: 'none' } : {}}
                       placeholder={user.facebook}
+                      value={user.facebook}
                       name="facebook"
                       onChange={this.handleChange}
                     />
@@ -327,6 +345,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.twitter ? { borderRight: 'none' } : {}}
                       placeholder={user.twitter}
+                      value={user.twitter}
                       name="twitter"
                       onChange={this.handleChange}
                     />
@@ -344,6 +363,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.linkedIn ? { borderRight: 'none' } : {}}
                       placeholder={user.linkedIn}
+                      value={user.linkedIn}
                       name="linkedIn"
                       onChange={this.handleChange}
                     />
@@ -361,6 +381,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.whatsapp ? { borderRight: 'none' } : {}}
                       placeholder={user.whatsapp}
+                      value={user.whatsapp}
                       name="whatsapp"
                       onChange={this.handleChange}
                     />
@@ -378,6 +399,7 @@ export default class EditProfile extends Component {
                       className='smInput'
                       style={user.website ? { borderRight: 'none' } : {}}
                       placeholder={user.website}
+                      value={user.website}
                       name="website"
                       onChange={this.handleChange}
                     />
@@ -394,6 +416,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       placeholder={user.email}
+                      value={user.email}
                       name="email"
                       onChange={this.handleChange}
                     />
@@ -448,7 +471,7 @@ export default class EditProfile extends Component {
                       />
 
                       <div className="textOverlay">
-                        <div className="profilePic">
+                        <div className="profilePic" style={{ marginBottom: 5 }}>
                           {user.imageLink ?
                             <div>
                               <img
@@ -478,7 +501,7 @@ export default class EditProfile extends Component {
                             />
                           }
                         </div>
-                        <br />
+
                         <div>
                           {this.state.nameEdit ?
                             <InputGroup>
@@ -512,13 +535,30 @@ export default class EditProfile extends Component {
                             </InputGroup>
                             :
                             <div>
-                              <p style={{ fontSize: 13, fontStyle: 'italic' }}>{user.title}
+                              <p style={{ fontSize: 13, fontStyle: 'italic', marginBottom: 5 }}>{user.title}
                                 {this.state.nameEdit || this.state.titleEdit || !this.state.user.title ?
                                   <span></span>
                                   :
                                   <FontAwesomeIcon icon='pen' size='xs' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ titleEdit: true })} />
                                 }</p>
 
+                            </div>
+                          }
+                          {this.state.summaryEdit ?
+                            <InputGroup style={{ maxWidth: '80%' }}>
+                              <FormControl
+                                as='textarea'
+                                placeholder={user.summary}
+                                style={{ fontSize: 12 }}
+                                name='summary'
+                                onChange={this.handleChange}
+                                onBlur={this.handleEditing}
+                                autoFocus
+                              />
+                            </InputGroup>
+                            :
+                            <div style={{ width: '80%', margin: '0 auto' }}>
+                              <p className='previewText iii' onClick={() => this.setState({ summaryEdit: true })} style={{ marginBottom: 5, cursor: 'pointer' }}>{user.summary}</p>
                             </div>
                           }
                           <div className='social'>
@@ -536,6 +576,12 @@ export default class EditProfile extends Component {
                             }
                             {user.linkedIn ?
                               <img src={require(`../../images/linkedIn.png`)} alt='linkedIn' onClick={this.handleLinks} />
+                              : <span></span>
+                            }
+                            {user.website ?
+                              <div className='sm-icon' onClick={() => window.open(this.state.user.website)} style={{cursor: 'pointer'}}>
+                                <img src={require(`../../images/website.jpeg`)} alt='website' />
+                              </div>
                               : <span></span>
                             }
                           </div>
@@ -575,6 +621,18 @@ export default class EditProfile extends Component {
             <span></span>
           }
         </div>
+
+        <button
+          className="btn btn-danger"
+          onClick={this.createNotification("invalidEmail")}
+          ref={ref => (this.invalidEmail = ref)}
+          style={{ display: "none" }}
+        >
+          Error
+        </button>
+
+        <NotificationContainer />
+
       </ReactCSSTransitionGroup>
     );
   }

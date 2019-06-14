@@ -338,6 +338,10 @@ div.page p {
   font-weight: lighter
 }
 
+.previewText.iii {
+  -webkit-line-clamp: 3
+}
+
 /* Custom Fields */
 
 .title {
@@ -376,6 +380,10 @@ div.page p {
 
 .smSettings .input-group-text {
   background-color: transparent !important
+}
+
+.smSettings .input-group input {
+  color: #a5a5a8
 }
 
 .form-control::placeholder {
@@ -546,6 +554,20 @@ div.page p {
   margin: 0 5px;
   cursor: pointer
 }
+
+.sm-icon {    display: inline-flex;
+  width: 40px;
+  background-color: #fff;
+  height: 40px;
+  border-radius: 50px;
+  margin: 0 5px;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px solid #7ac8fe;
+  vertical-align: middle;
+}
+
+.sm-icon img {width: 20px}
 
 form.stripe {
   background: #F6F9FC;

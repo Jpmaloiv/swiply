@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { NotificationContainer, NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import { withRouter } from 'react-router'
 
 export default class AccountSettings extends Component {
   constructor(props) {
@@ -130,12 +131,7 @@ export default class AccountSettings extends Component {
     }
 
     console.log(query)
-    axios
-      .put(
-        `/api/${role}/update?id=` +
-        this.state.user.id +
-        "&firstName=" +
-        user.firstName +
+    axios.put(`/api/${role}/update?id=` + this.state.user.id + "&firstName=" + user.firstName +
         "&lastName=" +
         user.lastName +
         "&title=" +
@@ -153,7 +149,7 @@ export default class AccountSettings extends Component {
           this.passwordError.click();
         } else {
           this.success.click();
-          this.fetchUser();
+          this.props.history.go(-1)
         }
       })
       .catch(err => {
@@ -316,7 +312,6 @@ export default class AccountSettings extends Component {
                 type='email'
                 style={{ opacity: 0 }}
                 placeholder="Email Address"
-                // value={this.state.email}
                 name="email"
                 onChange={this.handleChange}
                 autoComplete='new-email'

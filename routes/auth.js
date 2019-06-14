@@ -178,29 +178,6 @@ router.get('/token', async (req, res) => {
     success: false,
     message: "No users found",
   });
-  // .then(resp => {
-  //   console.log("RESP", resp)
-  //   if (resp.length > 0) {
-  //     res.json({
-  //       success: true,
-  //       message: "User(s) found!",
-  //       response: resp,
-  //       BASE_URL: BASE_URL,
-  //       bucket: process.env.S3_BUCKET
-  //     });
-  //   } else {
-  //     res.json({
-  //       success: false,
-  //       message: "No users found",
-  //       response: resp,
-  //     });
-  //   }
-  // })
-  // .catch(err => {
-  //   console.error("ERR", err);
-  //   res.status(500).json({ message: "Internal server error.", error: err });
-  // });
-  console.log("ROLE", role)
 })
 
 

@@ -52,17 +52,15 @@ export default class AddPage extends Component {
     // Creates a new page
     addPage() {
         const page = this.state;
-
-        let file = page.file
-        // Split the filename to get the name and type
-        let fileParts = file.name.split('.');
-        let fileName = fileParts[0];
-        let fileType = fileParts[1];
-        console.log("Preparing the upload", file);
-        let data = new FormData();
-        data.append("imgFile", file)
+        let file, data
+        if (page.file) {
+            file = page.file
+            let form = new FormData();
+            form.append("imgFile", file)
+            data = form
+        }
         axios.post('/api/pages/add?userId=' + page.decoded.id + '&name=' + page.name + '&description=' + page.description +
-            '&summary=' + page.summary + '&fileName=' + fileName + '&fileType=' + fileType, data)
+            '&summary=' + page.summary, data)
             .then((response) => {
                 console.log(response)
                 window.location = '/'
