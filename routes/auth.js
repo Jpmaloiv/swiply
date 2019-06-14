@@ -93,6 +93,7 @@ router.post("/login", (req, res) => {
 router.post('/reset-password', async (req, res) => {
 
   const { role } = req.query
+  console.log("ROLE", role)
 
   let userQuery
 
@@ -158,7 +159,48 @@ router.post('/reset-password', async (req, res) => {
     console.log('No user found');
     res.status(200).json({ success: false, message: 'No user found' })
   }
+})
 
+router.get('/token', async (req, res) => {
+
+  let query = { where: {} }
+  if (req.query.token) query.where.passwordResetToken = req.query.token;
+
+
+  let role = ''
+  let resp = await db.User.findOne(query)
+  if (resp) role = 'user'
+  else resp = await db.Customer.findOne(query)
+  if (resp && role !== 'user') role = 'customer'
+
+  if (resp) res.json({ success: true, message: `User found!`, response: resp, role})
+  else res.json({
+    success: false,
+    message: "No users found",
+  });
+  // .then(resp => {
+  //   console.log("RESP", resp)
+  //   if (resp.length > 0) {
+  //     res.json({
+  //       success: true,
+  //       message: "User(s) found!",
+  //       response: resp,
+  //       BASE_URL: BASE_URL,
+  //       bucket: process.env.S3_BUCKET
+  //     });
+  //   } else {
+  //     res.json({
+  //       success: false,
+  //       message: "No users found",
+  //       response: resp,
+  //     });
+  //   }
+  // })
+  // .catch(err => {
+  //   console.error("ERR", err);
+  //   res.status(500).json({ message: "Internal server error.", error: err });
+  // });
+  console.log("ROLE", role)
 })
 
 

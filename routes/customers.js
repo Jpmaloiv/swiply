@@ -141,8 +141,8 @@ router.get("/search", (req, res) => {
     });
 });
 
-// Update a user
-router.put("/update", upload.single("imgFile"), (req, res) => {
+// Update a customer
+router.put("/update", upload.single("imgFile"), async (req, res) => {
   console.log("REQ", req.file);
 
   let imageLink = req.query.imageLink;
@@ -156,6 +156,39 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     imageLink: imageLink
   };
 
+  // Check if old password was entered correctly
+  if (req.query.oldPassword) {
+    await db.Customer.findOne({
+      where: {
+        email: req.query.email
+      }
+    })
+      .then(resp => {
+        let inputHash = getHash(req.query.oldPassword, resp.salt);
+        console.log("HASH", inputHash.toString(), resp.hash);
+
+        if (inputHash === resp.hash) {
+          console.log("HASHLAND")
+          customer.salt = getSalt();
+          let salt = customer.salt
+          customer.hash = getHash(req.query.password, salt);
+        } else {
+          return res.json({ message: "Wrong original password" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ message: "Customer not found", error: err });
+      });
+  }
+
+  if (req.query.token) {
+    customer.salt = getSalt();
+    let salt = customer.salt;
+    customer.hash = getHash(req.query.password, salt);
+    customer.passwordResetToken = ''
+  }
+
   let AWS = "N/A";
   if (req.file) AWS = "Image uploaded!";
 
@@ -164,7 +197,7 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
       res.status(200);
       res.json({
         success: true,
-        message: "User created!",
+        message: "Customer updated!",
         token: auth.generateJWT(resp, role),
         AWS: AWS
       });

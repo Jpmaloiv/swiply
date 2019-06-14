@@ -142,7 +142,6 @@ router.get("/search", (req, res) => {
   };
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;
-  if (req.query.token) query.where.passwordResetToken = req.query.token;
 
   db.User.findAll(query)
     .then(resp => {
@@ -170,8 +169,8 @@ router.get("/search", (req, res) => {
 });
 
 // Update a user
-router.put("/update", upload.single("imgFile"), (req, res) => {
-  console.log("REQ", req.query.token);
+router.put("/update", upload.single("imgFile"), async (req, res) => {
+  console.log("REQ", req.query);
 
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
@@ -195,26 +194,31 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
 
   // Check if old password was entered correctly
   if (req.query.oldPassword) {
-
-    db.User.findOne({
+    await db.User.findOne({
       where: {
         email: req.query.email
       }
     })
       .then(resp => {
-        let inputHash = getHash(req.query.oldPassword, resp.salt);
-        console.log(inputHash.toString(), resp.hash);
+        if (resp) {
+          let inputHash = getHash(req.query.oldPassword, resp.salt);
+          console.log("HASH", inputHash.toString(), resp.hash);
 
-        if (inputHash === resp.hash) {
-          user.salt = getSalt();
-          user.hash = getHash(req.query.password, salt);
+          if (inputHash === resp.hash) {
+            console.log("HASHLAND")
+            user.salt = getSalt();
+            let salt = user.salt
+            user.hash = getHash(req.query.password, salt);
+          } else {
+            return res.json({ message: "Wrong original password" });
+          }
         } else {
-          return res.json({ message: "Wrong original password" });
+          res.status(200).json({ message: 'User not found'})
         }
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({ message: "User not found", error: err });
+        res.status(500).json({ message: "Internal server error", error: err });
       });
   }
 
@@ -225,7 +229,7 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
     user.passwordResetToken = ''
   }
 
-
+  console.log("MADE IT")
   let AWS = "N/A";
   if (req.file) AWS = "Image uploaded!";
 

@@ -316,7 +316,7 @@ export default class AccountSettings extends Component {
                 type='email'
                 style={{ opacity: 0 }}
                 placeholder="Email Address"
-                value={this.state.email}
+                // value={this.state.email}
                 name="email"
                 onChange={this.handleChange}
                 autoComplete='new-email'

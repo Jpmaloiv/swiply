@@ -54,6 +54,9 @@ export default class ResetPassword extends Component {
     };
 
     render() {
+        let role = ''
+        if (this.props.state.role === 'user') role = 'Content Provider'
+        if (this.props.state.role === 'customer') role = 'Customer'
         return (
             <ReactCSSTransitionGroup
                 transitionName="fade"
@@ -63,7 +66,7 @@ export default class ResetPassword extends Component {
                 transitionLeave={false}
             >
                 <div className='center'>
-                    <h3>Reset Password</h3> <br />
+                    <h3>Reset Password - {role}</h3> <br />
                     {!this.state.resetPassword ?
                         <div>
                             <h5>Please enter your email, and we'll send you a link to reset your password.</h5>

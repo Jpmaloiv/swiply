@@ -18,17 +18,18 @@ export default class ChangePassword extends Component {
 
     componentWillMount() {
         const now = moment().format()
-    
-        axios.get(`/api/users/search?token=${this.props.match.params.token}`)
+
+        axios.get(`/api/auth/token?token=${this.props.match.params.token}`)
             .then((resp) => {
                 console.log(resp)
-                console.log(now, resp.data.response[0].updatedAt)
-                let expiry = moment(resp.data.response[0].updatedAt).add(1, 'hours').format()
+                console.log(now, resp.data.response.updatedAt)
+                let expiry = moment(resp.data.response.updatedAt).add(1, 'hours').format()
 
                 if (resp.data.success == true && now < expiry)
                     this.setState({
                         token: true,
-                        user: resp.data.response[0]
+                        user: resp.data.response,
+                        role: resp.data.role
                     })
             })
             .catch((error) => {
@@ -45,8 +46,9 @@ export default class ChangePassword extends Component {
     }
 
     updatePassword() {
+        console.log(this.state.role)
         if (this.state.password === this.state.confirmpw) {
-            axios.put(`/api/users/update?id=${this.state.user.id}&password=${this.state.password}&token=${true}`)
+            axios.put(`/api/${this.state.role}s/update?id=${this.state.user.id}&password=${this.state.password}&token=${true}`)
                 .then(resp => {
                     console.log(resp);
                     window.location = '/'
