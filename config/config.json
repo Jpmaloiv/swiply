@@ -1,6 +1,6 @@
 {
   "testing": {
-    "use_env_variable": "LOCALDB"
+    "use_env_variable": "JAWSDB_URL"
   },
   "development": {
     "use_env_variable": "JAWSDB_URL",

@@ -24,6 +24,14 @@ module.exports = function (sequelize, DataTypes) {
         salt: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        passwordResetToken: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        passwordResetExpiry: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     });
 

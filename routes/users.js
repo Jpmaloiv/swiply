@@ -138,24 +138,30 @@ router.post("/login", (req, res) => {
 router.get("/search", (req, res) => {
   let query = {
     where: {},
-    include: [
-      {
-        model: db.Page
-      }
-    ]
+    include: [{ model: db.Page }]
   };
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;
+  if (req.query.token) query.where.passwordResetToken = req.query.token;
 
   db.User.findAll(query)
     .then(resp => {
-      res.json({
-        success: true,
-        message: "User(s) found!",
-        response: resp,
-        BASE_URL: BASE_URL,
-        bucket: process.env.S3_BUCKET
-      });
+      console.log("RESP", resp)
+      if (resp.length > 0) {
+        res.json({
+          success: true,
+          message: "User(s) found!",
+          response: resp,
+          BASE_URL: BASE_URL,
+          bucket: process.env.S3_BUCKET
+        });
+      } else {
+        res.json({
+          success: false,
+          message: "No users found",
+          response: resp,
+        });
+      }
     })
     .catch(err => {
       console.error("ERR", err);
@@ -165,7 +171,7 @@ router.get("/search", (req, res) => {
 
 // Update a user
 router.put("/update", upload.single("imgFile"), (req, res) => {
-  console.log("REQ", req.query, req.file);
+  console.log("REQ", req.query.token);
 
   let imageLink = req.query.imageLink;
   if (req.file) imageLink = req.file.key;
@@ -189,6 +195,7 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
 
   // Check if old password was entered correctly
   if (req.query.oldPassword) {
+
     db.User.findOne({
       where: {
         email: req.query.email
@@ -211,18 +218,25 @@ router.put("/update", upload.single("imgFile"), (req, res) => {
       });
   }
 
+  if (req.query.token) {
+    user.salt = getSalt();
+    let salt = user.salt;
+    user.hash = getHash(req.query.password, salt);
+    user.passwordResetToken = ''
+  }
+
 
   let AWS = "N/A";
   if (req.file) AWS = "Image uploaded!";
 
-  console.log("UPDATE OBJECT", user)
+  console.log("USER", user)
 
   db.User.update(user, { where: { id: req.query.id } })
     .then(resp => {
       res.status(200);
       res.json({
         success: true,
-        message: "User created!",
+        message: "User updated!",
         token: auth.generateJWT(resp),
         AWS: AWS
       });

@@ -83,7 +83,7 @@ export default class CreateAccount extends Component {
           NotificationManager.error("Please log in", "User already exists", 2500);
           break;
         case "passwordMismatch":
-          NotificationManager.warning("Passwords do not match", 'Error creating account')
+          NotificationManager.warning("Passwords do not match", 'Error creating account', 2500)
           break;
         case "invalidEmail":
           NotificationManager.error("Please try again", "Invalid email ", 2500);

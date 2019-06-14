@@ -346,6 +346,8 @@ div.page p {
   font-size: 15px
 }
 
+.input-group .text-muted {color: #4b4bff !important}
+
 .subscription-plan .btn-light {
   margin-bottom: 25px !important;
   cursor: pointer

@@ -5,6 +5,7 @@ import { NotificationContainer, NotificationManager } from "react-notifications"
 
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Form from 'react-bootstrap/Form'
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 
@@ -100,8 +101,6 @@ export default class Login extends Component {
           </InputGroup>
           <InputGroup
             style={{
-              display: "flex",
-              flex: "initial",
               margin: "1em auto",
               width: "70%"
             }}
@@ -110,9 +109,13 @@ export default class Login extends Component {
               placeholder="Enter Password"
               type="password"
               name="password"
+              style={{width: '100%'}}
               onChange={this.handleChange}
               onKeyPress={this.enterPressed.bind(this)}
             />
+            <Form.Text className="text-muted" onClick={() => this.props.setState({ view: 'ResetPassword' })} style={{cursor: 'pointer', width: '100%', textAlign: 'right', color: 'blue !important', textDecoration: 'underline'}}>
+              Forgot password?
+              </Form.Text>
           </InputGroup>
 
           <Button variant="success" size="lg" onClick={this.login.bind(this)}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import Login from './Login'
 import VerifyAccount from './VerifyAccount'
+import ResetPassword from './ResetPassword'
 
 
 export default class SignIn extends Component {
@@ -28,6 +29,8 @@ export default class SignIn extends Component {
                 return <Login {...props} />;
             case 'VerifyAccount':
                 return <VerifyAccount {...props} />;
+            case 'ResetPassword':
+                return <ResetPassword {...props} />
             default:
                 return null;
         }

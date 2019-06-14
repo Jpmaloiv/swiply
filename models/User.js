@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define("User", {
     firstName: {
       type: DataTypes.STRING
@@ -62,16 +62,24 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     hash: {
-        type: DataTypes.STRING(1500),
-        allowNull: false
-      },
-      salt: {
-        type: DataTypes.STRING,
-        allowNull: false
-      }
+      type: DataTypes.STRING(1500),
+      allowNull: false
+    },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    passwordResetToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    passwordResetExpiry: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   });
 
-  User.associate = function(models) {
+  User.associate = function (models) {
     models.User.hasMany(models.Page, {
       foreignKey: {
         allowNull: false

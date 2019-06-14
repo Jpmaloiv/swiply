@@ -9,6 +9,7 @@ import { Elements, StripeProvider } from 'react-stripe-elements';
 // import logo from './logo.svg';
 import './App.css';
 import AccountSettings from './components/Account/AccountSettings';
+import ChangePassword from './components/SignIn/ChangePassword'
 import Checkout from './components/Checkout/Checkout';
 import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation';
 import AddContent from './components/Content/AddContent';
@@ -92,6 +93,8 @@ class App extends Component {
             }
 
             <Switch>
+
+              <Route path='/reset-password/:token' component={ChangePassword} />
               <Route path='/customers' component={Customers} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />
