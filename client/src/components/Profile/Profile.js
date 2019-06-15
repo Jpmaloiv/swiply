@@ -122,7 +122,7 @@ export default class Profile extends Component {
                         {/* List pages in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.pages.map((page, i) =>
-                                <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
+                                <NavLink to={`/pages/${page.id}`} className='page' style={{ color: 'initial' }}>
 
                                     <div key={i} className='page'>
                                         <div style={{ display: 'flex', padding: 7.5 }}>

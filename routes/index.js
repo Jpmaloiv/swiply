@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async function(req, res, next) {
   return res.json({
     success: true,
-    message: "Welcome to the PV3 API",
+    message: "Welcome to the Swiply API",
   })
 });
 

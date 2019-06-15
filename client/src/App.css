@@ -172,8 +172,14 @@ form.login {
   text-align: center;
 }
 
-.textOverlay .input-group {max-width: 50%; margin: 5px auto}
-.textOverlay input {margin: 5px auto}
+.textOverlay .input-group {
+  max-width: 50%;
+  margin: 5px auto
+}
+
+.textOverlay input {
+  margin: 5px auto
+}
 
 /* FontAwesome */
 
@@ -192,6 +198,14 @@ button {
 .btn-success {
   background-color: #05b367 !important;
   border-color: #05b637 !important
+}
+
+button.loading {
+  display: flex;
+  font-size: 1.25rem;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 16px
 }
 
 button.circle {
@@ -342,6 +356,10 @@ div.page p {
   -webkit-line-clamp: 3
 }
 
+/* Videos */
+
+iframe body {display: none !important}
+
 /* Custom Fields */
 
 .title {
@@ -350,7 +368,9 @@ div.page p {
   font-size: 15px
 }
 
-.input-group .text-muted {color: #4b4bff !important}
+.input-group .text-muted {
+  color: #4b4bff !important
+}
 
 .subscription-plan .btn-light {
   margin-bottom: 25px !important;
@@ -555,7 +575,8 @@ div.page p {
   cursor: pointer
 }
 
-.sm-icon {    display: inline-flex;
+.sm-icon {
+  display: inline-flex;
   width: 40px;
   background-color: #fff;
   height: 40px;
@@ -567,7 +588,9 @@ div.page p {
   vertical-align: middle;
 }
 
-.sm-icon img {width: 20px}
+.sm-icon img {
+  width: 20px
+}
 
 form.stripe {
   background: #F6F9FC;
@@ -903,6 +926,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   }
   .profile-switch {
     justify-content: space-between;
+    margin-top: 20px;
     margin-bottom: 10px
   }
   .profile-header {

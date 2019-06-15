@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode'
 import Button from 'react-bootstrap/Button'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
+import Spinner from 'react-bootstrap/Spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -16,7 +17,8 @@ export default class AddPage extends Component {
             image: '',
             name: 'Page Name',
             description: 'Short Description',
-            summary: 'Page Summary'
+            summary: 'Page Summary',
+            submit: false
         }
     }
 
@@ -51,6 +53,7 @@ export default class AddPage extends Component {
 
     // Creates a new page
     addPage() {
+        this.setState({ submit: true })
         const page = this.state;
         let file, data
         if (page.file) {
@@ -148,14 +151,24 @@ export default class AddPage extends Component {
                                 </div>
                             }
                         </div>
-                        <Button
-                            variant='success'
-                            size='lg'
-                            style={{ display: 'block' }}
-                            onClick={this.addPage.bind(this)}
-                        >
-                            + Add Page
-                        </Button>
+                        {!this.state.submit ?
+                            <Button
+                                variant='success'
+                                size='lg'
+                                style={{ display: 'block' }}
+                                onClick={this.addPage.bind(this)}
+                            >
+                                + Add Page
+                            </Button>
+                            :
+                            <Button variant='success' className='loading' disabled>
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                />
+                                Creating Page...
+                            </Button>
+                        }
                     </div>
                 </div>
             </ReactCSSTransitionGroup>

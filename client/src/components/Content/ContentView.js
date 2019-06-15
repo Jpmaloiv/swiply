@@ -33,7 +33,7 @@ export default class ContentView extends Component {
     }
 
     embed() {
-        axios.get(`https://api.embedly.com/1/oembed?key=${this.state.EMBEDLY_API_KEY}&url=https://www.youtube.com/watch?v=${this.state.content.link}`)
+        axios.get(`https://api.embedly.com/1/oembed?key=${this.state.EMBEDLY_API_KEY}&url=https://www.youtube.com/watch?v=${this.state.content.link}&data-card-recommend=0`)
             .then((resp) => {
                 console.log(resp)
                 this.setState({
@@ -63,7 +63,6 @@ export default class ContentView extends Component {
                   <div style={{textAlign: 'left' }} >
                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                   <h4>{this.state.content.name}</h4>
-                  <h6>{Math.floor(1000 + Math.random() * 1000)} Views</h6>
                   </div>
                     {this.state.summaryEdit ? (
                       <InputGroup>

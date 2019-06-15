@@ -13,7 +13,7 @@ export default class Navigation extends Component {
     }
 
     logout() {
-        if (window.confirm('Would you like to log out of PV3?')) {
+        if (window.confirm('Would you like to log out of Swiply?')) {
             window.localStorage.removeItem('token')
             window.location = '/'
         } else {

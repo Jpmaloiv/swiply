@@ -1,5 +1,5 @@
 {
-  "name": "pv3",
+  "name": "swiply",
   "version": "1.0.0",
   "description": "An application for content providers to sell their content.",
   "main": "server.js",

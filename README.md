@@ -13,8 +13,7 @@ AWS_ACCESS_KEY_ID=AKIAIQAZSPTQJU6FHE7Q
 AWS_SECRET_ACCESS_KEY=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
 
 JAWSDB_URL=mysql://rdl0mx6atplktsq0:ssud2dq6oyjza4f7@pwcspfbyl73eccbn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zp3ac0cp1fctrl8n
-JWT_SECRET=pv3
-LOCALDB=mysql://root:root@localhost:3306/PV3
+JWT_SECRET=swiply
 NODE_ENV=development
 
 S3_BUCKET=pv3testing

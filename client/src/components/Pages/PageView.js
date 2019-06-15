@@ -9,6 +9,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
+import Spinner from 'react-bootstrap/Spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -23,7 +24,8 @@ export default class PageView extends Component {
             page: { User: {}, Contents: [] },
             edit: false,
             priceEdit: false,
-            viewAccess: false
+            viewAccess: false,
+            submit: false
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
@@ -93,7 +95,20 @@ export default class PageView extends Component {
 
     // Handles user input
     handleChange = e => {
-        this.state.page[e.target.name] = e.target.value
+        const { page } = this.state
+        if (e.target.name.includes('User')) {
+            let name = e.target.name.replace('User', '')
+            if (name === 'name') {
+                let arr = e.target.value.split(' ')
+                page.User.firstName = arr[0]
+                page.User.lastName = arr[1]
+            } else {
+                page.User[name] = e.target.value
+            }
+        }
+        else {
+            page[e.target.name] = e.target.value
+        }
     };
 
     // Preview image once seleted
@@ -131,13 +146,16 @@ export default class PageView extends Component {
             })
     }
 
-    // Updates page with any changes made
-    updatePage() {
+    // Updates page and user with any changes made
+    async updatePage() {
+        this.setState({ submit: true })
         const { file, page } = this.state;
+        const user = page.User
 
         let data = new FormData();
         data.append("imgFile", file)
-        axios.put('/api/pages/update?id=' + page.id + '&name=' + page.name + '&description=' + page.description +
+
+        await axios.put('/api/pages/update?id=' + page.id + '&name=' + page.name + '&description=' + page.description +
             '&summary=' + page.summary + '&price=' + page.price + '&displayProfile=' + page.displayProfile, data)
             .then(res => {
                 console.log(res)
@@ -145,6 +163,16 @@ export default class PageView extends Component {
             }).catch(err => {
                 console.error(err);
             })
+
+        await axios.put(`/api/users/update?id=${user.id}&firstName=${user.firstName}&lastName=${user.lastName}&title=${user.title}&summary=${user.summary}`)
+            .then(res => {
+                console.log(res)
+                window.location.reload();
+            }).catch(err => {
+                console.error(err);
+            })
+
+        window.location.reload()
     }
 
 
@@ -298,12 +326,49 @@ export default class PageView extends Component {
                     <div className='main' style={{ marginBottom: 0 }}>
                         <div className='profile'>
                             {page.displayProfile ?
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                                     <div className='profile-header'>
                                         <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 30, borderRadius: '50%', objectFit: 'cover' }} alt='' />
                                         <div className='profile-name'>
-                                            <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}</h5>
-                                            <p className='title'><i>{user.title}</i></p>
+                                            {this.state.nameUserEdit ?
+                                                <InputGroup>
+                                                    <FormControl
+                                                        placeholder={user.firstName + ' ' + user.lastName}
+                                                        name='nameUser'
+                                                        onChange={this.handleChange}
+                                                        onBlur={this.handleEditing}
+                                                        autoFocus
+                                                    />
+                                                </InputGroup>
+                                                :
+                                                <div style={{ display: 'flex' }}>
+                                                    <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}
+                                                        {edit ?
+                                                            <FontAwesomeIcon icon='pen' size='xs' name='nameUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3 }} />
+                                                            :
+                                                            <span></span>
+                                                        }</h5>
+                                                </div>
+                                            }
+                                            {this.state.titleUserEdit ?
+                                                <InputGroup>
+                                                    <FormControl
+                                                        placeholder={user.title}
+                                                        name='titleUser'
+                                                        onChange={this.handleChange}
+                                                        onBlur={this.handleEditing}
+                                                        autoFocus
+                                                    />
+                                                </InputGroup>
+                                                :
+                                                <div style={{ display: 'flex' }}>
+                                                    <p className='title'><i>{user.title}</i>
+                                                        {edit
+                                                            ? <FontAwesomeIcon icon='pen' size='xs' name='titleUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3 }} />
+                                                            : <span></span>
+                                                        }</p>
+                                                </div>
+                                            }
                                         </div>
 
                                         <div>
@@ -322,7 +387,29 @@ export default class PageView extends Component {
                                         </div>
 
                                     </div>
-                                    <p className='profile-summary'>{user.summary}</p>
+                                    {this.state.summaryUserEdit ?
+                                        <InputGroup>
+                                            <FormControl
+                                                as='textarea'
+                                                style={{ width: '80%' }}
+                                                placeholder={user.summary}
+                                                name='summaryUser'
+                                                onChange={this.handleChange}
+                                                onBlur={this.handleEditing}
+                                                autoFocus
+                                            />
+                                        </InputGroup>
+                                        :
+                                        <div style={{ display: 'flex' }}>
+                                            <p className='profile-summary'>
+                                                {user.summary}
+                                                {edit
+                                                    ? <FontAwesomeIcon icon='pen' name='summaryUser' onClick={this.handleEditing} style={{ opacity: 0.3 }} />
+                                                    : <span></span>
+                                                }
+                                            </p>
+                                        </div>
+                                    }
 
                                 </div>
                                 :
@@ -349,7 +436,7 @@ export default class PageView extends Component {
                                 <div style={{ display: 'flex' }}>
                                     <p style={{ fontSize: 24 }}>Page Summary</p>
                                     {edit ?
-                                        <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
+                                        <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} style={{ opacity: 0.3 }} />
                                         :
                                         <span></span>
                                     }
@@ -429,14 +516,26 @@ export default class PageView extends Component {
                         </div>
 
                         {edit ?
-                            <Button
-                                variant='success'
-                                size='lg'
-                                style={{ display: 'block' }}
-                                onClick={this.updatePage.bind(this)}
-                            >
-                                Update Page
-                        </Button>
+                            <div>
+                                {!this.state.submit ?
+                                    <Button
+                                        variant='success'
+                                        size='lg'
+                                        style={{ display: 'block' }}
+                                        onClick={this.updatePage.bind(this)}
+                                    >
+                                        Update Page
+                                    </Button>
+                                    :
+                                    <Button variant='success' className='loading' disabled>
+                                        <Spinner
+                                            as="span"
+                                            animation="grow"
+                                        />
+                                        Updating Page...
+                                    </Button>
+                                }
+                            </div>
                             :
                             <span></span>
                         }
