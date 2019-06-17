@@ -24,16 +24,16 @@ self.__precacheManifest = [
     "url": "/static/media/instagram.f8ed6bdc.png"
   },
   {
+    "revision": "a78360b4a253d0084b43b15e4ec1d58b",
+    "url": "/static/media/sfnsdisplay-webfont.a78360b4.woff2"
+  },
+  {
     "revision": "1b6a7b50eb875b8391870202b3abc916",
     "url": "/static/media/sfnsdisplay-webfont.1b6a7b50.eot"
   },
   {
     "revision": "7ca6e99e708522087b00fff2d897fff7",
     "url": "/static/media/sfnsdisplay-webfont.7ca6e99e.woff"
-  },
-  {
-    "revision": "a78360b4a253d0084b43b15e4ec1d58b",
-    "url": "/static/media/sfnsdisplay-webfont.a78360b4.woff2"
   },
   {
     "revision": "cd17cd27778c0f2d1640f784b68347cb",
@@ -44,12 +44,12 @@ self.__precacheManifest = [
     "url": "/static/js/main.e835799e.chunk.js"
   },
   {
-    "revision": "651771e1df95c807c99608188d0a4287",
-    "url": "/static/media/notification.651771e1.woff"
-  },
-  {
     "revision": "c0d3c94cd6112550c51d7d1ed13b9da1",
     "url": "/static/media/notification.c0d3c94c.eot"
+  },
+  {
+    "revision": "651771e1df95c807c99608188d0a4287",
+    "url": "/static/media/notification.651771e1.woff"
   },
   {
     "revision": "0b4ac1dc75df35e169b70d7719afe4cc",
