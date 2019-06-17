@@ -17,10 +17,10 @@ const cloudStorage = multerS3({
   bucket: process.env.S3_BUCKET,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   ACL: "public-read",
-  metadata: function(request, file, ab_callback) {
+  metadata: function (request, file, ab_callback) {
     ab_callback(null, { fieldname: file.fieldname });
   },
-  key: function(request, file, ab_callback) {
+  key: function (request, file, ab_callback) {
     const newFileName =
       "images/profile/customers/" + file.originalname + "-" + Date.now();
     ab_callback(null, newFileName);
@@ -54,18 +54,35 @@ function getSalt() {
 
 const role = "customer";
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 // Register a new customer
-router.post("/register", upload.single("imgFile"), (req, res) => {
-  let imageLink = "";
-  if (req.file) imageLink = req.file.key;
-  console.log("REQ", req.query)
+router.post("/register", upload.single("imgFile"), async (req, res) => {
+  // let imageLink = "";
+  // if (req.file) imageLink = req.file.key;
+  // console.log("REQ", req.query)
+
+  console.log("QUERY", req.query)
 
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
 
+  const charge = await stripe.charges.create({
+    amount: req.query.price,
+    currency: "usd",
+    source: req.query.token,
+  }, {
+      stripe_account: req.query.accountId,
+    }).then(function (charge, err) {
+      if (charge) console.log("CHARGE", charge)
+      else console.log("ERROR", err)
+    });
+
+    return
+
   const customer = {
-    firstName: req.query.firstName,
-    lastName: req.query.lastName,
+    // firstName: req.query.firstName,
+    // lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
     imageLink: imageLink,
     hash: hash,
@@ -123,8 +140,8 @@ router.get("/search", (req, res) => {
   };
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;
-  
-  
+
+
   db.Customer.findAll(query)
     .then(resp => {
       res.json({

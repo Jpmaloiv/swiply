@@ -130,9 +130,10 @@ export default class EditProfile extends Component {
   updateUser() {
     const { socialMedia, user } = this.state;
     let query = ''
+    let email = user.email.trim();
 
     // Validates email
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       this.invalidEmail.click()
       return
     }
@@ -148,7 +149,7 @@ export default class EditProfile extends Component {
     data.append("imgFile", this.state.file);
 
     axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName +
-      '&email=' + user.email + '&title=' + user.title + "&profile=" + user.profile + '&summary=' + user.summary + query, data)
+      '&email=' + email + '&title=' + user.title + "&profile=" + user.profile + '&summary=' + user.summary + query, data)
       .then(res => {
         console.log(res);
         window.location.reload();

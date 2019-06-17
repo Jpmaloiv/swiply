@@ -4,6 +4,8 @@ import jwt_decode from 'jwt-decode'
 import { NavLink } from 'react-router-dom'
 import Moment from 'react-moment';
 import Switch from "react-switch";
+import StripeCheckout from 'react-stripe-checkout'
+
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
@@ -34,6 +36,8 @@ export default class PageView extends Component {
         window.localStorage.removeItem('customer')
         window.localStorage.removeItem('pageId')
         window.localStorage.removeItem('page')
+        window.localStorage.removeItem('stripeToken')
+        window.localStorage.removeItem('accountId')
 
         const loginToken = window.localStorage.getItem("token");
         if (loginToken) this.setState({ decoded: jwt_decode(loginToken) })
@@ -176,15 +180,20 @@ export default class PageView extends Component {
     }
 
 
-    customerSignup() {
+    checkout(token) {
+        this.setState({ submit: true})
         window.localStorage.setItem('customer', true);
         window.localStorage.setItem('pageId', this.state.page.id);
         window.localStorage.setItem('page', this.state.page.name)
-        window.location = `/`
+        window.localStorage.setItem('stripeToken', token.id)
+        window.localStorage.setItem('accountId', this.state.page.User.accountId)
+        window.localStorage.setItem('price', this.state.page.price)
+        window.location = `/purchased`
     }
 
 
     render() {
+        console.log(this.state)
 
         const { edit, page } = this.state
         const user = page.User
@@ -282,40 +291,65 @@ export default class PageView extends Component {
 
                             {this.state.viewAccess ? <span></span>
                                 :
-                                <Button
-                                    variant='success'
-                                    size='lg'
-                                    onClick={edit ? null : this.state.decoded
-                                        ? () => window.location = '/checkout'
-                                        : () => this.customerSignup()}
-                                >
+                                <div>
+                                    <Button
+                                        variant='success'
+                                        size='lg'
+                                        onClick={edit ? null : this.state.decoded
+                                            ? () => window.location = '/checkout'
+                                            : () => this.checkoutRef.click()}
+                                    >
 
-                                    {edit ?
-                                        <div>
-                                            {this.state.priceEdit ?
-                                                <FormControl
-                                                    style={{ width: 'initial' }}
-                                                    placeholder="Amount or 'Free'"
-                                                    name='price'
-                                                    onChange={this.handleChange}
-                                                    onBlur={this.handleEditing}
-                                                    autoFocus
-                                                />
-                                                :
-                                                <div>
-                                                    Set Pricing ${page.price ? page.price : '--'}&nbsp;
+                                        {edit ?
+                                            <div>
+                                                {this.state.priceEdit ?
+                                                    <FormControl
+                                                        style={{ width: 'initial' }}
+                                                        placeholder="Amount or 'Free'"
+                                                        name='price'
+                                                        onChange={this.handleChange}
+                                                        onBlur={this.handleEditing}
+                                                        autoFocus
+                                                    />
+                                                    :
+                                                    <div>
+                                                        Set Pricing ${page.price ? page.price : '--'}&nbsp;
                                                 {edit ?
-                                                        <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
-                                                        :
-                                                        <span></span>
-                                                    }
-                                                </div>
-                                            }
-                                        </div>
-                                        :
-                                        <span>Request Page Access ${page.price}</span>
-                                    }
-                                </Button>
+                                                            <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
+                                                            :
+                                                            <span></span>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                            :
+                                            <div>
+                                                {!this.state.submit ?
+                                                    <StripeCheckout
+                                                        token={this.checkout.bind(this)}
+                                                        stripeKey='pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8'
+                                                        name={page.name}
+                                                        email={(e) => this.setState({ email: e.target.value})}
+                                                        description='Page Access'
+                                                        opened={() => window.alert('Please click top left yellow button for test numbers')}
+                                                        image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+                                                        allowRememberMe={false}
+                                                    >
+                                                        <span ref={(ref) => this.checkoutRef = ref}>Request Page Access ${page.price}</span>
+                                                    </StripeCheckout>
+                                                    :
+                                                    <Button variant='success' className='loading' disabled>
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="grow"
+                                                        />
+                                                        Registering...
+                                                </Button>
+                                                }
+                                            </div>
+                                        }
+                                    </Button>
+                                </div>
                             }
                         </div>
                     </div>
@@ -514,6 +548,8 @@ export default class PageView extends Component {
                                 </a>
                             )}
                         </div>
+
+
 
                         {edit ?
                             <div>

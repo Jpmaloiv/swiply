@@ -112,9 +112,6 @@ export default class CreateAccount extends Component {
 
   render() {
 
-    console.log(this.props, this.state)
-
-
     const { page } = this.props.state;
 
     return (

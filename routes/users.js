@@ -79,6 +79,7 @@ router.post('/verify', (req, res) => {
 
 // Register a new user
 router.post("/register", upload.single("imgFile"), async (req, res) => {
+  const {email} = req.query.trim()
 
   let { plan } = req.query
 
@@ -107,7 +108,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
 
 
   const accountId = await stripe.accounts.create({
-    email: 'malomedia7@gmail.com',
+    email: email,
     country: 'us',
     type: 'custom',
     requested_capabilities: ['card_payments'],

@@ -1,7 +1,11 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
+import Button from "react-bootstrap/Button";
+import Spinner from 'react-bootstrap/Spinner'
 import { CardElement, injectStripe } from "react-stripe-elements";
+import StripeCheckout from 'react-stripe-checkout'
+
 
 var stripe = window.Stripe('pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8');
 var elements = stripe.elements({
@@ -233,7 +237,7 @@ class Checkout extends Component {
             <div>
                 <script src="https://js.stripe.com/v3/"></script>
                 <body>
-                    <h2 style={{margin: '25px auto', textAlign: 'center'}}>Checkout</h2>
+                    <h2 style={{ margin: '25px auto', textAlign: 'center' }}>Checkout</h2>
                     <form className='stripe'>
                         <label>
                             <span>Name</span>
@@ -252,6 +256,32 @@ class Checkout extends Component {
                         </label>
 
                         <CardElement id='card-element' className='field' onChange={this.handleChange} {...createOptions()} />
+
+                        {!this.state.submit ?
+                            <StripeCheckout
+                                token={this.register.bind(this)}
+                                stripeKey='pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8'
+                                name='Swiply'
+                                description={'Subscription Plan'}
+                                opened={() => window.alert('Please click top left yellow button for test numbers')}
+                                closed={() => this.setState({ submit: true })}
+                                email={this.props.state.email}
+                                image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+                                allowRememberMe={false}
+                            >
+                                <Button variant='success' size='lg'>
+                                    Pay with Card
+                                </Button>
+                            </StripeCheckout>
+                            :
+                            <Button variant='success' className='loading' disabled>
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                />
+                                Registering...
+                            </Button>
+                        }
 
 
 

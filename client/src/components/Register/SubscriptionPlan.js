@@ -29,6 +29,7 @@ export default class SubscriptionPlan extends Component {
 
   // Register the new user
   register(token) {
+    this.setState({ submit: true})
     const user = this.props.state;
 
     if (user.password === user.confirmpw) {
@@ -99,14 +100,13 @@ export default class SubscriptionPlan extends Component {
               name='Swiply'
               description={'Subscription Plan'}
               opened={() => window.alert('Please click top left yellow button for test numbers')}
-              closed={() => this.setState({ submit: true })}
               email={this.props.state.email}
               image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
               allowRememberMe={false}
             >
               <Button variant='success' size='lg'>
                 Pay with Card
-            </Button>
+              </Button>
             </StripeCheckout>
             :
             <Button variant='success' className='loading' disabled>
