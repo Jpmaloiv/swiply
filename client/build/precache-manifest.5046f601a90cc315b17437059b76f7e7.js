@@ -24,20 +24,20 @@ self.__precacheManifest = [
     "url": "/static/media/instagram.f8ed6bdc.png"
   },
   {
-    "revision": "1b6a7b50eb875b8391870202b3abc916",
-    "url": "/static/media/sfnsdisplay-webfont.1b6a7b50.eot"
-  },
-  {
-    "revision": "a78360b4a253d0084b43b15e4ec1d58b",
-    "url": "/static/media/sfnsdisplay-webfont.a78360b4.woff2"
-  },
-  {
     "revision": "7ca6e99e708522087b00fff2d897fff7",
     "url": "/static/media/sfnsdisplay-webfont.7ca6e99e.woff"
   },
   {
+    "revision": "1b6a7b50eb875b8391870202b3abc916",
+    "url": "/static/media/sfnsdisplay-webfont.1b6a7b50.eot"
+  },
+  {
     "revision": "cd17cd27778c0f2d1640f784b68347cb",
     "url": "/static/media/sfnsdisplay-webfont.cd17cd27.ttf"
+  },
+  {
+    "revision": "a78360b4a253d0084b43b15e4ec1d58b",
+    "url": "/static/media/sfnsdisplay-webfont.a78360b4.woff2"
   },
   {
     "revision": "117eeb161ecef22cd0cd",
