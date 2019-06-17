@@ -327,9 +327,8 @@ export default class PageView extends Component {
                                                 {!this.state.submit ?
                                                     <StripeCheckout
                                                         token={this.checkout.bind(this)}
-                                                        stripeKey='pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8'
+                                                        stripeKey='pk_test_f3sdsuRefwIEyWwwg1LKClVY006I3NL4t9'
                                                         name={page.name}
-                                                        email={(e) => this.setState({ email: e.target.value})}
                                                         description='Page Access'
                                                         opened={() => window.alert('Please click top left yellow button for test numbers')}
                                                         image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'

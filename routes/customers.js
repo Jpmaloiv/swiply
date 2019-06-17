@@ -62,23 +62,23 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
   // if (req.file) imageLink = req.file.key;
   // console.log("REQ", req.query)
 
-  console.log("QUERY", req.query)
-
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
 
-  const charge = await stripe.charges.create({
-    amount: req.query.price,
-    currency: "usd",
-    source: req.query.token,
-  }, {
-      stripe_account: req.query.accountId,
-    }).then(function (charge, err) {
-      if (charge) console.log("CHARGE", charge)
-      else console.log("ERROR", err)
-    });
 
-    return
+  const charge = await stripe.charges.create({
+    amount: req.query.price * 100,
+    currency: "usd",
+    source: req.query.token.trim(),
+    transfer_data: {
+      destination: req.query.accountId,
+    },
+  }).then(function (charge, err) {
+    if (charge) console.log("CHARGE", charge)
+    else console.log("ERROR", err)
+  });
+
+  return
 
   const customer = {
     // firstName: req.query.firstName,
