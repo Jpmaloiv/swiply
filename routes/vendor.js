@@ -5,21 +5,22 @@ const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
-router.post('/create', (req, res) => {
+router.post('/subscribe', async (req, res) => {
 
-    stripe.accounts.create({
-        email: 'joe@funbarn.com',
-        country: 'us',
-        type: 'custom',
-        requested_capabilities: ['card_payments'],
-        business_type: 'individual',
-        individual: {
-            
-        }
-    })
-        .then(res => console.log(res))
-        .catch(err => console.error(err))
+    stripe.subscriptions.create({
+        customer: "cus_FGKAHQYPlIrLap",
+        items: [
+            {
+                plan: "plan_FGJmbUTlXiCjYe",
+            },
+        ]
+    }, function (err, subscription) {
+        if (err) console.log("ERR", err)
+        else console.log("SUB", subscription)
+    }
+    );
 
 })
+
 
 module.exports = router;

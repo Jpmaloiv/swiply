@@ -54,7 +54,7 @@ export default class VerifyAccount extends Component {
 
                     <Button variant='success' size='lg' onClick={() => this.props.setState({ view: 'SubscriptionPlan' })} ref={ref => (this.next = ref)}>
                         Next
-                </Button>
+                    </Button>
                 </div>
             </ReactCSSTransitionGroup>
         )

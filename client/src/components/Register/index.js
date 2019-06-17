@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-
 import CreateAccount from './CreateAccount'
 import VerifyAccount from './VerifyAccount'
 import ProfileSummary from './ProfileSummary'

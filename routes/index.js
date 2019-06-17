@@ -11,6 +11,12 @@ router.get('/', async function(req, res, next) {
   })
 });
 
+router.get('/env', async function(req, res, next) {
+  return res.json({
+    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+  })
+});
+
 // reads current directory and adds routes to router
 fs.readdirSync(__dirname)
   .filter(file => {

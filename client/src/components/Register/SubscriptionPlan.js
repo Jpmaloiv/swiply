@@ -2,31 +2,41 @@ import axios from "axios";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Button from "react-bootstrap/Button";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Spinner from 'react-bootstrap/Spinner'
+import StripeCheckout from 'react-stripe-checkout'
 
 
 export default class SubscriptionPlan extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      plan: 'medium',
+      stripePublishableKey: '',
+      submit: false
+    }
+  }
+
+  componentWillMount() {
+    axios.get('api/env')
+      .then(resp => {
+        console.log(resp)
+        this.setState({ stripePublishableKey: resp.data.stripePublishableKey })
+      }).catch(err => {
+        console.error(err)
+      })
+  }
+
   // Register the new user
-  register() {
+  register(token) {
     const user = this.props.state;
+
     if (user.password === user.confirmpw) {
       let data = new FormData();
       data.append("imgFile", user.file);
-      axios
-        .post(
-          "api/users/register?firstName=" +
-            user.firstName +
-            "&lastName=" +
-            user.lastName +
-            "&email=" +
-            user.email +
-            "&password=" +
-            user.password +
-            "&summary=" +
-            user.summary,
-          data
-        )
+
+      axios.post(`api/users/register?firstName=${user.firstName}&lastName=${user.lastName}&email=${user.email}
+      &password=${user.password}&summary=${user.summary}&token=${token.id}&plan=${this.state.plan}`, data)
         .then(resp => {
           console.log(resp);
           window.localStorage.setItem("token", resp.data.token);
@@ -38,7 +48,14 @@ export default class SubscriptionPlan extends Component {
     }
   }
 
+
+
+
   render() {
+    console.log(this.state.stripePublishableKey)
+
+    const { plan } = this.state
+
     return (
       <ReactCSSTransitionGroup
         transitionName="fade"
@@ -48,40 +65,59 @@ export default class SubscriptionPlan extends Component {
         transitionLeave={false}
       >
         <div className="center">
-        <ToggleButtonGroup vertical name='subscription' className='subscription-plan'>
-            <ToggleButton variant="light">
+          <ButtonGroup vertical name='subscription' className='subscription-plan'>
+            <Button variant="light" active={plan === 'small'} onClick={() => this.setState({ plan: 'small' })}>
               <h4>Small Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$0 Per Month</h4>
-            </ToggleButton>
-            <ToggleButton variant="light">
+            </Button>
+            <Button variant="light" active={plan === 'medium'} onClick={() => this.setState({ plan: 'medium' })}>
               <h4>Medium Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$199 Per Month</h4>
-            </ToggleButton>
-            <ToggleButton variant="light">
+            </Button>
+            <Button variant="light" active={plan === 'pro'} onClick={() => this.setState({ plan: 'pro' })}>
               <h4>Pro Plan</h4>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <h4>$399 Per Month</h4>
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </Button>
+          </ButtonGroup>
 
-          <Button
-            variant="success"
-            size="lg"
-            onClick={this.register.bind(this)}
-          >
-            Register
-          </Button>
+          {!this.state.submit ?
+            <StripeCheckout
+              token={this.register.bind(this)}
+              stripeKey={this.state.stripePublishableKey}
+              name='Swiply'
+              description={'Subscription Plan'}
+              opened={() => window.alert('Please click top left yellow button for test numbers')}
+              closed={() => this.setState({ submit: true })}
+              email={this.props.state.email}
+              image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+              allowRememberMe={false}
+            >
+              <Button variant='success' size='lg'>
+                Pay with Card
+            </Button>
+            </StripeCheckout>
+            :
+            <Button variant='success' className='loading' disabled>
+              <Spinner
+                as="span"
+                animation="grow"
+              />
+              Registering...
+            </Button>
+          }
+
         </div>
       </ReactCSSTransitionGroup>
     );

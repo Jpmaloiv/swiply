@@ -377,9 +377,9 @@ iframe body {display: none !important}
   cursor: pointer
 }
 
-.subscription-plan .btn-light.focus {
-  background: #01ae63;
-  color: #fff;
+.subscription-plan button.active {
+  background-color: #01ae63 !important;
+  color: #fff !important;
 }
 
 /* Custom Input */

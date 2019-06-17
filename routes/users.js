@@ -11,6 +11,8 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const aws = require("aws-sdk");
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 const s3 = new aws.S3();
 
 const cloudStorage = multerS3({
@@ -64,7 +66,6 @@ router.post('/verify', (req, res) => {
     }
   })
     .then(function (resp) {
-      console.log("RESP", resp)
       if (resp) res.status(200).json({ message: 'Duplicate user found', response: resp })
       else res.status(200).json({ message: 'No user data found', response: resp })
 
@@ -75,8 +76,54 @@ router.post('/verify', (req, res) => {
     });
 })
 
+
 // Register a new user
-router.post("/register", upload.single("imgFile"), (req, res) => {
+router.post("/register", upload.single("imgFile"), async (req, res) => {
+
+  let { plan } = req.query
+
+  if (plan === 'small') plan = process.env.PRICING_PLAN_SMALL
+  if (plan === 'medium') plan = process.env.PRICING_PLAN_MEDIUM
+  if (plan === 'pro') plan = process.env.PRICING_PLAN_PRO
+
+  const customer = await stripe.customers.create({
+    description: `Customer for ${req.query.email}`,
+    source: req.query.token,
+  })
+    .then(resp => {
+      console.log('Customer created:', resp.id)
+      return resp
+    })
+    .catch(err => console.error(err))
+
+  await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [{ plan: plan }]
+  })
+    .then(resp => {
+      console.log('Subscription created:', resp.id)
+    })
+    .catch(err => console.error(err))
+
+
+  const accountId = await stripe.accounts.create({
+    email: 'malomedia7@gmail.com',
+    country: 'us',
+    type: 'custom',
+    requested_capabilities: ['card_payments'],
+    business_type: 'individual',
+    individual: {
+      first_name: req.query.firstName,
+      last_name: req.query.lastName
+    }
+  })
+    .then(resp => {
+      console.log('Account created', resp.id)
+      return resp.id
+    })
+    .catch(err => console.error('Error creating account', err))
+
+
   let imageLink = "";
   if (req.file) imageLink = req.file.key;
 
@@ -91,6 +138,7 @@ router.post("/register", upload.single("imgFile"), (req, res) => {
     salt: salt,
     summary: req.query.summary,
     imageLink: imageLink,
+    accountId: accountId,
     remember: req.query.remember
   };
 
@@ -112,6 +160,7 @@ router.post("/register", upload.single("imgFile"), (req, res) => {
       res.status(500).json({ message: "Internal server error.", error: err });
     });
 });
+
 
 router.post("/login", (req, res) => {
   let role = "user";
@@ -145,7 +194,6 @@ router.get("/search", (req, res) => {
 
   db.User.findAll(query)
     .then(resp => {
-      console.log("RESP", resp)
       if (resp.length > 0) {
         res.json({
           success: true,
@@ -213,7 +261,7 @@ router.put("/update", upload.single("imgFile"), async (req, res) => {
             return res.json({ message: "Wrong original password" });
           }
         } else {
-          res.status(200).json({ message: 'User not found'})
+          res.status(200).json({ message: 'User not found' })
         }
       })
       .catch(err => {

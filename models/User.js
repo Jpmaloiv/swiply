@@ -9,10 +9,7 @@ module.exports = function (sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
+      unique: true
     },
     profile: {
       type: DataTypes.STRING,
@@ -76,6 +73,10 @@ module.exports = function (sequelize, DataTypes) {
     passwordResetExpiry: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    accountId: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
 
