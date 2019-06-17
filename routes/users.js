@@ -79,7 +79,7 @@ router.post('/verify', (req, res) => {
 
 // Register a new user
 router.post("/register", upload.single("imgFile"), async (req, res) => {
-  const {email} = req.query.trim()
+  const email = req.query.email.trim()
 
   let { plan } = req.query
 
