@@ -95,7 +95,7 @@ export default class SubscriptionPlan extends Component {
           {!this.state.submit ?
             <StripeCheckout
               token={this.register.bind(this)}
-              stripeKey={this.state.stripePublishableKey}
+              stripeKey='pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8'
               name='Swiply'
               description={'Subscription Plan'}
               opened={() => window.alert('Please click top left yellow button for test numbers')}
