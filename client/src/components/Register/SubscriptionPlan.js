@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Spinner from 'react-bootstrap/Spinner'
 import StripeCheckout from 'react-stripe-checkout'
-import crypto from 'crypto'
 
 
 export default class SubscriptionPlan extends Component {
@@ -16,22 +15,6 @@ export default class SubscriptionPlan extends Component {
       stripePublishableKey: '',
       submit: false
     }
-  }
-
-  componentWillMount() {
-    axios.get('api/env')
-      .then(resp => {
-        console.log(resp)
-        const token = crypto.randomBytes(64).toString('hex');
-
-        this.setState({
-          stateToken: token,
-          stripeClientId: resp.data.stripeClientId,
-          stripePublishableKey: resp.data.stripePublishableKey
-        })
-      }).catch(err => {
-        console.error(err)
-      })
   }
 
   // Register the new user
@@ -49,8 +32,7 @@ export default class SubscriptionPlan extends Component {
           console.log(resp);
           window.localStorage.setItem("token", resp.data.token);
           window.localStorage.setItem('userId', resp.data.userId)
-          window.open(`https://connect.stripe.com/express/oauth/authorize?client_id=${this.state.stripeClientId}&state=${this.state.stateToken}`)
-          // window.location.reload();
+          this.props.setState({ view: 'PaymentIntegration'})
         })
         .catch(error => {
           console.error(error);
@@ -59,10 +41,7 @@ export default class SubscriptionPlan extends Component {
   }
 
 
-
-
   render() {
-    console.log(this.state)
 
     const { plan } = this.state
 

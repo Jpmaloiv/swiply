@@ -252,9 +252,9 @@ export default class PageView extends Component {
                             {this.state.nameEdit ?
                                 <InputGroup>
                                     <FormControl
-                                        style={{ width: 'initial' }}
                                         placeholder={this.state.name}
                                         name='name'
+                                        className='page-name edit'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
                                         autoFocus

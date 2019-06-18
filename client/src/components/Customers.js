@@ -27,7 +27,7 @@ export default class CustomerList extends Component {
     if (loginToken) decoded = jwt_decode(loginToken);
 
     axios
-      .get("api/customers/search?userId=" + decoded.name)
+      .get("api/charges/search?userId=" + decoded.name)
       .then(resp => {
         console.log(resp);
         this.setState({

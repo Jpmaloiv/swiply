@@ -200,6 +200,9 @@ button {
   border-color: #05b637 !important
 }
 
+button.connect {margin: 20px !important}
+button.connect:hover {background-color: #f5f5f5}
+
 button.loading {
   display: flex;
   font-size: 1.25rem;
@@ -286,6 +289,11 @@ div.page p {
 
 .page-name {
   font-size: 60px
+}
+
+.page-name.edit {
+  font-size: 40px;
+  max-width: 350px
 }
 
 .page-name:after {
@@ -901,6 +909,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
   }
   .page-name {
     font-size: 28px !important
+  }
+  .page-name.edit {
+    font-size: initial;
+    max-width: initial
   }
   .page-name:after {
     margin-top: 0

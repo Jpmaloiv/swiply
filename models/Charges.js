@@ -10,18 +10,18 @@ module.exports = function (sequelize, DataTypes) {
 
     });
 
-    // Page.associate = function (models) {
-    //     models.Page.belongsTo(models.User, {
-    //         foreignKey: {
-    //             allowNull: false
-    //         }
-    //     })
-    //     models.Page.hasMany(models.Content, {
-    //         foreignKey: {
-    //             allowNull: false
-    //         }
-    //     })
-    // }
+    Charge.associate = function (models) {
+        models.Charge.belongsTo(models.Page, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
+        models.Charge.belongsTo(models.Customer, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
+    }
 
     return Charge;
 };

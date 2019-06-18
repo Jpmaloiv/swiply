@@ -31,16 +31,8 @@ router.post('/register', async (req, res) => {
         })
         .catch(err => console.log("ERR", err))
 
-    const loginLink = await stripe.accounts.createLoginLink(accountId)
-        .then(resp => {
-            console.log('Login link generated', resp)
-            return resp.url.replace('https://connect.stripe.com/express/', '')
-        })
-        .catch(err => console.error('Error creating account', err))
-
     const user = {
         accountId: accountId,
-        loginLink: loginLink
     }
 
     db.User.update(user, { where: { id: req.query.id } })
@@ -58,7 +50,19 @@ router.post('/register', async (req, res) => {
         });
 })
 
+
+router.post('/login', (req, res) => {
+    stripe.accounts.createLoginLink(req.query.accountId)
+        .then(resp => {
+            console.log('Login link generated', resp)
+            res.json({ stripeLink: resp.url})
+        })
+        .catch(err => console.error('Error creating login link', err))
+})
+
+
 router.post('/charge', async (req, res) => {
+    console.log("HERE")
 
     const purchase = await stripe.charges.create({
         amount: req.query.price * 100,
@@ -66,9 +70,6 @@ router.post('/charge', async (req, res) => {
         source: req.query.token.trim(),
         transfer_data: {
             destination: req.query.accountId,
-        },
-        metadata: {
-            customerId: req.query.customerId
         }
     })
         .then(charge => {
@@ -79,7 +80,9 @@ router.post('/charge', async (req, res) => {
 
     const charge = {
         id: purchase.id,
-        amount: purchase.amount
+        amount: purchase.amount,
+        CustomerId: req.query.customerId,
+        PageId: req.query.pageId
     }
 
     db.Charge.create(charge)

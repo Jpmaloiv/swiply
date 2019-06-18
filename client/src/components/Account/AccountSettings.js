@@ -51,6 +51,18 @@ export default class AccountSettings extends Component {
       });
   }
 
+  getPaymentLink() {
+    axios.post(`/api/stripe/login?accountId=${this.state.user.accountId}`)
+      .then((resp) => {
+        console.log("RESP", resp)
+        this.setState({
+          stripeLink: resp.data.stripeLink
+        })
+      }).catch((error) => {
+        console.error(error);
+      })
+  }
+
   imageCheck() {
     const { user } = this.state;
     if (user.imageLink) {
@@ -59,6 +71,7 @@ export default class AccountSettings extends Component {
         }/${user.imageLink}`;
       this.setState({ render: !this.state.render });
     }
+    this.getPaymentLink();
   }
 
   // Handles user input
@@ -132,17 +145,17 @@ export default class AccountSettings extends Component {
 
     console.log(query)
     axios.put(`/api/${role}/update?id=` + this.state.user.id + "&firstName=" + user.firstName +
-        "&lastName=" +
-        user.lastName +
-        "&title=" +
-        user.title +
-        "&email=" +
-        user.email +
-        "&summary=" +
-        user.summary +
-        query,
-        data
-      )
+      "&lastName=" +
+      user.lastName +
+      "&title=" +
+      user.title +
+      "&email=" +
+      user.email +
+      "&summary=" +
+      user.summary +
+      query,
+      data
+    )
       .then(res => {
         console.log(res);
         if (res.data.message === "Wrong original password") {
@@ -221,6 +234,16 @@ export default class AccountSettings extends Component {
                     Add Profile Image
                 </p>
                 )}
+
+              {role === 'user' ?
+                <Button
+                  variant='link'
+                  onClick={() => window.open(this.state.stripeLink)}
+                  style={{ color: '#007bff', textDecoration: 'underline', margin: '10px auto !important' }}
+                >View Payment Information</Button>
+                :
+                <span></span>
+              }
 
               <Form.Group>
                 <input
@@ -309,13 +332,13 @@ export default class AccountSettings extends Component {
               <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <input
-                type='email'
-                style={{ opacity: 0 }}
-                placeholder="Email Address"
-                name="email"
-                onChange={this.handleChange}
-                autoComplete='new-email'
-              />
+                  type='email'
+                  style={{ opacity: 0 }}
+                  placeholder="Email Address"
+                  name="email"
+                  onChange={this.handleChange}
+                  autoComplete='new-email'
+                />
 
                 <Form.Control
                   type='email'
@@ -326,7 +349,7 @@ export default class AccountSettings extends Component {
                   autoComplete='nope'
                   onKeyPress={this.enterPressed.bind(this)}
                 />
-              
+
               </Form.Group>
               {role === "user" ? (
                 <Form.Group>

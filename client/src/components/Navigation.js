@@ -53,7 +53,7 @@ export default class Navigation extends Component {
                             alt='PV3'
                         /> */}
                         {role === 'customer' ?
-                            <h6 style={{ color: 'initial', marginLeft: 25 }}>Welcome, {firstName}</h6>
+                            <span></span>
                             :
                             <h1 className='logo'>Swiply</h1>
                         }

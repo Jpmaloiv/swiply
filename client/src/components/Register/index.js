@@ -5,6 +5,7 @@ import CreateAccount from './CreateAccount'
 import VerifyAccount from './VerifyAccount'
 import ProfileSummary from './ProfileSummary'
 import SubscriptionPlan from './SubscriptionPlan'
+import PaymentIntegration from './PaymentIntegration'
 
 
 export default class Register extends Component {
@@ -55,6 +56,8 @@ export default class Register extends Component {
                 return <ProfileSummary {...props} />;
             case 'SubscriptionPlan':
                 return <SubscriptionPlan {...props} />;
+            case 'PaymentIntegration':
+                return <PaymentIntegration {...props} />
             default:
                 return null;
         }

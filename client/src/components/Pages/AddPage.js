@@ -81,7 +81,7 @@ export default class AddPage extends Component {
                             <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
                         </form>
                         <img src={this.state.image} style={{ width: '100%', opacity: .2 }} alt='' />
-                        <div style={{ position: 'absolute', bottom: 45, right: 95 }}>
+                        <div className='image-change_icon'>
                             <Button
                                 variant='dark'
                                 className='circle'
@@ -98,9 +98,9 @@ export default class AddPage extends Component {
                             {this.state.nameEdit ?
                                 <InputGroup>
                                     <FormControl
-                                        style={{ width: 'initial' }}
                                         placeholder={this.state.name}
                                         name='name'
+                                        className='page-name edit'
                                         onChange={this.handleChange}
                                         onBlur={this.handleEditing}
                                         autoFocus
@@ -108,7 +108,7 @@ export default class AddPage extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p style={{ fontSize: 20 }} className='page-name' style={{ fontSize: 60 }}>{this.state.name}</p>
+                                    <p className='page-name' style={{ fontSize: 60 }}>{this.state.name}</p>
                                     <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                 </div>
                             }

@@ -3,6 +3,7 @@ const db = require("../models");
 const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
+const axios = require('axios')
 
 const auth = require("../controllers/auth");
 
@@ -62,43 +63,57 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
 
-
-  axios.post(`api/stripe/charge?price=${req.query.price}&source=${req.query.token}&accountId=${req.query.accountId}`)
-    .then((resp) => {
-      console.log("RESP", resp)
-    }).catch((error) => {
-      console.error(error);
-    })
-
-  return
-
   const customer = {
-    // firstName: req.query.firstName,
-    // lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
-    imageLink: imageLink,
     hash: hash,
     salt: salt
   };
 
-  let AWS = "N/A";
-  if (req.file) AWS = "Image uploaded!";
+  let token = ''
 
-  db.Customer.create(customer)
+  const customerId = await db.Customer.create(customer)
     .then(resp => {
-      res.status(200);
-      res.json({
-        success: true,
-        message: "Customer created!",
-        token: auth.generateJWT(resp, role),
-        AWS: AWS
-      });
+      token = auth.generateJWT(resp, role)
+      return resp.id
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: "Internal server error.", error: err });
     });
+
+  const purchase = await stripe.charges.create({
+    amount: req.query.price * 100,
+    currency: "usd",
+    source: req.query.token.trim(),
+    transfer_data: {
+      destination: req.query.accountId,
+    }
+  })
+    .then(charge => {
+      console.log("CHARGE", charge)
+      return charge
+    })
+    .catch(err => console.log("ERR", err))
+
+  const charge = {
+    id: purchase.id,
+    amount: purchase.amount / 100,
+    CustomerId: customerId,
+    PageId: req.query.pageId
+  }
+
+  db.Charge.create(charge)
+    .then(resp => {
+      console.log("RESP", resp)
+      res.status(200);
+      res.json({ success: true, message: 'Customer and charge created!', customerId: customerId, token: token});
+    })
+    .catch(err => {
+      console.error('Error creating charge', err);
+      res.status(500).json({ message: "Internal server error.", error: err });
+    })
 });
+
 
 router.post("/login", (req, res) => {
   let role = "customer";
