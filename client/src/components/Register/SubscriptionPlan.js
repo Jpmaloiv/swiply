@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Spinner from 'react-bootstrap/Spinner'
 import StripeCheckout from 'react-stripe-checkout'
+import crypto from 'crypto'
 
 
 export default class SubscriptionPlan extends Component {
@@ -21,7 +22,13 @@ export default class SubscriptionPlan extends Component {
     axios.get('api/env')
       .then(resp => {
         console.log(resp)
-        this.setState({ stripePublishableKey: resp.data.stripePublishableKey })
+        const token = crypto.randomBytes(64).toString('hex');
+
+        this.setState({
+          stateToken: token,
+          stripeClientId: resp.data.stripeClientId,
+          stripePublishableKey: resp.data.stripePublishableKey
+        })
       }).catch(err => {
         console.error(err)
       })
@@ -29,7 +36,7 @@ export default class SubscriptionPlan extends Component {
 
   // Register the new user
   register(token) {
-    this.setState({ submit: true})
+    this.setState({ submit: true })
     const user = this.props.state;
 
     if (user.password === user.confirmpw) {
@@ -41,7 +48,9 @@ export default class SubscriptionPlan extends Component {
         .then(resp => {
           console.log(resp);
           window.localStorage.setItem("token", resp.data.token);
-          window.location.reload();
+          window.localStorage.setItem('userId', resp.data.userId)
+          window.open(`https://connect.stripe.com/express/oauth/authorize?client_id=${this.state.stripeClientId}&state=${this.state.stateToken}`)
+          // window.location.reload();
         })
         .catch(error => {
           console.error(error);
@@ -53,7 +62,7 @@ export default class SubscriptionPlan extends Component {
 
 
   render() {
-    console.log(this.state.stripePublishableKey)
+    console.log(this.state)
 
     const { plan } = this.state
 
@@ -102,6 +111,7 @@ export default class SubscriptionPlan extends Component {
               opened={() => window.alert('Please click top left yellow button for test numbers')}
               email={this.props.state.email}
               image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+              currency='USD'
               allowRememberMe={false}
             >
               <Button variant='success' size='lg'>

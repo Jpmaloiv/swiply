@@ -106,25 +106,6 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     })
     .catch(err => console.error(err))
 
-
-  const accountId = await stripe.accounts.create({
-    email: email,
-    country: 'us',
-    type: 'custom',
-    requested_capabilities: ['card_payments'],
-    business_type: 'individual',
-    individual: {
-      first_name: req.query.firstName,
-      last_name: req.query.lastName
-    }
-  })
-    .then(resp => {
-      console.log('Account created', resp.id)
-      return resp.id
-    })
-    .catch(err => console.error('Error creating account', err))
-
-
   let imageLink = "";
   if (req.file) imageLink = req.file.key;
 
@@ -139,7 +120,6 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     salt: salt,
     summary: req.query.summary,
     imageLink: imageLink,
-    accountId: accountId,
     remember: req.query.remember
   };
 
@@ -153,6 +133,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
         success: true,
         message: "User created!",
         token: auth.generateJWT(resp, role),
+        userId: resp.dataValues.id,
         AWS: AWS
       });
     })

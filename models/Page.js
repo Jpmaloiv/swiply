@@ -42,7 +42,12 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: {
                 allowNull: false
             }
-        })
+        }),
+            models.Page.hasMany(models.Charge, {
+                foreignKey: {
+                    allowNull: false
+                }
+            })
     }
 
     return Page;

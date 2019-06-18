@@ -13,7 +13,9 @@ router.get('/', async function(req, res, next) {
 
 router.get('/env', async function(req, res, next) {
   return res.json({
-    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+    stripeClientId: process.env.STRIPE_CLIENT_ID,
+    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY
   })
 });
 

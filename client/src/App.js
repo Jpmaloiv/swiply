@@ -57,6 +57,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props.location)
 
     return (
       <StripeProvider apiKey="pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8">
@@ -98,6 +99,9 @@ class App extends Component {
               <Route path='/customers' component={Customers} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />
+
+              <Route exact path='/welcome' component={Welcome} />
+
 
               <Route exact path='/pages/:pageId/add-content' component={AddContent} />
 

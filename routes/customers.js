@@ -58,25 +58,17 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Register a new customer
 router.post("/register", upload.single("imgFile"), async (req, res) => {
-  // let imageLink = "";
-  // if (req.file) imageLink = req.file.key;
-  // console.log("REQ", req.query)
 
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
 
 
-  const charge = await stripe.charges.create({
-    amount: req.query.price * 100,
-    currency: "usd",
-    source: req.query.token.trim(),
-    transfer_data: {
-      destination: req.query.accountId,
-    },
-  }).then(function (charge, err) {
-    if (charge) console.log("CHARGE", charge)
-    else console.log("ERROR", err)
-  });
+  axios.post(`api/stripe/charge?price=${req.query.price}&source=${req.query.token}&accountId=${req.query.accountId}`)
+    .then((resp) => {
+      console.log("RESP", resp)
+    }).catch((error) => {
+      console.error(error);
+    })
 
   return
 

@@ -76,7 +76,11 @@ module.exports = function (sequelize, DataTypes) {
     },
     accountId: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
+    },
+    loginLink: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 

@@ -41,6 +41,11 @@ module.exports = function (sequelize, DataTypes) {
             as: 'pages',
             foreignKey: 'CustomerId'
         });
+        models.Customer.hasMany(models.Charge, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
     }
 
     return Customer;

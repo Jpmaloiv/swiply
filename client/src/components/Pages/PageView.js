@@ -181,6 +181,7 @@ export default class PageView extends Component {
 
 
     checkout(token) {
+        console.log(token)
         this.setState({ submit: true})
         window.localStorage.setItem('customer', true);
         window.localStorage.setItem('pageId', this.state.page.id);
@@ -332,6 +333,7 @@ export default class PageView extends Component {
                                                         description='Page Access'
                                                         opened={() => window.alert('Please click top left yellow button for test numbers')}
                                                         image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+                                                        currency='usd'
                                                         allowRememberMe={false}
                                                     >
                                                         <span ref={(ref) => this.checkoutRef = ref}>Request Page Access ${page.price}</span>
