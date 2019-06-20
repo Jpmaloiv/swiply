@@ -156,7 +156,7 @@ form.login {
 .imageBanner {
   position: relative;
   height: 442px;
-  background-image: linear-gradient(to left top, #919191, #ababab, #c7c7c7, #e2e2e2, #ffffff);
+  background-image: url('./images/page-bg.png');
   overflow: hidden
 }
 

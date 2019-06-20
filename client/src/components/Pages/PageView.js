@@ -389,7 +389,7 @@ export default class PageView extends Component {
                                                 :
                                                 <div style={{ display: 'flex' }}>
                                                     <p className='title'><i>{user.title}</i>
-                                                        {edit
+                                                        {edit && user.title
                                                             ? <FontAwesomeIcon icon='pen' size='xs' name='titleUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3 }} />
                                                             : <span></span>
                                                         }</p>
@@ -429,7 +429,7 @@ export default class PageView extends Component {
                                         <div style={{ display: 'flex' }}>
                                             <p className='profile-summary'>
                                                 {user.summary}
-                                                {edit
+                                                {edit && user.summary
                                                     ? <FontAwesomeIcon icon='pen' name='summaryUser' onClick={this.handleEditing} style={{ opacity: 0.3 }} />
                                                     : <span></span>
                                                 }
@@ -530,11 +530,6 @@ export default class PageView extends Component {
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>
-                                                {/* <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
-                                                    <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                                                    <span>{page.views} Views</span>
-                                                    <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
-                                                </p> */}
                                                 <p className='previewText' style={{fontSize: 14}}>
                                                     {content.description}
                                                 </p>
