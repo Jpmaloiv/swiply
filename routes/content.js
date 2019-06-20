@@ -52,7 +52,34 @@ router.post('/add', upload.single('imgFile'), (req, res) => {
   db.Content.create(content)
     .then(resp => {
       res.status(200);
-      res.json({ success: true, message: 'Content created!' });
+      res.json({ success: true, message: 'Content created!', id: resp.dataValues.id });
+
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error.", error: err });
+    })
+
+})
+
+
+router.post('/attach', upload.single('imgFile'), (req, res) => {
+
+  upload.single('imgFile')
+  console.log("FILE", req.file)
+
+  const content = {
+    name: req.query.name,
+    description: req.query.description,
+    link: req.file.key,
+    FileId: req.query.fileId,
+    PageId: req.query.pageId
+  }
+
+  db.Content.create(content)
+    .then(resp => {
+      res.status(200);
+      res.json({ success: true, message: 'Content attachment created!' });
     })
     .catch(err => {
       console.error(err);
@@ -63,18 +90,25 @@ router.post('/add', upload.single('imgFile'), (req, res) => {
 
 router.get('/search', (req, res) => {
 
-  let query = { where: {} }
-  if (req.query.id) query.where.id = req.query.id
+  let query = {
+    where: {},
+    include: [{
+      model: db.Content,
+      as: 'File'
+    }]
+  }
 
+  if (req.query.id) query.where.id = req.query.id
 
   db.Content.findAll(query)
     .then(resp => {
-      res.json({ success: true, message: 'Content found!', response: resp, EMBEDLY_API_KEY: process.env.EMBEDLY_API_KEY });
+      res.json({ success: true, message: 'Content found!', response: resp, EMBEDLY_API_KEY: process.env.EMBEDLY_API_KEY, s3Bucket: process.env.S3_BUCKET });
     })
     .catch(err => {
       console.error("ERR", err);
       res.status(500).json({ message: "Internal server error.", error: err });
     })
 })
+
 
 module.exports = router;

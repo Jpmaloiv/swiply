@@ -27,7 +27,7 @@ export default class SubscriptionPlan extends Component {
       data.append("imgFile", user.file);
 
       axios.post(`api/users/register?firstName=${user.firstName}&lastName=${user.lastName}&email=${user.email}
-      &password=${user.password}&summary=${user.summary}&token=${token.id}&plan=${this.state.plan}`, data)
+      &password=${user.password}&title=${user.title}&profile=${user.profile}&summary=${user.summary}&token=${token.id}&plan=${this.state.plan}`, data)
         .then(resp => {
           console.log(resp);
           window.localStorage.setItem("token", resp.data.token);

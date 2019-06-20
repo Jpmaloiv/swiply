@@ -9,13 +9,14 @@ import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import { NavLink } from "react-router-dom";
 
+
 export default class CustomerList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       stats: [],
       pages: [],
-      customers: [],
+      charges: [],
       customerName: ""
     };
     this.searchQuery = this.searchQuery.bind(this);
@@ -27,11 +28,11 @@ export default class CustomerList extends Component {
     if (loginToken) decoded = jwt_decode(loginToken);
 
     axios
-      .get("api/charges/search?userId=" + decoded.name)
+      .get("api/charges/search?id=" + decoded.id)
       .then(resp => {
         console.log(resp);
         this.setState({
-          customers: resp.data.response,
+          charges: resp.data.response,
           S3_BUCKET: resp.data.bucket
         });
       })
@@ -125,7 +126,7 @@ export default class CustomerList extends Component {
                 <div>
                   <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
                     <Dropdown.Item href="#/action-1">
-                      Recent Customers
+                      Date Added
                   </Dropdown.Item>
                     <Dropdown.Item href="#/action-2">
                       Pages Purchased
@@ -139,26 +140,25 @@ export default class CustomerList extends Component {
               {/* List pages in table format */}
               <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
                 <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
-                  {this.state.customers.map((page, i) => (
+                  {this.state.charges.map((charge, i) => (
                     <NavLink
-                      to={`/pages/${page.id}`}
+                      to={`/`}
                       style={{ color: "initial" }}
                     >
                       <div key={i} className="page" style={{ display: "flex", padding: 18, margin: '7.5px auto', alignItems: 'center', width: 'initial' }}>
                         <img
                           src={`https://s3-us-west-1.amazonaws.com/${
                             this.state.S3_BUCKET
-                            }/${page.imageLink}`}
+                            }/${charge.Customer.imageLink}`}
                           style={{
-                            minWidth: 75, maxWidth: 75, height: 75, marginRight: 10, borderRadius: '50%', objectFit: 'cover'
+                            minWidth: 75, maxWidth: 75, height: 75, marginRight: 20, borderRadius: '50%', objectFit: 'cover'
                           }}
                         />
                         <div style={{ width: "100%" }}>
-                          <p>{page.name}</p>
                           <p style={{ fontSize: 18 }}>
-                            {page.firstName} {page.lastName}
+                            {charge.Customer.firstName} {charge.Customer.lastName}
                           </p>
-                          <p style={{ color: '#88898c' }}>Item: Manatee Grooming</p>
+                          <p style={{ color: '#88898c' }}>Item: {charge.Page.name}</p>
 
                           <p style={{ alignItems: "left" }}>
                             <span style={{ fontSize: 14 }}>Status: </span>

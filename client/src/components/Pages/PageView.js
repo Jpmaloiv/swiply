@@ -72,7 +72,6 @@ export default class PageView extends Component {
     }
 
     checkPermissions() {
-        console.log(this.state.decoded)
         if (this.state.decoded) {
             if (this.state.decoded.role === 'customer') {
                 axios.get(`/api/customers/search?id=${this.state.decoded.id}`)
@@ -93,7 +92,8 @@ export default class PageView extends Component {
         }
 
         if (this.state.decoded) {
-            if (this.state.decoded.id === this.state.page.UserId) this.setState({ edit: true })
+            if ((this.state.decoded.id === this.state.page.UserId) && this.state.decoded.role === 'user')
+                this.setState({ edit: true })
         }
     }
 
@@ -182,7 +182,6 @@ export default class PageView extends Component {
 
     checkout(token) {
         console.log(token)
-        this.setState({ submit: true})
         window.localStorage.setItem('customer', true);
         window.localStorage.setItem('pageId', this.state.page.id);
         window.localStorage.setItem('page', this.state.page.name)
@@ -194,9 +193,9 @@ export default class PageView extends Component {
 
 
     render() {
-        console.log(this.state)
+        console.log(this.state.edit)
 
-        const { edit, page } = this.state
+        const { decoded, edit, page } = this.state
         const user = page.User
 
         return (
@@ -296,9 +295,7 @@ export default class PageView extends Component {
                                     <Button
                                         variant='success'
                                         size='lg'
-                                        onClick={edit ? null : this.state.decoded
-                                            ? () => window.location = '/checkout'
-                                            : () => this.checkoutRef.click()}
+                                        onClick={edit ? null : () => this.checkoutRef.click()}
                                     >
 
                                         {edit ?
@@ -325,28 +322,18 @@ export default class PageView extends Component {
                                             </div>
                                             :
                                             <div>
-                                                {!this.state.submit ?
-                                                    <StripeCheckout
-                                                        token={this.checkout.bind(this)}
-                                                        stripeKey='pk_test_f3sdsuRefwIEyWwwg1LKClVY006I3NL4t9'
-                                                        name={page.name}
-                                                        description='Page Access'
-                                                        opened={() => window.alert('Please click top left yellow button for test numbers')}
-                                                        image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
-                                                        currency='usd'
-                                                        allowRememberMe={false}
-                                                    >
-                                                        <span ref={(ref) => this.checkoutRef = ref}>Request Page Access ${page.price}</span>
-                                                    </StripeCheckout>
-                                                    :
-                                                    <Button variant='success' className='loading' disabled>
-                                                        <Spinner
-                                                            as="span"
-                                                            animation="grow"
-                                                        />
-                                                        Registering...
-                                                </Button>
-                                                }
+                                                <StripeCheckout
+                                                    token={this.checkout.bind(this)}
+                                                    stripeKey='pk_test_f3sdsuRefwIEyWwwg1LKClVY006I3NL4t9'
+                                                    name={page.name}
+                                                    description='Page Access'
+                                                    opened={() => window.alert('Please click top left yellow button for test numbers')}
+                                                    image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+                                                    currency='usd'
+                                                    allowRememberMe={false}
+                                                >
+                                                    <span ref={(ref) => this.checkoutRef = ref}>Request Page Access ${page.price}</span>
+                                                </StripeCheckout>
                                             </div>
                                         }
                                     </Button>
@@ -359,11 +346,15 @@ export default class PageView extends Component {
 
                 <div style={{ width: '100%', borderBottom: '1px solid #ebecef' }}>
                     <div className='main' style={{ marginBottom: 0 }}>
-                        <div className='profile'>
+                        <div className='profile'
+                        >
                             {page.displayProfile ?
                                 <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                                     <div className='profile-header'>
-                                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 30, borderRadius: '50%', objectFit: 'cover' }} alt='' />
+                                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${user.imageLink}`} style={{ width: 75, height: 75, marginRight: 30, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer' }}
+                                            onClick={!edit
+                                                ? () => window.location = `/profile/${user.profile}`
+                                                : null} alt='' />
                                         <div className='profile-name'>
                                             {this.state.nameUserEdit ?
                                                 <InputGroup>
@@ -408,7 +399,7 @@ export default class PageView extends Component {
 
                                         <div>
                                             {edit ?
-                                                <NavLink to={`/account/${this.state.decoded.id}`}>
+                                                <NavLink to={`/account/${decoded.id}`}>
                                                     <Button
                                                         size='sm'
                                                         style={{ width: 76, border: '1px solid #DFE1E6', borderRadius: 2, backgroundColor: 'transparent', color: '#181818' }}
@@ -513,7 +504,7 @@ export default class PageView extends Component {
                             </div>
                         </div>
 
-                        {/* List pages in table format */}
+                        {/* List content in table format */}
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
                                 <a

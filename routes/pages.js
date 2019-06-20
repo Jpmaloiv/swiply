@@ -70,15 +70,24 @@ router.get('/search', (req, res) => {
 
   let query = {
     where: {},
-    include: [
-      {
+    include: [{
+      model: db.User
+    }, {
+      model: db.Content
+    }]
+  }
+  if (req.query.pageId) {
+    query = {
+      where: { id: req.query.pageId },
+      include: [{
         model: db.User
       }, {
-        model: db.Content
-      }
-    ]
+        model: db.Content,
+        required: false,
+        where: { fileId: null }
+      }]
+    }
   }
-  if (req.query.pageId) query.where.id = req.query.pageId
   if (req.query.published) query.where.published = true
   if (req.query.userId) query.where.UserId = req.query.userId
 

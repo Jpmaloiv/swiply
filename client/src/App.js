@@ -14,6 +14,7 @@ import Checkout from './components/Checkout/Checkout';
 import PurchaseConfirmation from './components/Checkout/PurchaseConfirmation';
 import AddContent from './components/Content/AddContent';
 import ContentView from './components/Content/ContentView';
+import Sales from './components/Sales'
 import Customers from './components/Customers';
 import MyPurchases from './components/Customer/MyPurchases';
 import Dashboard from './components/Dashboard';
@@ -33,19 +34,19 @@ class App extends Component {
     this.state = {
       decoded: false,
       login: false,
-      newUser: false
+      newUser: '',
+      loading: true
     }
   }
 
-  componentWillMount() {
-
+  async componentWillMount() {
     const loginToken = window.localStorage.getItem("token");
     let decoded = ''
     if (loginToken) {
       this.setState({ decoded: jwt_decode(loginToken) })
       decoded = jwt_decode(loginToken)
 
-      axios.get(`/api/users/search?id=${decoded.id}`)
+      await axios.get(`/api/users/search?id=${decoded.id}`)
         .then((resp) => {
           console.log(resp)
           if (resp.data.response[0].Pages.length === 0) this.setState({ newUser: true })
@@ -54,10 +55,16 @@ class App extends Component {
           console.error(error)
         })
     }
+    this.setState({ loading: false })
+
   }
 
+
   render() {
-    console.log(this.props.location)
+
+    if (this.state.loading) {
+      return <div></div>
+    }
 
     return (
       <StripeProvider apiKey="pk_test_J71dqS8brtNIK1ZYN7LCiJvd00D8Kbx2K8">
@@ -72,16 +79,16 @@ class App extends Component {
             {this.state.decoded ?
               <div>
                 {this.state.decoded.role === 'user' ?
-                <div>
-                {this.state.newUser ?
-                  <Route exact path='/' component={Welcome} />
+                  <div>
+                    {this.state.newUser ?
+                      <Route exact path='/' component={Welcome} />
+                      :
+                      <Route exact path='/' component={Dashboard} />
+                    }
+                  </div>
                   :
-                  <Route exact path='/' component={Dashboard} />
+                  <Route exact path='/' component={AccountSettings} />
                 }
-                </div>
-                :
-                <Route exact path='/' component={AccountSettings} />
-              }
               </div>
               :
               <div>
@@ -96,6 +103,7 @@ class App extends Component {
             <Switch>
 
               <Route path='/reset-password/:token' component={ChangePassword} />
+              <Route path='/sales' component={Sales} />
               <Route path='/customers' component={Customers} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />

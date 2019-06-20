@@ -57,8 +57,10 @@ const role = "customer";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+
 // Register a new customer
 router.post("/register", upload.single("imgFile"), async (req, res) => {
+  console.log("QUERY", req.query)
 
   const salt = getSalt();
   const hash = getHash(req.query.password, salt);
@@ -82,7 +84,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     });
 
   const purchase = await stripe.charges.create({
-    amount: req.query.price * 100,
+    amount: (req.query.price * 100).toFixed(0),
     currency: "usd",
     source: req.query.token.trim(),
     transfer_data: {
@@ -90,28 +92,36 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     }
   })
     .then(charge => {
-      console.log("CHARGE", charge)
+      console.log("Initial charge created for customer", charge)
       return charge
     })
-    .catch(err => console.log("ERR", err))
+    .catch(err => console.log("Error creating initial charge for customer", err))
+
+  const amount = purchase.amount / 100
 
   const charge = {
     id: purchase.id,
-    amount: purchase.amount / 100,
+    amount: amount,
     CustomerId: customerId,
     PageId: req.query.pageId
   }
 
-  db.Charge.create(charge)
+  await db.Charge.create(charge)
     .then(resp => {
       console.log("RESP", resp)
       res.status(200);
-      res.json({ success: true, message: 'Customer and charge created!', customerId: customerId, token: token});
+      res.json({ success: true, message: 'Customer and charge created!', customerId: customerId, token: token });
     })
     .catch(err => {
       console.error('Error creating charge', err);
       res.status(500).json({ message: "Internal server error.", error: err });
     })
+
+  console.log('AMOUNT', amount)
+
+  // Increment page revenue and purchase count
+  db.Page.increment('revenue', { by: amount, where: { id: req.query.pageId } })
+  db.Page.increment('purchases', {where: { id: req.query.pageId }})
 });
 
 

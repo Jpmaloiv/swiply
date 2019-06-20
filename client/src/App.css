@@ -83,6 +83,7 @@ body {
 }
 
 .profile-summary {
+  margin: 5px 0;
   font-size: 18px;
   line-height: 28px
 }
@@ -200,8 +201,13 @@ button {
   border-color: #05b637 !important
 }
 
-button.connect {margin: 20px !important}
-button.connect:hover {background-color: #f5f5f5}
+button.connect {
+  margin: 20px !important
+}
+
+button.connect:hover {
+  background-color: #f5f5f5
+}
 
 button.loading {
   display: flex;
@@ -366,7 +372,9 @@ div.page p {
 
 /* Videos */
 
-iframe body {display: none !important}
+iframe body {
+  display: none !important
+}
 
 /* Custom Fields */
 
@@ -472,6 +480,14 @@ iframe body {display: none !important}
 .show>.btn-secondary.dropdown-toggle {
   background-color: #02ae63 !important;
   color: #fff !important
+}
+
+.file-drop {
+  display: flex;
+  height: 90px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #D8D8D7
 }
 
 .App-logo {
@@ -966,6 +982,11 @@ Note: Beware of modifying this element as it can break the animations - you shou
   }
   .page-summary>div {
     padding-right: 0 !important
+  }
+  /* Videos */
+  iframe {
+    width: 100%;
+    height: auto
   }
   /* Public Profile */
   .public-profile {

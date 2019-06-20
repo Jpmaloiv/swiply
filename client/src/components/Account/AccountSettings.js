@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { NotificationContainer, NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import { withRouter } from 'react-router'
+
 
 export default class AccountSettings extends Component {
   constructor(props) {
@@ -51,17 +51,6 @@ export default class AccountSettings extends Component {
       });
   }
 
-  getPaymentLink() {
-    axios.post(`/api/stripe/login?accountId=${this.state.user.accountId}`)
-      .then((resp) => {
-        console.log("RESP", resp)
-        this.setState({
-          stripeLink: resp.data.stripeLink
-        })
-      }).catch((error) => {
-        console.error(error);
-      })
-  }
 
   imageCheck() {
     const { user } = this.state;
@@ -71,7 +60,6 @@ export default class AccountSettings extends Component {
         }/${user.imageLink}`;
       this.setState({ render: !this.state.render });
     }
-    this.getPaymentLink();
   }
 
   // Handles user input
@@ -128,7 +116,7 @@ export default class AccountSettings extends Component {
   updateUser() {
     const { user } = this.state;
     const { password, confirmpw, oldPassword } = this.state.user;
-    console.log(password)
+    console.log(user)
 
     let role = "";
     if (this.state.role === "user") role = "users";
@@ -235,16 +223,6 @@ export default class AccountSettings extends Component {
                 </p>
                 )}
 
-              {role === 'user' ?
-                <Button
-                  variant='link'
-                  onClick={() => window.open(this.state.stripeLink)}
-                  style={{ color: '#007bff', textDecoration: 'underline', margin: '10px auto !important' }}
-                >View Payment Information</Button>
-                :
-                <span></span>
-              }
-
               <Form.Group>
                 <input
                   type="file"
@@ -335,7 +313,7 @@ export default class AccountSettings extends Component {
                   type='email'
                   style={{ opacity: 0 }}
                   placeholder="Email Address"
-                  name="email"
+                  name="new-email"
                   onChange={this.handleChange}
                   autoComplete='new-email'
                 />

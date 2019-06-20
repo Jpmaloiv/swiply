@@ -12,6 +12,14 @@ module.exports = function (sequelize, DataTypes) {
         price: {
             type: DataTypes.STRING
         },
+        revenue: {
+            type: DataTypes.STRING,
+            defaultValue: 0
+        },
+        purchases: {
+            type: DataTypes.STRING,
+            defaultValue: 0
+        },
         imageLink: {
             type: DataTypes.STRING
         },

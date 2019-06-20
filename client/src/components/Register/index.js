@@ -15,6 +15,8 @@ export default class Register extends Component {
             view: 'CreateAccount',
             firstName: '',
             lastName: '',
+            title: '',
+            profile: '',
             summary: ''
         }
     }

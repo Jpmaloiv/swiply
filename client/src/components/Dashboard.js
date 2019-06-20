@@ -86,7 +86,7 @@ export default class Dashboard extends Component {
         return () => {
             switch (type) {
                 case "copied":
-                    NotificationManager.info(image, "Link copied to clipboard", 25000);
+                    NotificationManager.info(image, "Link copied to clipboard", 2500);
                     console.log(this.state)
                     break;
             };
@@ -226,9 +226,9 @@ export default class Dashboard extends Component {
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>
                                                         <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                                            <span>${page.revenue}</span>
                                                             <span>{page.views} Views</span>
-                                                            <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
+                                                            <span style={{ color: '#01ae63' }}>{page.views > 0 ? ((page.purchases / page.views) * 100).toFixed(0) : '-'}%</span>
                                                         </p>
                                                     </div>
                                                 </div>

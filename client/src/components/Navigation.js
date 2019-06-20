@@ -36,6 +36,7 @@ export default class Navigation extends Component {
     }
 
     render() {
+        console.log("NAV RENDER")
 
         const { id, name, role } = this.props.decoded
         let arr = ''

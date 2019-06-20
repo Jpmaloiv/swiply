@@ -146,7 +146,7 @@ export default class AddPage extends Component {
                                 </InputGroup>
                                 :
                                 <div style={{ display: 'flex' }}>
-                                    <h4>{this.state.summary}</h4>
+                                    <p style={{fontSize: 16}}>{this.state.summary}</p>
                                     <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
                                 </div>
                             }

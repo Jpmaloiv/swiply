@@ -3,19 +3,25 @@ require('dotenv').config();
 const db = require('../models');
 const express = require('express');
 const router = express.Router();
+const Sequelize = require('sequelize')
+
+const Op = Sequelize.Op
 
 
 router.get('/search', (req, res) => {
 
   let query = {
-    where: {},
-    include: [
-      {
-        model: db.Page
-      }, {
-        model: db.Customer
-      }
-    ]
+    where: {
+      '$Page.User.id$': req.query.id
+    },
+    include: [{
+      model: db.Page,
+      include: [{
+        model: db.User
+      }]
+    }, {
+      model: db.Customer
+    }]
   }
 
   console.log("QUERY", query)

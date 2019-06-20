@@ -116,6 +116,8 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     firstName: req.query.firstName,
     lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
+    title: req.query.title,
+    profile: req.query.profile,
     hash: hash,
     salt: salt,
     summary: req.query.summary,

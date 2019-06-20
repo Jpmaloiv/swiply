@@ -18,7 +18,7 @@ export default class VerifyAccount extends Component {
             this.next.click()
         }
     }
- 
+
 
     render() {
         return (
@@ -36,18 +36,6 @@ export default class VerifyAccount extends Component {
                                 name='summary'
                                 onChange={this.handleChange}
                                 onKeyPress={this.enterPressed.bind(this)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Add categories of content you will offer</Form.Label>
-                            <Form.Control
-                                as='textarea'
-                                rows='4'
-                                placeholder='Add a category'
-                                name='category'
-                                onChange={this.handleChange}
-                                onKeyPress={this.enterPressed.bind(this)}
-
                             />
                         </Form.Group>
                     </Form>

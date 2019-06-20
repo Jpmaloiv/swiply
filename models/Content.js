@@ -20,5 +20,8 @@ module.exports = function (sequelize, DataTypes) {
             freezeTableName: true,
         });
 
+    Content.hasOne(Content, { as: 'File' })
+
+
     return Content;
 };
