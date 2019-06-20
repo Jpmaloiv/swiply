@@ -311,9 +311,12 @@ export default class PageView extends Component {
                                                     />
                                                     :
                                                     <div>
-                                                        Set Pricing ${page.price ? page.price : '--'}&nbsp;
-                                                {edit ?
-                                                            <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} />
+                                                        <span>Set Pricing ${page.price ? page.price : '--'}&nbsp;</span>
+                                                        {/* Set Pricing ${page.price ? page.price : '--'}&nbsp; */}
+                                                        {edit ?
+                                                            <div>
+                                                                <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} style={{ fontSize: 16 }} />
+                                                            </div>
                                                             :
                                                             <span></span>
                                                         }
@@ -530,7 +533,7 @@ export default class PageView extends Component {
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>
-                                                <p className='previewText' style={{fontSize: 14}}>
+                                                <p className='previewText' style={{ fontSize: 14 }}>
                                                     {content.description}
                                                 </p>
                                             </div>

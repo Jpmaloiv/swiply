@@ -162,7 +162,7 @@ export default class CustomerList extends Component {
 
                           <p style={{ alignItems: "left" }}>
                             <span style={{ fontSize: 14 }}>Status: </span>
-                            <span style={{ fontSize: 14, color: "green" }}>
+                            <span style={{ fontSize: 14, color: "#5dcbb0" }}>
                               Paid
                           </span>
                           </p>

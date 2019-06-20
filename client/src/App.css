@@ -109,7 +109,7 @@ body {
 }
 
 .navigation a.active:not(.signOut) {
-  border-bottom: 3px solid #00af63;
+  border-bottom: 3px solid #5dcbb0;
 }
 
 a:hover {
@@ -197,8 +197,8 @@ button {
 }
 
 .btn-success {
-  background-color: #05b367 !important;
-  border-color: #05b637 !important
+  background-color: #5dcbb0 !important;
+  border-color: #5dcbb0 !important
 }
 
 button.connect {

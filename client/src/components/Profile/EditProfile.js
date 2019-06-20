@@ -264,7 +264,7 @@ export default class EditProfile extends Component {
                   <InputGroup.Append>
                     <InputGroup.Text
                       style={{
-                        background: "#01ae63",
+                        background: "#5dcbb0",
                         color: "#fff",
                         borderTopRightRadius: 27.5,
                         borderBottomRightRadius: 27.5
@@ -317,7 +317,7 @@ export default class EditProfile extends Component {
                     {user.instagram ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}
@@ -335,7 +335,7 @@ export default class EditProfile extends Component {
                     {user.facebook ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}
@@ -353,7 +353,7 @@ export default class EditProfile extends Component {
                     {user.twitter ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}
@@ -371,7 +371,7 @@ export default class EditProfile extends Component {
                     {user.linkedIn ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}
@@ -389,7 +389,7 @@ export default class EditProfile extends Component {
                     {user.whatsapp ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}
@@ -407,7 +407,7 @@ export default class EditProfile extends Component {
                     {user.website ?
                       <InputGroup.Append>
                         <InputGroup.Text>
-                          <FontAwesomeIcon icon='check' color='#00af63' />
+                          <FontAwesomeIcon icon='check' color='#5dcbb0' />
                         </InputGroup.Text>
                       </InputGroup.Append>
                       : <span></span>}

@@ -120,7 +120,7 @@ export default class ContentView extends Component {
                         <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
                           <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                           <span>{file.views} Views</span>
-                          <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
+                          <span style={{ color: '#5dcbb0' }}>+{Math.floor(Math.random() * 100)}%</span>
                         </p>
                       </div>
                     </div>

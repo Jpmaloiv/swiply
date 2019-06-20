@@ -124,22 +124,22 @@ export default class Dashboard extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='main'>
                     <div className='statistics'>
-                        <div style={{ backgroundColor: '#01ae63' }}>
+                        <div style={{ backgroundColor: '#5dcbb0' }}>
                             <FontAwesomeIcon icon='dollar-sign' />
                             <div>${Math.floor(Math.random() * 99)}k</div>
                             <div>Recent Earnings (+50)</div>
                         </div>
-                        <div style={{ backgroundColor: '#e0ab01' }}>
+                        <div style={{ backgroundColor: '#595fdb' }}>
                             <FontAwesomeIcon icon='eye' />
                             <div>{Math.floor(Math.random() * (250)) / 10}m</div>
                             <div>Recent View (+32)</div>
                         </div>
-                        <div style={{ backgroundColor: '#0650df' }}>
+                        <div style={{ backgroundColor: '#4193f2' }}>
                             <FontAwesomeIcon icon='user-plus' />
                             <div>{Math.floor(Math.random() * 19999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
                             <div>New Followers (+90)</div>
                         </div>
-                        <div style={{ backgroundColor: '#3808aa' }}>
+                        <div style={{ backgroundColor: '#152343' }}>
                             <FontAwesomeIcon icon='signal' />
                             <div>{Math.floor(Math.random() * (9999)) / 100}%</div>
                             <div>Percentages (+20)</div>
@@ -232,7 +232,7 @@ export default class Dashboard extends Component {
                                                         <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
                                                             <span>${page.revenue}</span>
                                                             <span>{page.views} Views</span>
-                                                            <span style={{ color: '#01ae63' }}>{page.views > 0 ? ((page.purchases / page.views) * 100).toFixed(0) : '-'}%</span>
+                                                            <span style={{ color: '#5dcbb0' }}>{page.views > 0 ? ((page.purchases / page.views) * 100).toFixed(0) : '-'}%</span>
                                                         </p>
                                                     </div>
                                                 </div>
