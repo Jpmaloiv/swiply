@@ -47,7 +47,7 @@ export default class AddContent extends Component {
             '&userName=' + this.state.decoded.name + '&pageId=' + this.props.match.params.pageId, data)
             .then(res => {
                 console.log(res)
-                if (this.state.content === 'file') window.location = `/pages/${this.props.match.params.pageId}`
+                if ((this.state.content === 'file') || (this.state.content === 'video' && !this.state.file)) window.location = `/pages/${this.props.match.params.pageId}`
                 else return res.data.id
             }).catch(err => {
                 console.error(err);

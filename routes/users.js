@@ -79,32 +79,32 @@ router.post('/verify', (req, res) => {
 
 // Register a new user
 router.post("/register", upload.single("imgFile"), async (req, res) => {
-  const email = req.query.email.trim()
 
   let { plan } = req.query
 
-  if (plan === 'small') plan = process.env.PRICING_PLAN_SMALL
   if (plan === 'medium') plan = process.env.PRICING_PLAN_MEDIUM
   if (plan === 'pro') plan = process.env.PRICING_PLAN_PRO
 
-  const customer = await stripe.customers.create({
-    description: `Customer for ${req.query.email}`,
-    source: req.query.token,
-  })
-    .then(resp => {
-      console.log('Customer created:', resp.id)
-      return resp
+  if (plan !== 'small') {
+    const customer = await stripe.customers.create({
+      description: `Customer for ${req.query.email}`,
+      source: req.query.token,
     })
-    .catch(err => console.error(err))
+      .then(resp => {
+        console.log('Customer created:', resp.id)
+        return resp
+      })
+      .catch(err => console.error(err))
 
-  await stripe.subscriptions.create({
-    customer: customer.id,
-    items: [{ plan: plan }]
-  })
-    .then(resp => {
-      console.log('Subscription created:', resp.id)
+    await stripe.subscriptions.create({
+      customer: customer.id,
+      items: [{ plan: plan }]
     })
-    .catch(err => console.error(err))
+      .then(resp => {
+        console.log('Subscription created:', resp.id)
+      })
+      .catch(err => console.error(err))
+  }
 
   let imageLink = "";
   if (req.file) imageLink = req.file.key;

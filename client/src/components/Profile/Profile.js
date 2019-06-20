@@ -38,9 +38,9 @@ export default class Profile extends Component {
     }
 
     filterPublishedPages() {
-        let {Pages} = this.state.user
-        let pages = Pages.filter(el => { return el.published == true})
-        this.setState({ pages: pages})
+        let { Pages } = this.state.user
+        let pages = Pages.filter(el => { return el.published == true })
+        this.setState({ pages: pages })
     }
 
 
@@ -129,7 +129,10 @@ export default class Profile extends Component {
 
                                             <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${page.imageLink}`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
                                             <div style={{ width: "100%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20 }}>
-                                                <p style={{ fontSize: 18, whiteSpace: 'nowrap' }}>{page.name}</p>
+                                                <div>
+                                                    <p style={{ fontSize: 18, whiteSpace: 'nowrap' }}>{page.name}</p>
+                                                    <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
+                                                </div>
                                                 <p className='previewText'>
                                                     {page.summary}
                                                 </p>

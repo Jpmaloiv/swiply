@@ -366,6 +366,9 @@ div.page p {
   font-weight: lighter
 }
 
+.previewText.i {
+  -webkit-line-clamp: 1
+}
 .previewText.iii {
   -webkit-line-clamp: 3
 }
@@ -873,6 +876,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .navigation {
     display: none;
   }
+
   /* Dashboard */
   .statistics {
     flex-wrap: wrap;
@@ -934,7 +938,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
     margin-top: 0
   }
   .page-description {
-    font-size: 16px
+    font-size: 16px;
+    max-width: 90%
   }
   .image-change_icon {
     bottom: 5%;

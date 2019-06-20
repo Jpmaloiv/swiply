@@ -65,8 +65,8 @@ export default class ContentView extends Component {
         transitionLeave={false}
       >
         {this.state.loading ?
-        <div className='center'>
-          <Spinner animation="border" variant="success" />
+          <div className='center'>
+            <Spinner animation="border" variant="success" />
           </div>
           :
           <div className="main">
@@ -96,36 +96,39 @@ export default class ContentView extends Component {
                 )}
             </div>
 
-            {/* List content attachments in table format */}
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-              <a
-                href={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${file.link}`}
-                style={{ color: 'initial', width: '100%'}}
-              >
+            {file ?
+              // {/* List content attachments in table format */}
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <a
+                  href={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${file.link}`}
+                  style={{ color: 'initial' }}
+                >
 
-                <div className='page'>
-                  <div style={{ display: 'flex', padding: 7.5 }}>
-                    {file.type === 'video'
-                      ? <img src={`https://img.youtube.com/vi/${file.link}/0.jpg`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
-                      : <img src={require(`../../images/file.png`)} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
-                    }
-                    <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <p style={{ fontSize: 18 }}>{file.name}</p>
+                  <div className='page'>
+                    <div style={{ display: 'flex', padding: 7.5 }}>
+                      {file.type === 'video'
+                        ? <img src={`https://img.youtube.com/vi/${file.link}/0.jpg`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                        : <img src={require(`../../images/file.png`)} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                      }
+                      <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <p style={{ fontSize: 18 }}>{file.name}</p>
+                          </div>
+                          <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={file.createdAt} /></p>
                         </div>
-                        <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={file.createdAt} /></p>
+                        <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
+                          <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                          <span>{file.views} Views</span>
+                          <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
+                        </p>
                       </div>
-                      <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
-                        <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                        <span>{file.views} Views</span>
-                        <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
-                      </p>
                     </div>
                   </div>
-                </div>
-              </a>
-            </div>
+                </a>
+              </div>
+              : <span></span>
+            }
           </div>
         }
       </ReactCSSTransitionGroup>

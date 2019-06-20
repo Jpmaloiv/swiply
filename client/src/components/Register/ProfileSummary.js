@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
 
-export default class VerifyAccount extends Component {
+export default class ProfileSummary extends Component {
 
     // Handle user input
     handleChange = e => {

@@ -20,6 +20,7 @@ export default class SubscriptionPlan extends Component {
   // Register the new user
   register(token) {
     this.setState({ submit: true })
+
     const user = this.props.state;
 
     if (user.password === user.confirmpw) {
@@ -32,7 +33,7 @@ export default class SubscriptionPlan extends Component {
           console.log(resp);
           window.localStorage.setItem("token", resp.data.token);
           window.localStorage.setItem('userId', resp.data.userId)
-          this.props.setState({ view: 'PaymentIntegration'})
+          this.props.setState({ view: 'PaymentIntegration' })
         })
         .catch(error => {
           console.error(error);
@@ -82,21 +83,35 @@ export default class SubscriptionPlan extends Component {
           </ButtonGroup>
 
           {!this.state.submit ?
-            <StripeCheckout
-              token={this.register.bind(this)}
-              stripeKey='pk_test_f3sdsuRefwIEyWwwg1LKClVY006I3NL4t9'
-              name='Swiply'
-              description={'Subscription Plan'}
-              opened={() => window.alert('Please click top left yellow button for test numbers')}
-              email={this.props.state.email}
-              image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
-              currency='USD'
-              allowRememberMe={false}
-            >
-              <Button variant='success' size='lg'>
-                Pay with Card
-              </Button>
-            </StripeCheckout>
+            <div>
+              <StripeCheckout
+                token={this.register.bind(this)}
+                stripeKey='pk_test_f3sdsuRefwIEyWwwg1LKClVY006I3NL4t9'
+                name='Swiply'
+                description={'Subscription Plan'}
+                opened={() => window.alert('Please click top left yellow button for test numbers')}
+                email={this.props.state.email}
+                image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
+                currency='USD'
+                allowRememberMe={false}
+              >
+                {plan !== 'small' ?
+                  <Button variant='success' size='lg'>
+                    Pay with Card
+                  </Button>
+                  :
+                  <span></span>
+                }
+              </StripeCheckout>
+
+              {plan === 'small' ?
+                <Button onClick={this.register.bind(this)} variant='success' size='lg'>
+                  Continue
+                </Button>
+                :
+                <span></span>
+              }
+            </div>
             :
             <Button variant='success' className='loading' disabled>
               <Spinner

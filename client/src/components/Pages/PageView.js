@@ -508,6 +508,7 @@ export default class PageView extends Component {
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {this.state.page.Contents.map((content, i) =>
                                 <a
+                                    className='page'
                                     href={this.state.viewAccess || this.state.edit
                                         ? content.type === 'video'
                                             ? `/pages/${this.props.match.params.pageId}/${content.id}`
@@ -525,14 +526,17 @@ export default class PageView extends Component {
                                             <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
                                                 <div>
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <p style={{ fontSize: 18 }}>{content.name}</p>
+                                                        <p className='previewText i' style={{ fontSize: 18 }}>{content.name}</p>
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>
-                                                <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
+                                                {/* <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                                     <span>{page.views} Views</span>
                                                     <span style={{ color: '#01ae63' }}>+{Math.floor(Math.random() * 100)}%</span>
+                                                </p> */}
+                                                <p className='previewText' style={{fontSize: 14}}>
+                                                    {content.description}
                                                 </p>
                                             </div>
                                         </div>
