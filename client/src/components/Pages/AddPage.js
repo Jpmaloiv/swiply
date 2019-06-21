@@ -132,24 +132,16 @@ export default class AddPage extends Component {
 
                     <div className='main'>
                         <div>
-                            {this.state.summaryEdit ?
-                                <InputGroup>
-                                    <FormControl
-                                        as='textarea'
-                                        style={{ width: 'initial' }}
-                                        placeholder={this.state.summary}
-                                        name='summary'
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleEditing}
-                                        autoFocus
-                                    />
-                                </InputGroup>
-                                :
-                                <div style={{ display: 'flex' }}>
-                                    <p style={{fontSize: 16}}>{this.state.summary}</p>
-                                    <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} />
-                                </div>
-                            }
+                            <InputGroup>
+                                <FormControl
+                                    as='textarea'
+                                    rows={4}
+                                    style={{ width: 'initial' }}
+                                    placeholder={this.state.summary}
+                                    name='summary'
+                                    onChange={this.handleChange}
+                                />
+                            </InputGroup>
                         </div>
                         {!this.state.submit ?
                             <Button

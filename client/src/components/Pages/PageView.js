@@ -311,12 +311,10 @@ export default class PageView extends Component {
                                                     />
                                                     :
                                                     <div>
-                                                        <span>Set Pricing ${page.price ? page.price : '--'}&nbsp;</span>
-                                                        {/* Set Pricing ${page.price ? page.price : '--'}&nbsp; */}
+                                                        {/* <span>Set Pricing ${page.price ? page.price : '--'}&nbsp;</span> */}
+                                                        Set Pricing ${page.price ? page.price : '--'}&nbsp;
                                                         {edit ?
-                                                            <div>
-                                                                <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} style={{ fontSize: 16 }} />
-                                                            </div>
+                                                            <FontAwesomeIcon icon='pen' name='price' onClick={this.handleEditing} style={{ fontSize: 16 }} />
                                                             :
                                                             <span></span>
                                                         }

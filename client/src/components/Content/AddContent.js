@@ -10,6 +10,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import Form from 'react-bootstrap/Form'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { createRequireFromPath } from 'module';
 
 
 export default class AddContent extends Component {
@@ -154,20 +155,22 @@ export default class AddContent extends Component {
                                 onDragEnter={() => this.setState({ hover: true })}
                                 onDragLeave={() => this.setState({ hover: false })}
                             >
+
                                 {({ getRootProps, getInputProps }) => (
                                     <section style={{ width: '100%', marginBottom: '1rem' }}>
+
                                         <div {...getRootProps()}>
                                             <input {...getInputProps()} />
                                             <input type='file' name='imgFile' ref={(ref) => this.upload = ref} onChange={this.onFileChange} style={{ display: 'none' }} />
 
                                             <div className='file-drop' style={this.state.hover ? { background: '#e0e0e0' } : null}>
+                                                <img src={require('../../images/drag-drop.png')} style={{opacity: 0.3, width: 75}} />
                                                 {this.state.fileName ?
-                                                    <div>
+                                                    <div style={{margin: '5px 0'}}>
                                                         <Button
                                                             variant='success'
                                                             size='lg'
                                                             className='circle'
-                                                        // onClick={() => { this.upload.click() }}
                                                         >
                                                             <FontAwesomeIcon icon='check' />
                                                         </Button>
@@ -179,11 +182,10 @@ export default class AddContent extends Component {
                                                             variant='success'
                                                             size='lg'
                                                             className='circle'
-                                                        // onClick={() => { this.upload.click() }}
                                                         >
                                                             <FontAwesomeIcon icon='plus' />
                                                         </Button>
-                                                        <h6>Add Content</h6>
+                                                        <h6 style={{ marginTop: 5 }}>Add Content</h6>
                                                     </div>
                                                 }
                                             </div>

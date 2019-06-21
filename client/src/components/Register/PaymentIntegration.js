@@ -52,7 +52,7 @@ export default class PaymentIntegration extends Component {
                                 onClick={() => window.open(`https://connect.stripe.com/express/oauth/authorize?client_id=${this.state.stripeClientId}&state=${this.state.token}
                                 &redirect_uri=${this.state.baseUrl}/welcome`)}
                             >Connect Now
-                        </Button>
+                            </Button>
                         </div>
                         <Button variant='link' onClick={() => window.location.reload()} style={{ display: 'block', textDecoration: 'underline', borderBottom: 'none' }}>
                             <span style={{ fontSize: 20 }}>Skip it, I'll do this later.</span>

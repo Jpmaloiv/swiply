@@ -31,12 +31,10 @@ export default class Navigation extends Component {
     }
 
     closeMenu() {
-        console.log("HERE")
         this.setState({ menuOpen: false })
     }
 
     render() {
-        console.log("NAV RENDER")
 
         const { id, name, role } = this.props.decoded
         let arr = ''
@@ -53,10 +51,10 @@ export default class Navigation extends Component {
                             style={{ width: 150 }}
                             alt='PV3'
                         /> */}
-                        {role === 'customer' ?
-                            <span></span>
+                        {role === 'user' ?
+                            <p style={{ fontSize: 24 }} className='logo'>Swiply</p>
                             :
-                            <h1 className='logo'>Swiply</h1>
+                            <span></span>
                         }
                     </NavLink>
                 </div>

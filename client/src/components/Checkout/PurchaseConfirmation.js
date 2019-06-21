@@ -141,7 +141,7 @@ export default class PurchaseConfirmation extends Component {
                         <div>
                             <h1>Congratulations</h1> <br />
                             <h5>You now have access to the page <br /><b>{window.localStorage.getItem('page')}</b></h5>
-                            <img src={require(`../../images/congrats.jpg`)} style={{ width: '100%', opacity: .6 }} alt='Welcome' />
+                            <img src={require(`../../images/congrats.png`)} style={{ width: '100%', opacity: .6 }} alt='Welcome' />
 
                             <NavLink to={`/pages/${window.localStorage.getItem('pageId')}`}>
                                 <Button variant='success' size='lg'>

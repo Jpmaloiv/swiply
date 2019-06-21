@@ -70,7 +70,7 @@ export default class Profile extends Component {
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div>
                     <div className='imageBanner set'>
-                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}`} style={{ width: '100%', filter: 'blur(10px)', opacity: .3 }} alt='' />
+                        <img src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${user.imageLink}`} style={{ width: '100%', filter: 'blur(12px)', opacity: 0.25 }} alt='' />
 
                         <div className='textOverlay'>
                             <div className='profilePic'>

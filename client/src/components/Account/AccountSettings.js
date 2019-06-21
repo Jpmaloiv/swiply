@@ -132,9 +132,7 @@ export default class AccountSettings extends Component {
     }
 
     console.log(query)
-    axios.put(`/api/${role}/update?id=` + this.state.user.id + "&firstName=" + user.firstName +
-      "&lastName=" +
-      user.lastName +
+    axios.put(`/api/${role}/update?id=` + this.state.user.id +
       "&title=" +
       user.title +
       "&email=" +
@@ -230,24 +228,6 @@ export default class AccountSettings extends Component {
                   ref={ref => (this.upload = ref)}
                   onChange={this.onImageChange}
                   style={{ display: "none" }}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  placeholder={user.firstName}
-                  name="firstName"
-                  onChange={this.handleChange}
-                  onKeyPress={this.enterPressed.bind(this)}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  placeholder={user.lastName}
-                  name="lastName"
-                  onChange={this.handleChange}
-                  onKeyPress={this.enterPressed.bind(this)}
                 />
               </Form.Group>
               <Form.Group>

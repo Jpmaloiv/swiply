@@ -369,6 +369,7 @@ div.page p {
 .previewText.i {
   -webkit-line-clamp: 1
 }
+
 .previewText.iii {
   -webkit-line-clamp: 3
 }
@@ -487,10 +488,10 @@ iframe body {
 
 .file-drop {
   display: flex;
-  height: 90px;
   align-items: center;
   justify-content: center;
-  border: 1px dashed #D8D8D7
+  border: 1px dashed #D8D8D7;
+  flex-direction: column
 }
 
 .App-logo {
@@ -876,7 +877,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .navigation {
     display: none;
   }
-
   /* Dashboard */
   .statistics {
     flex-wrap: wrap;
@@ -892,7 +892,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
     font-size: 30px
   }
   .main, .center {
-    width: 90%
+    width: 90% !important
   }
   .main {
     margin: 20px auto;
@@ -992,6 +992,13 @@ Note: Beware of modifying this element as it can break the animations - you shou
   iframe {
     width: 100%;
     height: auto
+  }
+  /* Custom */
+  .main.my-purchases {
+    padding: 15px 0 !important
+  }
+  button.my-purchases {
+    display: none
   }
   /* Public Profile */
   .public-profile {

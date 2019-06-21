@@ -69,11 +69,10 @@ export default class ContentView extends Component {
             <Spinner animation="border" variant="success" />
           </div>
           :
-          <div className="main">
-            <div style={{ textAlign: "center", margin: 25 }}>
+          <div className="center" style={{maxWidth: 860, width: 'initial'}}>
+            <div style={{ textAlign: "center", margin: '25px 0' }}>
               {ReactHtmlParser(this.state.embed)}
-            </div>
-            <div style={{ textAlign: 'left' }} >
+            <div style={{ textAlign: 'left', marginTop: 25 }} >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h4>{this.state.content.name}</h4>
               </div>
@@ -100,6 +99,7 @@ export default class ContentView extends Component {
               // {/* List content attachments in table format */}
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 <a
+                  className='page'
                   href={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${file.link}`}
                   style={{ color: 'initial' }}
                 >
@@ -115,7 +115,7 @@ export default class ContentView extends Component {
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <p style={{ fontSize: 18 }}>{file.name}</p>
                           </div>
-                          <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={file.createdAt} /></p>
+                          <p style={{ fontSize: 14, color: '#a4A5A8', textAlign: 'left' }}>Published: <Moment format='M.DD.YYYY' date={file.createdAt} /></p>
                         </div>
                         <p className='page-stats' style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
                           <span>${Math.floor(Math.random() * 9999).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
@@ -129,6 +129,7 @@ export default class ContentView extends Component {
               </div>
               : <span></span>
             }
+            </div>
           </div>
         }
       </ReactCSSTransitionGroup>

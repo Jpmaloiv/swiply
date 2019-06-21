@@ -81,12 +81,6 @@ export default class EditProfile extends Component {
   // Handles user input
   handleChange = e => {
     let { name, value } = e.target
-    if (name === 'name') {
-      let arr = value.split(' ')
-      this.state.user.firstName = arr[0]
-      this.state.user.lastName = arr[1]
-      return
-    }
     this.state.user[name] = value;
     this.setState({ render: !this.state.render })
   };
@@ -148,8 +142,7 @@ export default class EditProfile extends Component {
     let data = new FormData();
     data.append("imgFile", this.state.file);
 
-    axios.put("/api/users/update?id=" + user.id + '&firstName=' + user.firstName + '&lastName=' + user.lastName +
-      '&email=' + email + '&title=' + user.title + "&profile=" + user.profile + '&summary=' + user.summary + query, data)
+    axios.put("/api/users/update?id=" + user.id + '&email=' + email + '&title=' + user.title + "&profile=" + user.profile + '&summary=' + user.summary + query, data)
       .then(res => {
         console.log(res);
         window.location.reload();
@@ -464,8 +457,8 @@ export default class EditProfile extends Component {
                         style={{
                           width: "100%",
                           height: "100%",
-                          opacity: 0.35,
-                          filter: "blur(4px)",
+                          opacity: 0.3,
+                          filter: "blur(6px)",
                           objectFit: "cover"
                         }}
                         alt=""
@@ -504,26 +497,11 @@ export default class EditProfile extends Component {
                         </div>
 
                         <div>
-                          {this.state.nameEdit ?
-                            <InputGroup>
-                              <FormControl
-                                placeholder={user.firstName + (user.lastName ? ' ' + user.lastName : '')}
-                                name='name'
-                                onChange={this.handleChange}
-                                onBlur={this.handleEditing}
-                                autoFocus
-                              />
-                            </InputGroup>
-                            :
-                            <div>
-                              <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}
-                                {this.state.nameEdit || this.state.titleEdit || !this.state.user.firstName ?
-                                  <span></span>
-                                  :
-                                  <FontAwesomeIcon icon='pen' size='sm' style={{ position: 'absolute', opacity: 0.3 }} onClick={() => this.setState({ nameEdit: true })} />
-                                }</h4>
-                            </div>
-                          }
+
+                          <div>
+                            <h4 style={{ fontSize: 18, fontWeight: 'bold', margin: 0 }}>{user.firstName + (user.lastName ? ' ' + user.lastName : '')}</h4>
+                          </div>
+
                           {this.state.titleEdit ?
                             <InputGroup>
                               <FormControl
@@ -580,7 +558,7 @@ export default class EditProfile extends Component {
                               : <span></span>
                             }
                             {user.website ?
-                              <div className='sm-icon' onClick={() => window.open(this.state.user.website)} style={{cursor: 'pointer'}}>
+                              <div className='sm-icon' onClick={() => window.open(this.state.user.website)} style={{ cursor: 'pointer' }}>
                                 <img src={require(`../../images/website.jpeg`)} alt='website' />
                               </div>
                               : <span></span>

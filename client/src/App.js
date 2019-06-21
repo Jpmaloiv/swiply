@@ -1,6 +1,6 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios'
 import React, { Component } from 'react';
@@ -147,7 +147,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUser, faUserPlus)
+library.add(faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus)
 
 
 export default App;
