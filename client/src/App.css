@@ -446,7 +446,7 @@ iframe body {
   width: 100%
 }
 
-.dropdown.ellipsis button {
+.ellipsis button {
   width: initial;
   margin: 0 !important;
   padding: 0;
@@ -454,29 +454,35 @@ iframe body {
   border: none
 }
 
-.dropdown.ellipsis .dropdown-toggle:after {
+.ellipsis .dropdown-toggle:after {
   display: none
 }
 
-.dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:focus, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:hover, .dropdown.ellipsis.show button.dropdown-toggle.btn.btn-primary:active {
+.ellipsis button:hover, .ellipsis button:active, .ellipsis button:focus {background-color: transparent;
+  border-color: transparent !important;
+  box-shadow: none !important}
+
+  .ellipsis.show>.btn-secondary.dropdown-toggle {background-color: transparent !important}
+
+.ellipsis button.dropdown-toggle.btn.btn-primary, .ellipsis button.dropdown-toggle.btn.btn-primary:focus, .ellipsisbutton.dropdown-toggle.btn.btn-primary:hover, .ellipsis button.dropdown-toggle.btn.btn-primary:active {
   background-color: transparent;
   border-color: transparent !important;
   box-shadow: none !important
 }
 
-.dropdown.ellipsis .btn-primary.focus, .btn-primary:focus {
+.ellipsis button.focus, button:focus {
   background-color: transparent;
   border-color: transparent !important;
   box-shadow: none !important
 }
 
-.dropdown.ellipsis .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+.ellipsis .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
   box-shadow: none !important;
   background-color: transparent !important;
   border-color: transparent !important;
 }
 
-.dropdown.ellipsis .dropdown-item:active {
+.ellipsis .dropdown-item:active {
   background-color: initial;
   color: initial
 }
@@ -911,6 +917,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
   div.page {
     width: 100%;
     margin: 1em 0
+  }
+  div.page.payment-integration {
+    flex-direction: column;
+    height: initial !important
   }
   .imageBanner {
     height: 345px

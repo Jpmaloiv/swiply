@@ -80,7 +80,7 @@ export default class CustomerList extends Component {
         transitionLeave={false}
       >
         <div
-          style={{ backgroundColor: "#f9fafc", borderTop: "1px solid #ebecef" }}
+          style={{ backgroundColor: "#f9fafc", height: '100%', borderTop: "1px solid #ebecef" }}
         >
           <div className="main">
             <div
@@ -102,79 +102,85 @@ export default class CustomerList extends Component {
               >
                 <InputGroup>
                   <FormControl
-                    style={{ height: 45, borderTopLeftRadius: 22.5, borderBottomLeftRadius: 22.5, borderRight: 'none'}}
+                    style={{ height: 45, borderTopLeftRadius: 22.5, borderBottomLeftRadius: 22.5, borderRight: 'none' }}
                     placeholder='Search Your Customers ...'
                     onChange={event => {
                       this.setState({ customerName: event.target.value });
                     }}
                   />
-                    <InputGroup.Append>
-                      <InputGroup.Text style={{background: '#fff', borderTopRightRadius: 22.5, borderBottomRightRadius: 22.5}}>
-                        <FontAwesomeIcon icon='search' style={{opacity: 0.2}} onClick={this.searchQuery} />
-                      </InputGroup.Text>
-                    </InputGroup.Append>
-              </InputGroup>
+                  <InputGroup.Append>
+                    <InputGroup.Text style={{ background: '#fff', borderTopRightRadius: 22.5, borderBottomRightRadius: 22.5 }}>
+                      <FontAwesomeIcon icon='search' style={{ opacity: 0.2 }} onClick={this.searchQuery} />
+                    </InputGroup.Text>
+                  </InputGroup.Append>
+                </InputGroup>
               </div>
-              </div>
+            </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  margin: "20px auto"
-                }}
-              >
-                <div>
-                  <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
-                    <Dropdown.Item href="#/action-1">
-                      Date Added
+            <div
+              style={{
+                display: "flex",
+                margin: "20px auto"
+              }}
+            >
+              <div>
+                <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
+                  <Dropdown.Item href="#/action-1">
+                    Date Added
                   </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Pages Purchased
+                  <Dropdown.Item href="#/action-2">
+                    Pages Purchased
                   </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
-                    <Dropdown.Item href="#/action-4">Sort Criteria</Dropdown.Item>
-                  </DropdownButton>
-                </div>
+                  <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
+                  <Dropdown.Item href="#/action-4">Sort Criteria</Dropdown.Item>
+                </DropdownButton>
               </div>
+            </div>
 
-              {/* List pages in table format */}
-              <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
-                <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
-                  {this.state.charges.map((charge, i) => (
-                    <NavLink
-                      to={`/`}
-                      style={{ color: "initial" }}
-                    >
-                      <div key={i} className="page" style={{ display: "flex", padding: 18, margin: '7.5px auto', alignItems: 'center', width: 'initial' }}>
+            {/* List pages in table format */}
+            <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+              <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
+                {this.state.charges.map((charge, i) => (
+                  <NavLink
+                    to={`/`}
+                    style={{ color: "initial" }}
+                  >
+                    <div key={i} className="page" style={{ display: "flex", padding: 18, margin: '7.5px auto', alignItems: 'center', width: 'initial' }}>
+                      {charge.Customer.imageLink ?
                         <img
-                          src={`https://s3-us-west-1.amazonaws.com/${
-                            this.state.S3_BUCKET
-                            }/${charge.Customer.imageLink}`}
+                          src={`https://s3-us-west-1.amazonaws.com/${this.state.S3_BUCKET}/${charge.Customer.imageLink}`}
                           style={{
                             minWidth: 75, maxWidth: 75, height: 75, marginRight: 20, borderRadius: '50%', objectFit: 'cover'
                           }}
                         />
-                        <div style={{ width: "100%" }}>
-                          <p style={{ fontSize: 18 }}>
-                            {charge.Customer.firstName} {charge.Customer.lastName}
-                          </p>
-                          <p style={{ color: '#88898c' }}>Item: {charge.Page.name}</p>
+                        : <FontAwesomeIcon icon='user' style={{
+                          minWidth: 70, maxWidth: 70, height: 75, marginRight: 20, borderRadius: '50%', objectFit: 'cover'
+                        }} />
+                      }
 
-                          <p style={{ alignItems: "left" }}>
-                            <span style={{ fontSize: 14 }}>Status: </span>
-                            <span style={{ fontSize: 14, color: "#5dcbb0" }}>
-                              Paid
+                      <div style={{ width: "100%" }}>
+                        <p style={{ fontSize: 18 }}>
+                          {charge.Customer.firstName || charge.Customer.lastName
+                            ? <span>{charge.Customer.firstName} {charge.Customer.lastName}</span>
+                            : <span>Customer</span>}
+                        </p>
+                        <p style={{ color: '#88898c' }}>Item: {charge.Page.name}</p>
+
+                        <p style={{ alignItems: "left" }}>
+                          <span style={{ fontSize: 14 }}>Status: </span>
+                          <span style={{ fontSize: 14, color: "#5dcbb0" }}>
+                            Paid
                           </span>
-                          </p>
-                        </div>
+                        </p>
                       </div>
-                    </NavLink>
-                  ))}
-                </div>
+                    </div>
+                  </NavLink>
+                ))}
               </div>
             </div>
           </div>
+        </div>
       </ReactCSSTransitionGroup>
-        );
-      }
-    }
+    );
+  }
+}

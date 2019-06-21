@@ -24,15 +24,15 @@ export default class ProfileSummary extends Component {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='center'>
-                    <h3>Create a profile summary</h3>
+                    <h3>Tell us about yourself.</h3>
                     <br />
                     <Form style={{ paddingTop: 0, paddingBottom: 0 }}>
                         <Form.Group>
-                            <Form.Label>Content Provider Summary</Form.Label>
+                            <Form.Label>Give people a summary of your background.</Form.Label>
                             <Form.Control
                                 as='textarea'
                                 rows='4'
-                                placeholder='I grew up in Arizona and moved to SF when I was 5...'
+                                placeholder="i.e. I've been a fitness trainer for 10 years and love helping people..."
                                 name='summary'
                                 onChange={this.handleChange}
                                 onKeyPress={this.enterPressed.bind(this)}

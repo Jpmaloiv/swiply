@@ -15,9 +15,9 @@ export default class AddPage extends Component {
         super(props)
         this.state = {
             image: '',
-            name: 'Page Name',
-            description: 'Short Description',
-            summary: 'Page Summary',
+            name: "Let's name your page",
+            description: 'In a few words, what do you offer your fans?',
+            summary: 'Write a short description about what your followers can expect to learn from your page.',
             submit: false
         }
     }
@@ -150,7 +150,7 @@ export default class AddPage extends Component {
                                 style={{ display: 'block' }}
                                 onClick={this.addPage.bind(this)}
                             >
-                                + Add Page
+                                Done
                             </Button>
                             :
                             <Button variant='success' className='loading' disabled>

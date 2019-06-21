@@ -32,15 +32,14 @@ export default class PaymentIntegration extends Component {
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div style={{ borderBottom: '1px solid #ebecef' }}>
-                    <div className='center'>
-                        <h1 style={{ fontSize: 48 }}>Payment Integration</h1>
-                        <p style={{ fontSize: 16, color: '#88898c' }}>In order to charge for your content, you'll need to set up a payment method
-                        to collect your payments.</p>
+                    <div className='center' style={{width: 550}}>
+                        <h1 style={{ fontSize: 48 }}>Getting paid is important.</h1>
+                        <p style={{ fontSize: 16, color: '#88898c' }}>We've partnered with <b>Stripe</b> to ensure that your customer's payments are quick and seamless.</p>
                     </div>
                 </div>
                 <div style={{ background: 'linear-gradient(180deg, #EDF0F4 0%, #FFFFFF 65.24%, #FFFFFF 100%)' }}>
                     <div className='main' style={{ margin: '0 auto', padding: 25 }}>
-                        <div className='page' style={{ display: 'flex', width: 'initial', height: 135, maxWidth: 1036, margin: '20px auto', alignItems: 'center', background: '#fff' }}>
+                        <div className='page payment-integration' style={{ display: 'flex', width: 'initial', height: 135, maxWidth: 1036, margin: '20px auto', alignItems: 'center', background: '#fff' }}>
                             <img src={require(`../../images/stripe.png`)} style={{ margin: 20, width: 95, height: 95, borderRadius: 5 }} />
                             <p style={{ fontSize: 16, color: '#68696b', margin: 20 }}>Stripe is the best software platform for running an internet business. We handle billions of dollars
                                 every year for forward-thinking businesses around the world.

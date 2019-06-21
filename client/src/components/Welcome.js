@@ -44,7 +44,7 @@ export default class Welcome extends Component {
         axios.post(`api/stripe/register?id=${window.localStorage.getItem('userId')}
             &client_secret=${this.state.stripeSecretKey}&code=${this.state.accessToken}`)
             .then((resp) => {
-                if (resp.data.success == true) this.setState({ loading: false})
+                if (resp.data.success == true) this.setState({ loading: false })
             }).catch((error) => {
                 console.error(error);
             })
@@ -63,14 +63,14 @@ export default class Welcome extends Component {
                         </div>
                         :
                         <div>
-                            <h1>Welcome to Swiply</h1><br />
-                            <h5>Congratulations, you're just a few steps away from getting paid for your content.</h5>
+                            <h1>You're almost there.</h1><br />
+                            <h5>Let's create your first page and give your fans what they want, you.</h5>
                             <img src={require(`../images/welcome.png`)} style={{ width: '100%', opacity: .6 }} alt='Welcome' />
 
                             <NavLink to='/pages/add'>
                                 <Button variant='success' size='lg'>
-                                    Create Your First Page
-                        </Button>
+                                    Create Page
+                                </Button>
                             </NavLink>
                         </div>
                     }

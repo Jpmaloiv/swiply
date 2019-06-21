@@ -57,28 +57,28 @@ export default class SubscriptionPlan extends Component {
         <div className="center">
           <ButtonGroup vertical name='subscription' className='subscription-plan'>
             <Button variant="light" active={plan === 'small'} onClick={() => this.setState({ plan: 'small' })}>
-              <h4>Small Plan</h4>
+              <h4>Bronze Plan</h4>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                If you're new to your craft or content creation this is
+                a good first step. Get your feet wet and check it out.
               </p>
-              <h4>$0 Per Month</h4>
+              <h4>FREE</h4>
             </Button>
             <Button variant="light" active={plan === 'medium'} onClick={() => this.setState({ plan: 'medium' })}>
-              <h4>Medium Plan</h4>
+              <h4>Silver Plan</h4>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                If you've got some momentum with what you do
+                and are gaining traction with your audience.
               </p>
-              <h4>$199 Per Month</h4>
+              <h4>$199.<sup style={{ fontSize: '60%' }}>95</sup> / <span style={{ fontSize: 16 }}>mnth</span></h4>
             </Button>
             <Button variant="light" active={plan === 'pro'} onClick={() => this.setState({ plan: 'pro' })}>
-              <h4>Pro Plan</h4>
+              <h4>Gold Plan</h4>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                You've been a pro for many years and are simply
+                looking for the platform that's right for you.
               </p>
-              <h4>$399 Per Month</h4>
+              <h4>$399.<sup style={{ fontSize: '60%' }}>95</sup> / <span style={{ fontSize: 16 }}>mnth</span></h4>
             </Button>
           </ButtonGroup>
 
@@ -97,7 +97,7 @@ export default class SubscriptionPlan extends Component {
               >
                 {plan !== 'small' ?
                   <Button variant='success' size='lg'>
-                    Pay with Card
+                    Select Plan
                   </Button>
                   :
                   <span></span>

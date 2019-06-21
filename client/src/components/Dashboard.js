@@ -147,7 +147,7 @@ export default class Dashboard extends Component {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#f9fafc', borderTop: '1px solid #ebecef' }}>
+                <div style={{ backgroundColor: '#f9fafc', height: '100%', borderTop: '1px solid #ebecef' }}>
                     <div className='main'>
                         <div className='page-controls'>
                             <div>
@@ -174,22 +174,6 @@ export default class Dashboard extends Component {
                             </div>
                         </div>
 
-                        {/* {['up', 'down', 'left', 'right'].map(direction => (
-                            <DropdownButton
-                                drop='left'
-                                variant="secondary"
-                                title={` Drop left `}
-                                id={`dropdown-button-drop-left`}
-                                key='left'
-                            >
-                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
-                                <Dropdown.Divider />
-                                <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                            </DropdownButton>
-                        ))} */}
-
                         {/* List pages in table format */}
                         <div>
                             <div>
@@ -208,24 +192,26 @@ export default class Dashboard extends Component {
                                                         <div>
                                                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                                 <p style={{ fontSize: 18 }}>{page.name}</p>
-                                                                <Dropdown className='ellipsis' onClick={e => e.preventDefault()}>
-                                                                    <Dropdown.Toggle>
-                                                                        <FontAwesomeIcon icon='ellipsis-v' color='#66686b' />
-                                                                    </Dropdown.Toggle>
 
-                                                                    <Dropdown.Menu>
-                                                                        <Dropdown.Item onClick={() => window.location = `/pages/${page.id}`}>Edit/Preview</Dropdown.Item>
-                                                                        <CopyToClipboard
-                                                                            text={`${window.location.href}pages/${page.id}`}
-                                                                            onCopy={() => this.setState({ copiedPage: page.name, copiedImage: page.imageLink })}
-                                                                            style={{ cursor: "pointer" }}
-                                                                        >
-                                                                            <Dropdown.Item>Share</Dropdown.Item>
-                                                                        </CopyToClipboard>
-                                                                        <Dropdown.Item onClick={() => this.handlePublish(page)}>{page.published ? 'Unpublish' : 'Publish'}</Dropdown.Item>
-                                                                        <Dropdown.Item onClick={() => this.deletePage(page)}>Delete</Dropdown.Item>
-                                                                    </Dropdown.Menu>
-                                                                </Dropdown>
+                                                                <DropdownButton
+                                                                    className='ellipsis'
+                                                                    onClick={e => e.preventDefault()}
+                                                                    drop='left'
+                                                                    variant="secondary"
+                                                                    title={<FontAwesomeIcon icon='ellipsis-v' color='#66686b' />}
+                                                                    id={`dropdown-button-drop-left`}
+                                                                    key='left'>
+                                                                    <Dropdown.Item onClick={() => window.location = `/pages/${page.id}`}>Edit/Preview</Dropdown.Item>
+                                                                    <CopyToClipboard
+                                                                        text={`${window.location.href}pages/${page.id}`}
+                                                                        onCopy={() => this.setState({ copiedPage: page.name, copiedImage: page.imageLink })}
+                                                                        style={{ cursor: "pointer" }}
+                                                                    >
+                                                                        <Dropdown.Item>Share</Dropdown.Item>
+                                                                    </CopyToClipboard>
+                                                                    <Dropdown.Item onClick={() => this.handlePublish(page)}>{page.published ? 'Unpublish' : 'Publish'}</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => this.deletePage(page)}>Delete</Dropdown.Item>
+                                                                </DropdownButton>
                                                             </div>
                                                             <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={page.createdAt} /></p>
                                                         </div>

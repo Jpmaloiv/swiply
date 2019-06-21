@@ -175,6 +175,11 @@ router.get("/search", (req, res) => {
     });
 });
 
+// Contact customer support
+router.post('/contact-us', (req, res) => {
+  
+})
+
 // Update a customer
 router.put("/update", upload.single("imgFile"), async (req, res) => {
   console.log("REQ", req.file);
