@@ -1,6 +1,6 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faArrowsAlt, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios'
 import React, { Component } from 'react';
@@ -17,6 +17,7 @@ import ContentView from './components/Content/ContentView';
 import Sales from './components/Sales'
 import Customers from './components/Customers';
 import MyPurchases from './components/Customer/MyPurchases';
+import ContactUs from './components/Customer/ContactUs';
 import Dashboard from './components/Dashboard';
 import Navigation from './components/Navigation';
 import AddPage from './components/Pages/AddPage';
@@ -122,6 +123,7 @@ class App extends Component {
               <Route path='/purchased' component={PurchaseConfirmation} />
 
               <Route path='/purchases' component={MyPurchases} />
+              <Route path='/contact-us' component={ContactUs} />
 
               <Elements>
                 <Route exact path='/checkout' component={Checkout} />
@@ -147,7 +149,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faAngleRight, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus)
+library.add(faAngleRight, faArrowsAlt, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus)
 
 
 export default App;

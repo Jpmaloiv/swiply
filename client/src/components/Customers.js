@@ -49,24 +49,13 @@ export default class CustomerList extends Component {
   }
 
   searchQuery() {
-    let customerName = "";
-    if (this.state.customerName) customerName = this.state.customerName;
-    const loginToken = window.localStorage.getItem("token");
-    axios
-      .get("api/customers/search?customername=" + customerName, {
-        headers: { Authorization: "Bearer " + loginToken }
-      })
+    axios.get(`api/customers/search?name=${this.state.customer}`)
       .then(resp => {
-        console.log(resp.data.response);
-        this.setState(
-          {
-            patients: resp.data.response
-          },
-          () => console.log(this.state.customers)
-        );
+        console.log(resp);
+        this.setState({ customers: resp.data.response })
       })
-      .catch(error => {
-        console.error(error);
+      .catch(err => {
+        console.error(err);
       });
   }
 
@@ -79,44 +68,36 @@ export default class CustomerList extends Component {
         transitionEnter={false}
         transitionLeave={false}
       >
+        <div style={{ borderBottom: '1px solid #ebecef' }}>
+          <div className='main'>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                flex: 0.2,
+                justifyContent: "center"
+              }}
+            >
+              <InputGroup>
+                <FormControl
+                  style={{ height: 45, borderTopLeftRadius: 22.5, borderBottomLeftRadius: 22.5, borderRight: 'none' }}
+                  placeholder='Search Your Customers ...'
+                  onChange={e => this.setState({ customer: e.target.value })}
+                  onKeyPress={this.enterPressed.bind(this)}
+                />
+                <InputGroup.Append>
+                  <InputGroup.Text style={{ background: '#fff', borderTopRightRadius: 22.5, borderBottomRightRadius: 22.5 }}>
+                    <FontAwesomeIcon icon='search' style={{ opacity: 0.2 }} onClick={this.searchQuery} />
+                  </InputGroup.Text>
+                </InputGroup.Append>
+              </InputGroup>
+            </div>
+          </div>
+        </div>
         <div
           style={{ backgroundColor: "#f9fafc", height: '100%', borderTop: "1px solid #ebecef" }}
         >
           <div className="main">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: 1,
-                justifyContent: "center",
-                margin: "20px auto"
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  flex: 0.2,
-                  justifyContent: "center"
-                }}
-              >
-                <InputGroup>
-                  <FormControl
-                    style={{ height: 45, borderTopLeftRadius: 22.5, borderBottomLeftRadius: 22.5, borderRight: 'none' }}
-                    placeholder='Search Your Customers ...'
-                    onChange={event => {
-                      this.setState({ customerName: event.target.value });
-                    }}
-                  />
-                  <InputGroup.Append>
-                    <InputGroup.Text style={{ background: '#fff', borderTopRightRadius: 22.5, borderBottomRightRadius: 22.5 }}>
-                      <FontAwesomeIcon icon='search' style={{ opacity: 0.2 }} onClick={this.searchQuery} />
-                    </InputGroup.Text>
-                  </InputGroup.Append>
-                </InputGroup>
-              </div>
-            </div>
-
             <div
               style={{
                 display: "flex",

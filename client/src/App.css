@@ -233,7 +233,7 @@ button.circle {
 }
 
 .btn.active.btn-link {
-  border-bottom: 3px solid #06b367;
+  border-bottom: 3px solid #5dcbb0 !important;
   text-decoration: none
 }
 
@@ -331,7 +331,7 @@ div.page p {
 /* Images */
 
 .profilePic {
-  background-color: #06b367;
+  background-color: #5dcbb0;
   width: 75px;
   height: 75px;
   border-radius: 50%;
@@ -398,7 +398,7 @@ iframe body {
 }
 
 .subscription-plan button.active {
-  background-color: #01ae63 !important;
+  background-color: #5dcbb0 !important;
   color: #fff !important;
 }
 
@@ -458,11 +458,15 @@ iframe body {
   display: none
 }
 
-.ellipsis button:hover, .ellipsis button:active, .ellipsis button:focus {background-color: transparent;
+.ellipsis button:hover, .ellipsis button:active, .ellipsis button:focus {
+  background-color: transparent;
   border-color: transparent !important;
-  box-shadow: none !important}
+  box-shadow: none !important
+}
 
-  .ellipsis.show>.btn-secondary.dropdown-toggle {background-color: transparent !important}
+.ellipsis.show>.btn-secondary.dropdown-toggle {
+  background-color: transparent !important
+}
 
 .ellipsis button.dropdown-toggle.btn.btn-primary, .ellipsis button.dropdown-toggle.btn.btn-primary:focus, .ellipsisbutton.dropdown-toggle.btn.btn-primary:hover, .ellipsis button.dropdown-toggle.btn.btn-primary:active {
   background-color: transparent;

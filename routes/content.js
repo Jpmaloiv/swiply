@@ -111,4 +111,21 @@ router.get('/search', (req, res) => {
 })
 
 
+router.delete("/delete", (req, res) => {
+
+  db.Content.destroy({
+    where: {
+      id: req.query.id
+    }
+  })
+    .then(function (resp) {
+      res.json({ success: true });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).end(err.toString());
+    });
+});
+
+
 module.exports = router;

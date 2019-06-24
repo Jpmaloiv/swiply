@@ -4,12 +4,17 @@ const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
 const axios = require('axios')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 const auth = require("../controllers/auth");
 
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const aws = require("aws-sdk");
+
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const s3 = new aws.S3();
 
@@ -121,7 +126,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
 
   // Increment page revenue and purchase count
   db.Page.increment('revenue', { by: amount, where: { id: req.query.pageId } })
-  db.Page.increment('purchases', {where: { id: req.query.pageId }})
+  db.Page.increment('purchases', { where: { id: req.query.pageId } })
 });
 
 
@@ -147,6 +152,7 @@ router.post("/login", (req, res) => {
     });
 });
 
+
 router.get("/search", (req, res) => {
   let query = {
     where: {},
@@ -155,6 +161,53 @@ router.get("/search", (req, res) => {
       as: "pages"
     }
   };
+
+  if (req.query.name) {
+    query = {
+      where: {
+        firstName: req.query.name
+      }
+    }
+  }
+
+  // if (req.query.name) {
+  //   if (req.query.name.trim().indexOf(' ') != -1) {
+  //     const names = req.query.name.split(' ');
+  //     const firstName = names[0];
+  //     const lastName = names[1];
+
+  //     query = {
+  //       where: {
+  //         [Op.and]: [{
+  //           firstName: {
+  //             $like: '%' + firstName + '%'
+  //           }
+  //         }, {
+  //           lastName: {
+  //             $like: '%' + lastName + '%'
+  //           }
+  //         }]
+  //       }
+  //     }
+  //   } else {
+  //     query = {
+  //       where: {
+  //         [Op.and]: [{
+  //           [Op.or]: [{
+  //             firstName: {
+  //               like: '%' + req.query.name + '%'
+  //             }
+  //           }, {
+  //             lastName: {
+  //               like: '%' + req.query.name + '%'
+  //             }
+  //           }]
+  //         }]
+  //       }
+  //     }
+  //   }
+  // }
+
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;
 
@@ -175,10 +228,28 @@ router.get("/search", (req, res) => {
     });
 });
 
+
 // Contact customer support
 router.post('/contact-us', (req, res) => {
-  
+
+  const msg = {
+    to: process.env.SUPPORT_EMAIL,
+    from: req.query.email,
+    subject: 'Swiply - Customer Support Inquiry',
+    html: `${req.query.email} - <br /><br />` + req.query.message
+  }
+
+  sgMail.send(msg)
+    .then(resp => {
+      console.log("Successfully sent inquiry email")
+      res.status(200).json({ success: true, message: 'Successfully sent inquiry email', response: resp })
+    })
+    .catch(err => {
+      console.error("Error sending inquiry email", err)
+      res.status(500).json({ success: false, message: 'Error sending inquiry email', error: err })
+    })
 })
+
 
 // Update a customer
 router.put("/update", upload.single("imgFile"), async (req, res) => {

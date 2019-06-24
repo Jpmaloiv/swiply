@@ -107,8 +107,8 @@ export default class AddPage extends Component {
                                     />
                                 </InputGroup>
                                 :
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p className='page-name' style={{ fontSize: 60 }}>{this.state.name}</p>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
+                                    <p className='page-name' style={{ fontSize: 60, margin: 0 }}>{this.state.name}</p>
                                     <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                 </div>
                             }

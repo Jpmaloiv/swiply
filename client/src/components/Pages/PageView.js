@@ -5,7 +5,9 @@ import { NavLink } from 'react-router-dom'
 import Moment from 'react-moment';
 import Switch from "react-switch";
 import StripeCheckout from 'react-stripe-checkout'
-
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Draggable from 'react-draggable';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Button from 'react-bootstrap/Button'
@@ -137,6 +139,11 @@ export default class PageView extends Component {
         this.setState({ render: !this.state.render });
     }
 
+    eventLogger = (e: MouseEvent, data: Object) => {
+        console.log('Event: ', e);
+        console.log('Data: ', data);
+    };
+
     // Toggles whether page is published
     handlePublish = e => {
         const published = e.target.value;
@@ -179,6 +186,19 @@ export default class PageView extends Component {
         window.location.reload()
     }
 
+    // Deletes the selected content
+    deleteContent(content) {
+        if (window.confirm(`Delete page content ${content.name}?`)) {
+            axios.delete(`/api/content/delete?id=${content.id}`)
+                .then(res => {
+                    console.log(res)
+                    window.location.reload();
+                }).catch(err => {
+                    console.error(err);
+                })
+        }
+    }
+
 
     checkout(token) {
         console.log(token)
@@ -193,7 +213,6 @@ export default class PageView extends Component {
 
 
     render() {
-        console.log(this.state.edit)
 
         const { decoded, edit, page } = this.state
         const user = page.User
@@ -203,7 +222,27 @@ export default class PageView extends Component {
                 <div>
                     <div className={this.state.image === '' ? 'imageBanner' : 'imageBanner set'}>
                         <input type='file' ref={(ref) => this.upload = ref} onChange={this.onImageChange} style={{ display: 'none' }} />
-                        <img src={this.state.image} className='page-image' alt='' />
+
+                        <Draggable
+                            axis="y"
+                            handle=".handle"
+                            defaultPosition={{ x: 0, y: 0 }}
+                            position={null}
+                            grid={[25, 25]}
+                            scale={1}
+                            onStart={this.handleStart}
+                            onDrag={this.handleDrag}
+                            onStop={this.handleStop}
+                        // bounds={{top: 'parent', bottom: 'parent'}}
+                        >
+                            <div>
+                                <div className="handle" style={{ position: 'absolute', zIndex: 1, top: 10, left: 10, opacity: 0.25 }}>
+                                    <FontAwesomeIcon icon='arrows-alt' size='2x' />
+                                </div>
+                                <img src={this.state.image} className='page-image' alt='' />
+                            </div>
+                        </Draggable>
+
 
                         {edit ?
                             <div>
@@ -260,8 +299,8 @@ export default class PageView extends Component {
                                     />
                                 </InputGroup>
                                 :
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p className='page-name'>{page.name}</p>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
+                                    <p className='page-name' style={{margin: 0}}>{page.name}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='name' onClick={this.handleEditing} />
                                         :
@@ -279,8 +318,8 @@ export default class PageView extends Component {
                                     autoFocus
                                 />
                                 :
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p className='page-description'>{page.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem'}}>
+                                    <p className='page-description' style={{margin: 0}}>{page.description}</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='description' onClick={this.handleEditing} />
                                         :
@@ -357,26 +396,10 @@ export default class PageView extends Component {
                                                 ? () => window.location = `/profile/${user.profile}`
                                                 : null} alt='' />
                                         <div className='profile-name'>
-                                            {this.state.nameUserEdit ?
-                                                <InputGroup>
-                                                    <FormControl
-                                                        placeholder={user.firstName + ' ' + user.lastName}
-                                                        name='nameUser'
-                                                        onChange={this.handleChange}
-                                                        onBlur={this.handleEditing}
-                                                        autoFocus
-                                                    />
-                                                </InputGroup>
-                                                :
-                                                <div style={{ display: 'flex' }}>
-                                                    <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}
-                                                        {edit ?
-                                                            <FontAwesomeIcon icon='pen' size='xs' name='nameUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3 }} />
-                                                            :
-                                                            <span></span>
-                                                        }</h5>
-                                                </div>
-                                            }
+                                            <div style={{ display: 'flex' }}>
+                                                <h5 style={{ margin: 0 }}>{user.firstName} {user.lastName}</h5>
+                                            </div>
+
                                             {this.state.titleUserEdit ?
                                                 <InputGroup>
                                                     <FormControl
@@ -389,9 +412,9 @@ export default class PageView extends Component {
                                                 </InputGroup>
                                                 :
                                                 <div style={{ display: 'flex' }}>
-                                                    <p className='title'><i>{user.title}</i>
+                                                    <p className='title'>{user.title}
                                                         {edit && user.title
-                                                            ? <FontAwesomeIcon icon='pen' size='xs' name='titleUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3 }} />
+                                                            ? <FontAwesomeIcon icon='pen' name='titleUser' onClick={this.handleEditing} style={{ position: 'absolute', opacity: 0.3, marginTop: 2 }} />
                                                             : <span></span>
                                                         }</p>
                                                 </div>
@@ -446,7 +469,8 @@ export default class PageView extends Component {
                                 <div>
                                     <div className='profile-switch'>
                                         <span style={{ marginRight: 10, fontSize: 14 }}>DISPLAY PROFILE</span>
-                                        <Switch onChange={this.handleSwitch.bind(this)} checked={page.displayProfile} checkedIcon={false} uncheckedIcon={false} />
+                                        <Switch onChange={this.handleSwitch.bind(this)}
+                                            onColor='#5dcbb0' checked={page.displayProfile} checkedIcon={false} uncheckedIcon={false} />
                                     </div>
                                 </div>
                                 :
@@ -460,8 +484,8 @@ export default class PageView extends Component {
                     <div className='main' style={{ marginTop: 0 }}>
                         <div className='page-summary'>
                             <div style={this.state.summaryEdit ? { paddingRight: 35, width: '80%' } : { paddingRight: 35 }}>
-                                <div style={{ display: 'flex' }}>
-                                    <p style={{ fontSize: 24 }}>Page Summary</p>
+                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                                    <p style={{ fontSize: 24, margin: 0 }}>Page Summary</p>
                                     {edit ?
                                         <FontAwesomeIcon icon='pen' name='summary' onClick={this.handleEditing} style={{ opacity: 0.3 }} />
                                         :
@@ -528,6 +552,21 @@ export default class PageView extends Component {
                                                 <div>
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <p className='previewText i' style={{ fontSize: 18 }}>{content.name}</p>
+
+                                                        <DropdownButton
+                                                            className='ellipsis'
+                                                            onClick={e => e.preventDefault()}
+                                                            drop='left'
+                                                            variant="secondary"
+                                                            title={<FontAwesomeIcon icon='ellipsis-v' color='#66686b' />}
+                                                            id={`dropdown-button-drop-left`}
+                                                            key='left'>
+                                                            <Dropdown.Item onClick={content.type === 'video'
+                                                                ? () => window.location = `${this.props.match.params.pageId}/${content.id}`
+                                                                : () => window.location = `https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${content.link}`
+                                                            }>Edit/Preview</Dropdown.Item>
+                                                            <Dropdown.Item onClick={() => this.deleteContent(content)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </div>
                                                     <p style={{ fontSize: 14, color: '#a4A5A8' }}>Published: <Moment format='M.DD.YYYY' date={content.createdAt} /></p>
                                                 </div>
