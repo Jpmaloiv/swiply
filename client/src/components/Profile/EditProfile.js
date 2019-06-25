@@ -464,7 +464,7 @@ export default class EditProfile extends Component {
                         alt=""
                       />
 
-                      <div className="textOverlay">
+                      <div className="textOverlay pp">
                         <div className="profilePic" style={{ marginBottom: 5 }}>
                           {user.imageLink ?
                             <div>

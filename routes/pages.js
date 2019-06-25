@@ -113,6 +113,7 @@ router.put('/update', upload.single('imgFile'), (req, res) => {
     description: req.query.description,
     summary: req.query.summary,
     price: req.query.price,
+    position: req.query.position,
     published: req.query.published,
     displayProfile: req.query.displayProfile,
     order: req.query.order

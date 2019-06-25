@@ -1,7 +1,9 @@
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleRight, faArrowsAlt, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown, faAngleRight, faArrowsAltV, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
+import AddToHomescreen from 'react-add-to-homescreen';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios'
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -59,6 +61,12 @@ class App extends Component {
     this.setState({ loading: false })
 
   }
+
+  handleAddToHomescreenClick = () => {
+    alert(`
+      1. Open Share menu
+      2. Tap on "Add to Home Screen" button`);
+  };
 
 
   render() {
@@ -130,6 +138,10 @@ class App extends Component {
               </Elements>
             </Switch>
 
+            <AddToHomescreen onAddToHomescreenClick={this.handleAddToHomescreenClick}
+              title={<div>Add shortcut to home screen<FontAwesomeIcon icon='angle-double-down' /></div>}
+              icon={require('./images/swiply.png')} />
+
 
 
             <link
@@ -149,7 +161,7 @@ class App extends Component {
 }
 
 // FontAwesome Library
-library.add(faAngleRight, faArrowsAlt, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus)
+library.add(faAngleDoubleDown, faAngleRight, faArrowsAltV, faCamera, faCheck, faDollarSign, faEllipsisV, faEye, faFile, faPen, faPlus, faSearch, faSignal, faSignOutAlt, faUpload, faUser, faUserPlus)
 
 
 export default App;

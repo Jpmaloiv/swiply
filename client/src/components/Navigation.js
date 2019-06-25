@@ -46,13 +46,12 @@ export default class Navigation extends Component {
             <header>
                 <div>
                     <NavLink to='/'>
-                        {/* <img
-                            src={require(`../images/pv3_logo.png`)}
-                            style={{ width: 150 }}
-                            alt='PV3'
-                        /> */}
                         {role === 'user' ?
-                            <p style={{ fontSize: 24 }} className='logo'>Swiply</p>
+                            <img
+                                src={require(`../images/swiply-logo.png`)}
+                                style={{ width: 60, marginLeft: 25 }}
+                                alt='PV3'
+                            />
                             :
                             <span></span>
                         }

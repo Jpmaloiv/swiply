@@ -15,7 +15,7 @@
 body {
   font-family: 'SF NS Display' !important;
   letter-spacing: -0.2px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  /* text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); */
 }
 
 /* @font-face {
@@ -165,13 +165,16 @@ form.login {
 }
 
 .textOverlay {
-  width: 100%;
   position: absolute;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
 }
+.textOverlay.pp {
+  width: 100%
+}
+
 
 .textOverlay .input-group {
   max-width: 50%;
@@ -294,11 +297,12 @@ div.page p {
 }
 
 .page-name {
-  font-size: 60px
+  font-size: 60px;
+  white-space: nowrap
 }
 
 .page-name.edit {
-  font-size: 40px;
+  font-size: 30px;
   max-width: 350px
 }
 
@@ -401,6 +405,11 @@ iframe body {
   background-color: #5dcbb0 !important;
   color: #fff !important;
 }
+
+.react-draggable {height: 442px}
+
+.add-to-home-banner {padding: 10px}
+.add-to-home-icon {height: auto !important}
 
 /* Custom Input */
 
@@ -858,6 +867,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
   background: rgba(0, 0, 0, 0.3);
 }
 
+.mobile {display: none}
+
 /* Responseiveness */
 
 @media (max-width: 1300px) {
@@ -1034,7 +1045,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
     margin-bottom: 0
   }
   .editProfile .center {
-    width: 100%;
+    width: 100% !important;
     margin: 0
   }
   .smartphone {
@@ -1045,6 +1056,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
     box-shadow: none !important;
     overflow: none
   }
+
+  .react-draggable {display: none}
+
+  .mobile {display: initial}
 }
 
 @media (max-width: 600px) {
