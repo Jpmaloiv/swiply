@@ -51,7 +51,7 @@ export default class MyPurchases extends Component {
                         {this.state.pages.map((page, i) =>
                             <NavLink to={`/pages/${page.id}`} style={{ color: 'initial' }}>
 
-                                <div className='page' style={{ display: 'flex', width: 'initial', height: 105, maxWidth: 1036, padding: 10, margin: '20px auto', alignItems: 'center', background: '#fff' }}>
+                                <div className='page' style={{ display: 'flex', justifyContent: 'space-between', width: 'initial', height: 105, maxWidth: 1036, padding: 10, margin: '20px auto', alignItems: 'center', background: '#fff' }}>
                                     <div style={{ display: 'flex' }}>
                                         <img src={`https://s3-us-west-1.amazonaws.com/${this.state.s3Bucket}/${page.imageLink}`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
                                         <div style={{ width: "50%", textAlign: "left", display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20 }}>

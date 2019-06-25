@@ -96,7 +96,7 @@ export default class AddPage extends Component {
 
                         <div className='textOverlay'>
                             {this.state.nameEdit ?
-                                <InputGroup>
+                                <InputGroup style={{maxWidth: '100%'}}>
                                     <FormControl
                                         placeholder={this.state.name}
                                         name='name'
