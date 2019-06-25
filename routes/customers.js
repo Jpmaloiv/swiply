@@ -77,6 +77,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
   };
 
   let token = ''
+  
 
   const customerId = await db.Customer.create(customer)
     .then(resp => {
@@ -88,27 +89,37 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
       res.status(500).json({ message: "Internal server error.", error: err });
     });
 
-  const purchase = await stripe.charges.create({
-    amount: (req.query.price * 100).toFixed(0),
-    currency: "usd",
-    source: req.query.token.trim(),
-    transfer_data: {
-      destination: req.query.accountId,
-    }
-  })
-    .then(charge => {
-      console.log("Initial charge created for customer", charge)
-      return charge
-    })
-    .catch(err => console.log("Error creating initial charge for customer", err))
-
-  const amount = purchase.amount / 100
-
   const charge = {
-    id: purchase.id,
-    amount: amount,
+    firstName: req.query.firstName,
+    lastName: req.query.lastName,
     CustomerId: customerId,
     PageId: req.query.pageId
+  }
+  const t = req.query.token.trim()
+
+  console.log(t)
+
+  if (t !== 'undefined') {
+
+    const purchase = await stripe.charges.create({
+      amount: (req.query.price * 100).toFixed(0),
+      currency: "usd",
+      source: req.query.token.trim(),
+      transfer_data: {
+        destination: req.query.accountId,
+      }
+    })
+      .then(charge => {
+        console.log("Initial charge created for customer", charge)
+        return charge
+      })
+      .catch(err => console.log("Error creating initial charge for customer", err))
+
+    charge.id = purchase.id
+    charge.amount = purchase.amount / 100
+  } else {
+    charge.id = Math.floor(Math.random()*90000) + 10000;
+    charge.amount = 0
   }
 
   await db.Charge.create(charge)

@@ -63,7 +63,7 @@ export default class PurchaseConfirmation extends Component {
     // Register the new customer and grant initial page access
     async register() {
         this.setState({ loading: true })
-        const customerId = await axios.post(`api/customers/register?email=${this.state.email}&password=${this.state.password}&token=${window.localStorage.getItem('stripeToken')}
+        const customerId = await axios.post(`api/customers/register?firstName=${this.state.firstName}&lastName=${this.state.lastName}&email=${this.state.email}&password=${this.state.password}&token=${window.localStorage.getItem('stripeToken')}
         &accountId=${window.localStorage.getItem('accountId')}&price=${window.localStorage.getItem('price')}&pageId=${window.localStorage.getItem('pageId')}`)
             .then((resp) => {
                 console.log(resp)
@@ -95,6 +95,22 @@ export default class PurchaseConfirmation extends Component {
                             {!this.state.decoded ?
                                 <div>
                                     <h6>Please enter information which you'll use to log in and view the content you've purchased.</h6><br />
+                                    <Form.Group>
+                                        <Form.Control
+                                            placeholder='Enter First Name'
+                                            onChange={(e) => this.setState({ firstName: e.target.value })}
+                                            style={{ width: '70%', margin: '0 auto' }}
+                                            onKeyPress={this.enterPressed.bind(this)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Control
+                                            placeholder='Enter Last Name'
+                                            onChange={(e) => this.setState({ lastName: e.target.value })}
+                                            style={{ width: '70%', margin: '0 auto' }}
+                                            onKeyPress={this.enterPressed.bind(this)}
+                                        />
+                                    </Form.Group>
                                     <Form.Group>
                                         <Form.Control
                                             placeholder='Enter Email'

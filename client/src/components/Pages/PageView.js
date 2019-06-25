@@ -74,7 +74,9 @@ export default class PageView extends Component {
     }
 
     componentWillUpdate(prevProps, prevState) {
-        if (prevState.page.price === '0' || (prevState.page.price).toLowerCase() === 'free') this.state.page.price = 'FREE'
+        if (prevState.page.price) {
+            if (prevState.page.price === '0' || (prevState.page.price).toLowerCase() === 'free') this.state.page.price = 'FREE'
+        }
     }
 
     checkPermissions() {
@@ -201,7 +203,6 @@ export default class PageView extends Component {
 
 
     checkout(token) {
-        console.log(token)
         window.localStorage.setItem('customer', true);
         window.localStorage.setItem('pageId', this.state.page.id);
         window.localStorage.setItem('page', this.state.page.name)
@@ -240,9 +241,13 @@ export default class PageView extends Component {
                             >
                                 <div>
                                     <img src={this.state.image} className='page-image' alt='' />
-                                    <div className="handle" style={{ position: 'absolute', zIndex: 1, top: '50%', left: 10, opacity: 0.25 }}>
-                                        <FontAwesomeIcon icon='arrows-alt-v' size='2x' onMouseDown={() => this.setState({ drag: true })} />
-                                    </div>
+                                    {edit ?
+                                        <div className="handle" style={{ position: 'absolute', zIndex: 1, top: '50%', left: 10, opacity: 0.25 }}>
+                                            <FontAwesomeIcon icon='arrows-alt-v' size='2x' onMouseDown={() => this.setState({ drag: true })} />
+                                        </div>
+                                        :
+                                        <span></span>
+                                    }
                                 </div>
                             </Draggable>
 
@@ -378,8 +383,9 @@ export default class PageView extends Component {
                                                         image='https://cdn0.iconfinder.com/data/icons/galaxy-open-line-gradient-iii/200/internet-browser-512.png'
                                                         currency='usd'
                                                         allowRememberMe={false}
+                                                        disabled={page.price === 'FREE'}
                                                     >
-                                                        <span ref={(ref) => this.checkoutRef = ref}>Request Page Access ${page.price}</span>
+                                                        <span onClick={page.price === 'FREE' ? this.checkout.bind(this) : null} ref={(ref) => this.checkoutRef = ref}>Request Page Access {page.price !== 'FREE' ? '$' : '- '}{page.price}</span>
                                                     </StripeCheckout>
                                                 </div>
                                             }
@@ -487,7 +493,7 @@ export default class PageView extends Component {
                         </div>
                     </div>
 
-                    <div style={{ width: '100%', background: '#f9fafc' }}>
+                    <div style={{ width: '100%', height: '100%', background: '#f9fafc' }}>
                         <div className='main' style={{ marginTop: 0 }}>
                             <div className='page-summary'>
                                 <div style={this.state.summaryEdit ? { paddingRight: 35, width: '80%' } : { paddingRight: 35 }}>
