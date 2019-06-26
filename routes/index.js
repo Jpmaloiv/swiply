@@ -13,6 +13,7 @@ router.get('/', async function (req, res, next) {
   })
 });
 
+// Passes environment variables to front end
 router.get('/env', async function (req, res, next) {
 
   let BASE_URL = "";

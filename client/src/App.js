@@ -18,6 +18,7 @@ import AddContent from './components/Content/AddContent';
 import ContentView from './components/Content/ContentView';
 import Sales from './components/Sales'
 import Customers from './components/Customers';
+import CustomerView from './components/CustomerView'
 import MyPurchases from './components/Customer/MyPurchases';
 import ContactUs from './components/Customer/ContactUs';
 import Dashboard from './components/Dashboard';
@@ -113,7 +114,8 @@ class App extends Component {
 
               <Route path='/reset-password/:token' component={ChangePassword} />
               <Route path='/sales' component={Sales} />
-              <Route path='/customers' component={Customers} />
+              <Route exact path='/customers' component={Customers} />
+              <Route exact path='/customers/:id' component={CustomerView} />
               <Route path='/pages/add' component={AddPage} />
               <Route exact path='/pages/:pageId' component={PageView} />
 

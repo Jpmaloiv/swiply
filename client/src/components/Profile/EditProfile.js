@@ -302,7 +302,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.instagram ? { borderRight: 'none' } : {}}
-                      placeholder={user.instagram}
+                      placeholder={user.instagram ? user.instagram : '@janedoe'}
                       value={user.instagram}
                       name="instagram"
                       onChange={this.handleChange}
@@ -320,7 +320,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.facebook ? { borderRight: 'none' } : {}}
-                      placeholder={user.facebook}
+                      placeholder={user.facebook ? user.facebook : 'https://facebook.com/johndoe'}
                       value={user.facebook}
                       name="facebook"
                       onChange={this.handleChange}
@@ -338,7 +338,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.twitter ? { borderRight: 'none' } : {}}
-                      placeholder={user.twitter}
+                      placeholder={user.twitter ? user.twitter : '@johnDoe'}
                       value={user.twitter}
                       name="twitter"
                       onChange={this.handleChange}
@@ -356,7 +356,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.linkedIn ? { borderRight: 'none' } : {}}
-                      placeholder={user.linkedIn}
+                      placeholder={user.linkedin ? user.linkedIn : 'https://linkedin.com/in/jane-doe-0291c837'}
                       value={user.linkedIn}
                       name="linkedIn"
                       onChange={this.handleChange}
@@ -374,7 +374,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.whatsapp ? { borderRight: 'none' } : {}}
-                      placeholder={user.whatsapp}
+                      placeholder={user.whatsapp ? user.whatsapp : '+91 75671 04889'}
                       value={user.whatsapp}
                       name="whatsapp"
                       onChange={this.handleChange}
@@ -392,7 +392,7 @@ export default class EditProfile extends Component {
                     <FormControl
                       className='smInput'
                       style={user.website ? { borderRight: 'none' } : {}}
-                      placeholder={user.website}
+                      placeholder={user.website ? user.website : 'https://google.com'}
                       value={user.website}
                       name="website"
                       onChange={this.handleChange}

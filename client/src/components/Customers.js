@@ -123,7 +123,7 @@ export default class CustomerList extends Component {
               <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
                 {this.state.charges.map((charge, i) => (
                   <NavLink
-                    to={`/`}
+                    to={`/customers/${charge.Customer.id}`}
                     style={{ color: "initial" }}
                   >
                     <div key={i} className="page" style={{ display: "flex", padding: 18, margin: '7.5px auto', alignItems: 'center', width: 'initial' }}>

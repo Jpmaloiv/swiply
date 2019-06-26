@@ -314,6 +314,7 @@ export default class AccountSettings extends Component {
                   <Form.Label>Profile Summary</Form.Label>
                   <Form.Control
                     as="textarea"
+                    rows='4'
                     placeholder={user.summary}
                     name="summary"
                     onChange={this.handleChange}

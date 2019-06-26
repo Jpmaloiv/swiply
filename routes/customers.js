@@ -71,13 +71,15 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
   const hash = getHash(req.query.password, salt);
 
   const customer = {
+    firstName: req.query.firstName,
+    lastName: req.query.lastName,
     email: req.query.email.toLowerCase(),
     hash: hash,
     salt: salt
   };
 
   let token = ''
-  
+
 
   const customerId = await db.Customer.create(customer)
     .then(resp => {
@@ -90,8 +92,6 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     });
 
   const charge = {
-    firstName: req.query.firstName,
-    lastName: req.query.lastName,
     CustomerId: customerId,
     PageId: req.query.pageId
   }
@@ -118,7 +118,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     charge.id = purchase.id
     charge.amount = purchase.amount / 100
   } else {
-    charge.id = Math.floor(Math.random()*90000) + 10000;
+    charge.id = Math.floor(Math.random() * 90000) + 10000;
     charge.amount = 0
   }
 
@@ -172,6 +172,22 @@ router.get("/search", (req, res) => {
       as: "pages"
     }
   };
+
+
+  if (req.query.userId) {
+    query = {
+      where: {
+        '$pages.User.id$': req.query.userId
+      },
+      include: [{
+        model: db.Page,
+        as: 'pages',
+        include: [{
+          model: db.User
+        }]
+      }]
+    }
+  }
 
   if (req.query.name) {
     query = {

@@ -85,10 +85,10 @@ export default class Profile extends Component {
                                     />
                                 }
                             </div>
-                            <br />
+
                             <div>
-                                <h3>{user.firstName + ' ' + user.lastName}</h3>
-                                <p>{user.title}</p>
+                                <p className='page-name'>{user.firstName + ' ' + user.lastName}</p>
+                                <p className='page-description' style={{fontStyle: 'italic', whiteSpace: 'nowrap'}}>{user.title}</p>
                             </div>
                             <div className='social'>
                                 {user.instagram ?
@@ -116,7 +116,7 @@ export default class Profile extends Component {
                 <div className='main'>
                     <div>
                         <div style={{ display: 'flex' }}>
-                            <p>{user.summary}</p>
+                            <p className='profile-summary'>{user.summary}</p>
                         </div>
 
                         {/* List pages in table format */}
