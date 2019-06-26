@@ -134,7 +134,7 @@ export default class CustomerList extends Component {
                             minWidth: 75, maxWidth: 75, height: 75, marginRight: 20, borderRadius: '50%', objectFit: 'cover'
                           }}
                         />
-                        : <FontAwesomeIcon icon='user' style={{
+                        : <img src={require('../images/default-user.png')} style={{
                           minWidth: 70, maxWidth: 70, height: 75, marginRight: 20, borderRadius: '50%', objectFit: 'cover'
                         }} />
                       }

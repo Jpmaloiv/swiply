@@ -95,6 +95,7 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
     CustomerId: customerId,
     PageId: req.query.pageId
   }
+  
   const t = req.query.token.trim()
 
   console.log(t)
@@ -177,14 +178,17 @@ router.get("/search", (req, res) => {
   if (req.query.userId) {
     query = {
       where: {
-        '$pages.User.id$': req.query.userId
+        '$Charges.Page.UserId$': req.query.userId
       },
       include: [{
-        model: db.Page,
-        as: 'pages',
+        model: db.Charge,
         include: [{
-          model: db.User
+          model: db.Page,
         }]
+        // as: 'pages',
+        // include: [{
+        //   model: db.User
+        // }]
       }]
     }
   }

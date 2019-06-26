@@ -64,27 +64,35 @@ router.post('/login', (req, res) => {
 router.post('/charge', async (req, res) => {
   console.log("HERE", req.query)
 
-  const purchase = await stripe.charges.create({
-    amount: (req.query.price * 100).toFixed(0),
-    currency: "usd",
-    source: req.query.token.trim(),
-    transfer_data: {
-      destination: req.query.accountId,
-    }
-  })
-    .then(charge => {
-      console.log("CHARGE", charge)
-      return charge
-    })
-    .catch(err => console.log("Error charging customer", err))
-
-  const amount = purchase.amount / 100
-
   const charge = {
-    id: purchase.id,
-    amount: amount,
     CustomerId: req.query.id,
     PageId: req.query.pageId
+  }
+
+  const t = req.query.token.trim()
+
+  console.log(t)
+
+  if (t !== 'undefined') {
+    const purchase = await stripe.charges.create({
+      amount: (req.query.price * 100).toFixed(0),
+      currency: "usd",
+      source: req.query.token.trim(),
+      transfer_data: {
+        destination: req.query.accountId,
+      }
+    })
+      .then(charge => {
+        console.log("CHARGE", charge)
+        return charge
+      })
+      .catch(err => console.log("Error charging customer", err))
+
+    charge.id = purchase.id
+    charge.amount = purchase.amount / 100
+  } else {
+    charge.id = Math.floor(Math.random() * 90000) + 10000;
+    charge.amount = 0
   }
 
   await db.Charge.create(charge)
