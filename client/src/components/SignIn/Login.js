@@ -14,7 +14,6 @@ export default class Login extends Component {
 
   // Handle user input
   handleChange = e => {
-    console.log(e.target);
     this.props.setState({ [e.target.name]: e.target.value });
   };
 

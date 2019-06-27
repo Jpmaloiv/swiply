@@ -33,6 +33,7 @@ export default class CustomerList extends Component {
         console.log(resp);
         this.setState({
           charges: resp.data.response,
+          decoded: decoded,
           S3_BUCKET: resp.data.bucket
         });
       })
@@ -49,10 +50,10 @@ export default class CustomerList extends Component {
   }
 
   searchQuery() {
-    axios.get(`api/customers/search?name=${this.state.customer}`)
+    axios.get(`api/charges/search?id=${this.state.decoded.id}&name=${this.state.customer}`)
       .then(resp => {
         console.log(resp);
-        this.setState({ customers: resp.data.response })
+        this.setState({ charges: resp.data.response })
       })
       .catch(err => {
         console.error(err);
@@ -106,14 +107,13 @@ export default class CustomerList extends Component {
             >
               <div>
                 <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
-                  <Dropdown.Item href="#/action-1">
-                    Date Added
+                  <Dropdown.Item>
+                    Recent Customers
                   </Dropdown.Item>
                   <Dropdown.Item href="#/action-2">
                     Pages Purchased
                   </Dropdown.Item>
                   <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
-                  <Dropdown.Item href="#/action-4">Sort Criteria</Dropdown.Item>
                 </DropdownButton>
               </div>
             </div>
@@ -149,6 +149,7 @@ export default class CustomerList extends Component {
 
                         <p style={{ alignItems: "left" }}>
                           <span style={{ fontSize: 14 }}>Status: </span>
+                          {charge.createdAt}
                           <span style={{ fontSize: 14, color: "#5dcbb0" }}>
                             Paid
                           </span>
