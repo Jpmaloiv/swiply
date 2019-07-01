@@ -12,7 +12,8 @@ export default class Navigation extends Component {
         }
     }
 
-    logout() {
+    logout(e) {
+        e.preventDefault();
         if (window.confirm('Would you like to log out of Swiply?')) {
             window.localStorage.removeItem('token')
             window.location = '/'
@@ -106,14 +107,14 @@ export default class Navigation extends Component {
                                             <h5>Dashboard</h5>
                                             <p>View your pages and their statistics</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
                                     <NavLink to='/sales' className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Sales</h5>
                                             <p>Review the sales details of your pages</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
 
                                     </NavLink>
                                     <NavLink to='/customers' className='bm-item menu-item' onClick={() => this.closeMenu()}>
@@ -121,14 +122,14 @@ export default class Navigation extends Component {
                                             <h5>Customers</h5>
                                             <p>Analyze your customer data</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
                                     <NavLink to={`/profile/edit/${this.props.decoded.id}`} className='bm-item menu-item' onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Public Profile</h5>
                                             <p>View how customers see your profile</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
                                 </div>
                                 :
@@ -140,7 +141,7 @@ export default class Navigation extends Component {
                                     <h5>My Account</h5>
                                     <p>View your profile and content</p>
                                 </div>
-                                <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                             </NavLink>
 
                             {role === 'customer' ?
@@ -150,20 +151,20 @@ export default class Navigation extends Component {
                                             <h5>My Purchases</h5>
                                             <p>View all content purchases</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
                                     <NavLink to='contact-us' className="menu-item" onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Contact Us</h5>
                                             <p>Get help from our support team</p>
                                         </div>
-                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#02ae63' />
+                                        <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
                                 </div>
                                 :
                                 <span></span>
                             }
-                            <NavLink className="menu-item" onClick={this.logout}>
+                            <NavLink to='/' className="menu-item" onClick={this.logout}>
                                 <div>
                                     <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                                         <FontAwesomeIcon icon='sign-out-alt' />

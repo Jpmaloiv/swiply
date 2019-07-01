@@ -107,7 +107,7 @@ router.post('/charge', async (req, res) => {
     })
 
   // Increment page revenue and purchase count
-  db.Page.increment('revenue', { by: amount, where: { id: req.query.pageId } })
+  db.Page.increment('revenue', { by: charge.amount, where: { id: req.query.pageId } })
   db.Page.increment('purchases', { where: { id: req.query.pageId } })
 })
 

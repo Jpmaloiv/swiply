@@ -10,7 +10,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import DragSortableList from "react-drag-sortable";
 import { NotificationContainer, NotificationManager } from "react-notifications";
-import Moment from "react-moment";
 import { NavLink } from "react-router-dom";
 
 

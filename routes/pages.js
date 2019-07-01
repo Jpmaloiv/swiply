@@ -3,6 +3,7 @@ require('dotenv').config();
 const db = require('../models');
 const express = require('express');
 const router = express.Router();
+const sequelize = require('sequelize');
 
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -67,6 +68,7 @@ router.post("/add", upload.single('imgFile'), function (req, res) {
 
 
 router.get('/search', (req, res) => {
+  console.log("QUERY", req.query)
 
   let query = {
     where: {},
@@ -74,8 +76,9 @@ router.get('/search', (req, res) => {
       model: db.User
     }, {
       model: db.Content
-    }]
+    }],
   }
+
   if (req.query.pageId) {
     query = {
       where: { id: req.query.pageId },
@@ -88,8 +91,24 @@ router.get('/search', (req, res) => {
       }]
     }
   }
+
   if (req.query.published) query.where.published = true
   if (req.query.userId) query.where.UserId = req.query.userId
+
+  console.log("SORT", req.query.sort)
+
+  // Sort pages
+  switch (req.query.sort) {
+    case 'views':
+      query.order = [['views', 'DESC']];
+      break;
+    case 'date':
+      query.order = [['createdAt', 'DESC']];
+      break;
+    case 'revenue':
+      query.order = [['revenue', 'DESC']]
+  }
+
 
   console.log("QUERY", query)
   db.Page.findAll(query)

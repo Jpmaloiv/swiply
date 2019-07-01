@@ -134,10 +134,10 @@ router.post("/register", upload.single("imgFile"), async (req, res) => {
       res.status(500).json({ message: "Internal server error.", error: err });
     })
 
-  console.log('AMOUNT', amount)
+  console.log('AMOUNT', charge.amount)
 
   // Increment page revenue and purchase count
-  db.Page.increment('revenue', { by: amount, where: { id: req.query.pageId } })
+  db.Page.increment('revenue', { by: charge.amount, where: { id: req.query.pageId } })
   db.Page.increment('purchases', { where: { id: req.query.pageId } })
 });
 
@@ -185,10 +185,6 @@ router.get("/search", (req, res) => {
         include: [{
           model: db.Page,
         }]
-        // as: 'pages',
-        // include: [{
-        //   model: db.User
-        // }]
       }]
     }
   }
@@ -200,44 +196,6 @@ router.get("/search", (req, res) => {
       }
     }
   }
-
-  // if (req.query.name) {
-  //   if (req.query.name.trim().indexOf(' ') != -1) {
-  //     const names = req.query.name.split(' ');
-  //     const firstName = names[0];
-  //     const lastName = names[1];
-
-  //     query = {
-  //       where: {
-  //         [Op.and]: [{
-  //           firstName: {
-  //             $like: '%' + firstName + '%'
-  //           }
-  //         }, {
-  //           lastName: {
-  //             $like: '%' + lastName + '%'
-  //           }
-  //         }]
-  //       }
-  //     }
-  //   } else {
-  //     query = {
-  //       where: {
-  //         [Op.and]: [{
-  //           [Op.or]: [{
-  //             firstName: {
-  //               like: '%' + req.query.name + '%'
-  //             }
-  //           }, {
-  //             lastName: {
-  //               like: '%' + req.query.name + '%'
-  //             }
-  //           }]
-  //         }]
-  //       }
-  //     }
-  //   }
-  // }
 
   if (req.query.id) query.where.id = req.query.id;
   if (req.query.profile) query.where.profile = req.query.profile;

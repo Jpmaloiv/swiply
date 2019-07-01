@@ -173,7 +173,7 @@ router.get('/token', async (req, res) => {
   else resp = await db.Customer.findOne(query)
   if (resp && role !== 'user') role = 'customer'
 
-  if (resp) res.json({ success: true, message: `User found!`, response: resp, role})
+  if (resp) res.json({ success: true, message: `User found!`, response: resp, role })
   else res.json({
     success: false,
     message: "No users found",
@@ -183,17 +183,18 @@ router.get('/token', async (req, res) => {
 
 // Grants customer access to a page
 router.post("/page", (req, res) => {
-  db.Customer.findByPk(req.query.customerId).then(customer => {
-    customer
-      .addPage(req.query.pageId)
-      .then(resp => {
-        res.status(200).json({ message: "Page access granted!" });
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(500).json({ message: "Internal server error.", error: err });
-      });
-  });
+  db.Customer.findByPk(req.query.customerId)
+    .then(customer => {
+      customer
+        .addPage(req.query.pageId)
+        .then(resp => {
+          res.status(200).json({ message: "Page access granted!" });
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ message: "Internal server error.", error: err });
+        });
+    });
 });
 
 

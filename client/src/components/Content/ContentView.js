@@ -107,8 +107,8 @@ export default class ContentView extends Component {
                   <div className='page'>
                     <div style={{ display: 'flex', padding: 7.5 }}>
                       {file.type === 'video'
-                        ? <img src={`https://img.youtube.com/vi/${file.link}/0.jpg`} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
-                        : <img src={require(`../../images/file.png`)} style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                        ? <img src={`https://img.youtube.com/vi/${file.link}/0.jpg`} alt='thumbnail-image' style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
+                        : <img src={require(`../../images/file.png`)} alt='file' style={{ height: 90, minWidth: 90, maxWidth: 90, objectFit: 'cover', borderRadius: 3 }} />
                       }
                       <div style={{ width: '100%', marginLeft: 20, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
                         <div>

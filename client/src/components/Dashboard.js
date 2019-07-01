@@ -17,19 +17,24 @@ export default class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            sort: 'views',
+            sortTitle: 'Popular Pages',
             stats: [],
             pages: []
         }
     }
 
     componentWillMount() {
+        console.log(this.state)
         const loginToken = window.localStorage.getItem("token");
         let decoded = ''
         if (loginToken) decoded = jwt_decode(loginToken);
 
-        axios.get('api/pages/search?userId=' + decoded.id)
+        axios.get(`api/pages/search?userId=${decoded.id}&sort=${this.state.sort}`)
             .then((resp) => {
+                console.log(resp)
                 this.setState({
+                    decoded: decoded,
                     pages: resp.data.response,
                     S3_BUCKET: resp.data.bucket
                 })
@@ -45,37 +50,19 @@ export default class Dashboard extends Component {
         }
     }
 
-    sortDates() {
-        console.log(this.state.pages)
-        var pageList = this.state.pages.sort(function (a, b) {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        });
-        console.log(this.state.pages, pageList)
+    sortPages() {
+        axios.get(`api/pages/search?userId=${this.state.decoded.id}&sort=${this.state.sort}`)
+            .then((resp) => {
+                this.setState({
+                    pages: resp.data.response,
+                    S3_BUCKET: resp.data.bucket
+                })
+            })
+            .catch((error) => {
+                console.error(error)
+            })
 
-        this.setState({
-            pages: this.state.pages
-        })
     }
-
-    sortCount = () => {
-        function count(a, b) {
-            return b.views - a.views;
-        };
-        this.state.pages.sort(count)
-        this.setState({
-            pages: this.state.pages
-        })
-    }
-
-    //     sortRating = () => {
-    //         function rating(a, b) {
-    //     return b.rating - a.rating;
-    // };
-    //         this.state.pages.sort(rating)
-    //         this.setState({
-    //             pages: this.state.pages
-    //         })
-    //     }
 
     createNotification(type) {
         const image =
@@ -151,12 +138,11 @@ export default class Dashboard extends Component {
                     <div className='main'>
                         <div className='page-controls'>
                             <div>
-                                <DropdownButton className='plain' title="Popular Pages" variant='secondary'>
-                                    <Dropdown.Item onClick={this.sortDates.bind(this)} >Date Published</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortCount}>Highest Rated</Dropdown.Item>
-                                    <Dropdown.Item
-                                        // onClick={this.sortRating}
-                                        href="#/action-3">Most Content</Dropdown.Item>
+                                <DropdownButton className='plain' title={this.state.sortTitle} variant='secondary'>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'views', sortTitle: 'Popular Pages'}, this.sortPages)} active={this.state.sort === 'views'}>Popular Pages</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'date', sortTitle: 'Most Recently Created' }, this.sortPages)} active={this.state.sort === 'date'}>Most Recently Created</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'revenue', sortTitle: 'Most Successful'}, this.sortPages)} active={this.state.sort === 'revenue'}>Most Successful</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'convRatio', sortTitle: 'Highest Conversion Ratio'})} active={this.state.sort === 'convRatio'}>Highest Conversion Ratio</Dropdown.Item>
                                 </DropdownButton>
                             </div>
 
@@ -179,9 +165,9 @@ export default class Dashboard extends Component {
                             <div>
                                 <div className='test' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', maxWidth: 1300, margin: '0 auto' }}>
                                     {this.state.pages.map((page, i) =>
-                                        <NavLink to={`/pages/${page.id}`} className='page' style={{ color: 'initial' }}>
+                                        <NavLink to={`/pages/${page.id}`} className='page' style={{ color: 'initial' }} key={i}>
 
-                                            <div key={i} className='page'>
+                                            <div className='page'>
                                                 <div style={{ display: 'flex', padding: 7.5 }}>
                                                     <img
                                                         src={page.imageLink

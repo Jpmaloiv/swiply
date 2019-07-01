@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         revenue: {
-            type: DataTypes.STRING,
+            type: DataTypes.DECIMAL(10,2),
             defaultValue: 0
         },
         purchases: {
@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: false
         },
         views: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         order: {
