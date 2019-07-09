@@ -1,3 +1,0 @@
-id,firstName,lastName,email,imageLink,hash,salt,passwordResetToken,passwordResetExpiry,createdAt,updatedAt
-1,Veronica,Fletcher,vfletcher@gmail.com,NULL,59d4299de5b9db62f2b04a60d4bfcc43ca89c95bb2a14472d1f8643e971496a20a5184c6da40cc483ec930c47c33124a012cc5ce7cacc5aa4eca866a8114cdf1,eccb32390a7735a2bb252c088ebbf3f0,NULL,NULL,"2019-06-30 00:26:59","2019-06-30 00:26:59"
-2,Michael,Nyman,mnyman@gmail.com,NULL,4b2387446601e09c88e0d16114f059c2daf4ad6dcd17db805b120fb652ed190b00a75b8ab4f12b25bd9c86ca966b85a3251695b528f309cf59ef96ea97ea29e6,a8168c2d521d8958c79f1b20832b5f11,NULL,NULL,"2019-06-30 00:29:05","2019-06-30 00:29:05"

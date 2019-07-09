@@ -199,6 +199,10 @@ button {
   margin: 25px auto !important;
 }
 
+.btn:focus {
+  box-shadow: none !important
+}
+
 .btn-success {
   background-color: #5dcbb0 !important;
   border-color: #5dcbb0 !important
@@ -243,6 +247,10 @@ button.circle {
 .btn.btn-link:hover {
   color: initial;
   text-decoration: none
+}
+
+.dropdown-item:active {
+  background-color: #4093f2
 }
 
 /* Links */
@@ -483,7 +491,7 @@ iframe body {
   box-shadow: none !important
 }
 
-.ellipsis button.focus, button:focus {
+.ellipsis button.focus {
   background-color: transparent;
   border-color: transparent !important;
   box-shadow: none !important

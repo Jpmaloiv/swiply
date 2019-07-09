@@ -87,7 +87,7 @@ export default class Navigation extends Component {
                                     <NavLink to='/purchases'>
                                         My Purchases
                                     </NavLink>
-                                    <NavLink to='contact-us'>
+                                    <NavLink to='/contact-us'>
                                         Contact Us
                                     </NavLink>
                                 </div>
@@ -153,7 +153,7 @@ export default class Navigation extends Component {
                                         </div>
                                         <FontAwesomeIcon icon='angle-right' size='2x' color='#5dcbb0' />
                                     </NavLink>
-                                    <NavLink to='contact-us' className="menu-item" onClick={() => this.closeMenu()}>
+                                    <NavLink to='/contact-us' className="menu-item" onClick={() => this.closeMenu()}>
                                         <div>
                                             <h5>Contact Us</h5>
                                             <p>Get help from our support team</p>

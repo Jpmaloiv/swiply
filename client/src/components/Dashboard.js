@@ -36,7 +36,9 @@ export default class Dashboard extends Component {
                 this.setState({
                     decoded: decoded,
                     pages: resp.data.response,
-                    S3_BUCKET: resp.data.bucket
+                    revenue: resp.data.revenue.fulfillmentValue,
+                    S3_BUCKET: resp.data.bucket,
+                    views: resp.data.views.fulfillmentValue
                 })
             })
             .catch((error) => {
@@ -61,7 +63,6 @@ export default class Dashboard extends Component {
             .catch((error) => {
                 console.error(error)
             })
-
     }
 
     createNotification(type) {
@@ -107,18 +108,20 @@ export default class Dashboard extends Component {
 
     render() {
 
+        const { sort } = this.state
+
         return (
             <ReactCSSTransitionGroup transitionName='fade' transitionAppear={true} transitionAppearTimeout={500} transitionEnter={false} transitionLeave={false}>
                 <div className='main'>
                     <div className='statistics'>
                         <div style={{ backgroundColor: '#5dcbb0' }}>
                             <FontAwesomeIcon icon='dollar-sign' />
-                            <div>${Math.floor(Math.random() * 99)}k</div>
+                            <div>{this.state.revenue}</div>
                             <div>Recent Earnings (+50)</div>
                         </div>
                         <div style={{ backgroundColor: '#595fdb' }}>
                             <FontAwesomeIcon icon='eye' />
-                            <div>{Math.floor(Math.random() * (250)) / 10}m</div>
+                            <div>{this.state.views}</div>
                             <div>Recent View (+32)</div>
                         </div>
                         <div style={{ backgroundColor: '#4193f2' }}>
@@ -139,10 +142,10 @@ export default class Dashboard extends Component {
                         <div className='page-controls'>
                             <div>
                                 <DropdownButton className='plain' title={this.state.sortTitle} variant='secondary'>
-                                    <Dropdown.Item onClick={() => this.setState({ sort: 'views', sortTitle: 'Popular Pages'}, this.sortPages)} active={this.state.sort === 'views'}>Popular Pages</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.setState({ sort: 'date', sortTitle: 'Most Recently Created' }, this.sortPages)} active={this.state.sort === 'date'}>Most Recently Created</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.setState({ sort: 'revenue', sortTitle: 'Most Successful'}, this.sortPages)} active={this.state.sort === 'revenue'}>Most Successful</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.setState({ sort: 'convRatio', sortTitle: 'Highest Conversion Ratio'})} active={this.state.sort === 'convRatio'}>Highest Conversion Ratio</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'views', sortTitle: 'Popular Pages' }, this.sortPages)} active={sort === 'views'}>Popular Pages</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'date', sortTitle: 'Most Recently Created' }, this.sortPages)} active={sort === 'date'}>Most Recently Created</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'revenue', sortTitle: 'Most Successful' }, this.sortPages)} active={sort === 'revenue'}>Most Successful</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ sort: 'convRatio', sortTitle: 'Highest Conversion Ratio' }, this.sortPages)} active={sort === 'convRatio'}>Highest Conversion Ratio</Dropdown.Item>
                                 </DropdownButton>
                             </div>
 

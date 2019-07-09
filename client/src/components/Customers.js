@@ -17,7 +17,9 @@ export default class CustomerList extends Component {
       stats: [],
       pages: [],
       charges: [],
-      customerName: ""
+      customerName: '',
+      sort: 'date',
+      sortTitle: 'Recent Customers'
     };
     this.searchQuery = this.searchQuery.bind(this);
   }
@@ -28,7 +30,7 @@ export default class CustomerList extends Component {
     if (loginToken) decoded = jwt_decode(loginToken);
 
     axios
-      .get("api/charges/search?id=" + decoded.id)
+      .get(`api/charges/search?id=${decoded.id}&sort=${this.state.sort}`)
       .then(resp => {
         console.log(resp);
         this.setState({
@@ -60,7 +62,24 @@ export default class CustomerList extends Component {
       });
   }
 
+  sortCustomers() {
+    axios.get(`api/charges/search?id=${this.state.decoded.id}&sort=${this.state.sort}`)
+        .then((resp) => {
+          console.log(resp)
+            this.setState({
+                charges: resp.data.response,
+                S3_BUCKET: resp.data.bucket
+            })
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+
   render() {
+
+    const { sort } = this.state
+
     return (
       <ReactCSSTransitionGroup
         transitionName="fade"
@@ -106,14 +125,10 @@ export default class CustomerList extends Component {
               }}
             >
               <div>
-                <DropdownButton title="Recent Customers" className='plain' variant='secondary'>
-                  <Dropdown.Item>
-                    Recent Customers
-                  </Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">
-                    Pages Purchased
-                  </Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Highest Value</Dropdown.Item>
+                <DropdownButton title={this.state.sortTitle} className='plain' variant='secondary'>
+                  <Dropdown.Item onClick={() => this.setState({ sort: 'date', sortTitle: 'Recent Customer' }, this.sortCustomers)} active={sort === 'date'}>Recent Customers</Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.setState({ sort: 'purchases', sortTitle: 'Pages Purchased' }, this.sortCustomers)} active={sort === 'purchases'}>Pages Purchased</Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.setState({ sort: 'revenue', sortTitle: 'Highest Value' }, this.sortCustomers)} active={sort === 'revenue'}>Highest Value</Dropdown.Item>
                 </DropdownButton>
               </div>
             </div>
@@ -142,7 +157,7 @@ export default class CustomerList extends Component {
                       <div style={{ width: "100%" }}>
                         <p style={{ fontSize: 18 }}>
                           {charge.Customer.firstName || charge.Customer.lastName
-                            ? <span>{charge.Customer.firstName} {charge.Customer.lastName}</span>
+                            ? <span>{charge.Customer.firstName} {charge.Customer.lastName} {charge.createdAt}</span>
                             : <span>Customer</span>}
                         </p>
                         <p style={{ color: '#88898c' }}>Item: {charge.Page.name}</p>

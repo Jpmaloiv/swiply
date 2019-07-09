@@ -3,8 +3,8 @@ require('dotenv').config();
 const db = require('../models');
 const express = require('express');
 const router = express.Router();
-const Sequelize = require('sequelize')
-const Op = Sequelize.Op
+const sequelize = require('sequelize')
+const Op = sequelize.Op
 
 
 router.get('/search', (req, res) => {
@@ -74,6 +74,17 @@ router.get('/search', (req, res) => {
         }]
       }
     }
+  }
+
+  // Sort charges
+  switch (req.query.sort) {
+    case 'purchases':
+      query.attributes = [
+        [sequelize.fn('COUNT', sequelize.col('CustomerId')), 'purchases']
+      ]
+
+        // query.order = [[sequelize.literal('purchases'), 'DESC']]
+      break;
   }
 
   console.log("QUERY", query)

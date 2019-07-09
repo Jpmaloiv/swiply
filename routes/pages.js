@@ -106,14 +106,29 @@ router.get('/search', (req, res) => {
       query.order = [['createdAt', 'DESC']];
       break;
     case 'revenue':
-      query.order = [['revenue', 'DESC']]
+      query.order = [['revenue', 'DESC']];
+      break;
+    case 'convRatio':
+      query.order = [[sequelize.literal('purchases / views DESC')]]
   }
+
+  const revenue = db.Page.sum('revenue', query)
+  const views = db.Page.sum('views', query)
+  // const followers = 
+  
+  // const convRatio = sequelize.query(
+  //   'SELECT AVG("purchases" / "views") FROM "Page"',
+  //   { type: sequelize.QueryTypes.SELECT}
+  // ).then(function(result) {
+  //   console.log("RES", result)
+  //     // process result here
+  // })
 
 
   console.log("QUERY", query)
   db.Page.findAll(query)
     .then(resp => {
-      res.json({ success: true, message: 'Pages found!', response: resp, bucket: process.env.S3_BUCKET });
+      res.json({ success: true, message: 'Pages found!', response: resp, bucket: process.env.S3_BUCKET, revenue: revenue, views: views });
     })
     .catch(err => {
       console.error("ERR", err);
