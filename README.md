@@ -1,6 +1,10 @@
 # Swiply
 An application for content providers to sell their content.
 
+Credentials:
+
+Username: malomedia7@gmail.com - Password: Test123$
+
 ###########
 -React/Node/MySQL/Express app
 
